@@ -1,0 +1,30 @@
+body {
+  font-family: 'Raleway', sans-serif;
+}
+.qr-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.qr {
+  width: 500px;
+}
+
+#start {
+  font-size: 2em;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  background-color: #38a1db;
+  color: #ffffff;
+  box-shadow: 0 1px 6px rgba(0,0,0,.117647), 0 1px 4px rgba(0,0,0,.117647);
+  padding: 10px 20px;
+}

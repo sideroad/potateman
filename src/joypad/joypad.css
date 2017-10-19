@@ -1,0 +1,48 @@
+body {
+  margin: 0;
+}
+
+#color {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 50px 50px 0 50px;
+  border-color: none transparent transparent transparent;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#test {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.joypad {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.left-pad,
+.right-pad {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#ck {
+	width : 180px;
+	height : 180px;
+}
+
+.button{
+	width: 180px;
+	height: 85px;
+  margin: 10px;
+}
