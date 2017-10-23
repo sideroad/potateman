@@ -36,8 +36,6 @@ body {
 
 #winner {
   display: none;
-  width: 100vw;
-  height: 100vh;
 }
 #overlay {
   background-color: #000000;
