@@ -53,6 +53,7 @@ export default function (act) {
   // eslint-disable-next-line no-param-reassign
   act.attend = (data) => {
     stack.push(data);
+    document.getElementById('attendee').innerHTML = `${stack.length} potatemans are connected.`;
   };
 
   // eslint-disable-next-line no-param-reassign
@@ -85,7 +86,10 @@ export default function (act) {
     delete players[data.player];
     if (Object.keys(players).length === 1) {
       const player = Object.values(players)[0];
-      window.alert(`You Win!! player:${player.body.attr.player}`);
+      document.getElementById('winner-caset').style.borderColor = `${player.body.attr.color} transparent`;
+      console.log(player.image);
+      document.getElementById('winner-character').style.backgroundImage = `url(${player.image})`;
+      document.getElementById('winner').style.display = 'block';
     }
   };
   volcano({ engine, size });

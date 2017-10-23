@@ -7,6 +7,15 @@ import {
 import Sprite from './Sprite';
 import COLLISION from './collision';
 
+const getStrength = ({ punchGage, power }) => {
+  const punchStrength = (punchGage * power) / 100;
+  // eslint-disable-next-line no-nested-ternary
+  const strength = punchStrength < 5 ? 5 :
+  // eslint-disable-next-line indent
+                   punchStrength > 30 ? 30 : punchStrength;
+  return strength;
+};
+
 export default function ({
   engine,
   size,
@@ -30,7 +39,7 @@ export default function ({
     },
     render: {
       sprite: {
-        texture: '/images/potateman-walk-1.png',
+        texture: '/images/potateman-stand-left-1.png',
         xScale: -0.5,
         yScale: 0.5,
       },
@@ -77,40 +86,76 @@ export default function ({
     Body.set(potateman, {
       angle: 0,
     });
+    const { sinkMotion } = potateman.attr;
+    if (sinkMotion) {
+      const strength = getStrength(potateman.attr);
+      const scale = strength / sinkMotion.circleRadius;
+      Body.setPosition(sinkMotion, {
+        x: potateman.position.x,
+        y: potateman.position.y,
+      });
+      Body.scale(sinkMotion, scale, scale);
+    }
   });
   potateman.attr = {
     punchGage: 0,
     power: 100,
     damage: 0,
+    magic: 1,
     flycount: 0,
     flying: false,
     index,
     category,
     type: 'potateman',
     player,
+    color,
   };
   return {
     body: potateman,
     sprite,
+    image: '/images/potateman-stand-left-1.png',
+  };
+}
+
+const shockWaveRender = {
+  strokeStyle: '#ffffff',
+  fillStyle: '#38a1db',
+  opacity: 0.5,
+  lineWidth: 1,
+};
+
+export function sink({ engine, body, sprite }) {
+  sprite.setState('gard');
+  // eslint-disable-next-line no-param-reassign
+  body.attr.punchGage += 1;
+  const strength = getStrength(body.attr);
+  if (!body.attr.sinkMotion) {
+    const sinkMotion = Bodies.circle(body.position.x, body.position.y, 1, {
+      render: shockWaveRender,
+      isStatic: true,
+    });
+    // eslint-disable-next-line no-param-reassign
+    body.attr.sinkMotion = sinkMotion;
+    World.add(engine.world, [sinkMotion]);
+  }
+  // eslint-disable-next-line no-param-reassign
+  body.attr.sinkMotion.attr = {
+    strength,
+    type: 'sink',
   };
 }
 
 export function punch({ engine, body, sprite }) {
   const { x = 0, y = 0 } = body.position;
-  const { punchGage, category, power } = body.attr;
+  const { category } = body.attr;
+
+  World.remove(engine.world, body.attr.sinkMotion);
+  // eslint-disable-next-line no-param-reassign
+  body.attr.sinkMotion = undefined;
   sprite.setState('punch');
-  const punchStrength = (punchGage * power) / 100;
-  // eslint-disable-next-line no-nested-ternary
-  const strength = punchStrength < 5 ? 5 :
-  // eslint-disable-next-line indent
-                   punchStrength > 30 ? 30 : punchStrength;
+  const strength = getStrength(body.attr);
   const shockWave = Bodies.circle(x, y, strength, {
-    render: {
-      strokeStyle: '#ffffff',
-      fillStyle: '#38a1db',
-      opacity: 0.5,
-      lineWidth: 1,
-    },
+    render: shockWaveRender,
     density: 0.025,
     collisionFilter: {
       category: COLLISION.ATTACK,
@@ -128,6 +173,7 @@ export function punch({ engine, body, sprite }) {
   shockWave.attr = {
     strength,
     type: 'shockWave',
+    player: body.attr.player,
   };
   // eslint-disable-next-line no-param-reassign
   body.attr.punchGage = 0;

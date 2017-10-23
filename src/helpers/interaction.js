@@ -3,7 +3,7 @@ import {
   Events,
 } from 'matter-js';
 import input from './input';
-import { punch } from './potateman';
+import { sink, punch } from './potateman';
 
 export default function ({
   act,
@@ -24,9 +24,13 @@ export default function ({
     for (let i = 0, j = pairs.length; i < j; i += 1) {
       const pair = pairs[i];
       if (bodies.includes(pair.bodyA)) {
+        // when potateman collision with some others, reset fly count
         bodies.find(body => body === pair.bodyA).attr.flycount = 0;
         if (pair.bodyB.attr && pair.bodyB.attr.type === 'shockWave') {
           pair.bodyA.attr.damage += pair.bodyB.attr.strength;
+          pair.bodyA.attr.magic += pair.bodyB.attr.strength / 3;
+          // eslint-disable-next-line no-param-reassign
+          players[pair.bodyB.attr.player].body.attr.magic += pair.bodyB.attr.strength;
           const density = 0.5 - (pair.bodyA.attr.damage / 1000);
           Body.setDensity(pair.bodyA, density > 0.005 ? density : 0.005);
           console.log(`density:${density > 0.005 ? density : 0.005} damage:${pair.bodyA.attr.damage}`);
@@ -75,8 +79,11 @@ export default function ({
 
       // attack
       if (direction.a) {
-        sprite.setState('gard');
-        body.attr.punchGage += 1;
+        sink({
+          engine,
+          sprite,
+          body,
+        });
       } else if (body.attr.punchGage) {
         punch({
           engine,
