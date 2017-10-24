@@ -73,7 +73,9 @@ const act = {
     });
   },
   jp: (ws, from, data) => {
-    send(ws, act.player[from], data);
+    if (ws.id === Number(act.player[from])) {
+      send(ws, act.player[from], data);
+    }
   },
 };
 

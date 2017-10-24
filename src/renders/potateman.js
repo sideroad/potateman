@@ -86,7 +86,7 @@ export default function ({
     Body.set(potateman, {
       angle: 0,
     });
-    const { sinkMotion } = potateman.attr;
+    const { sinkMotion, gardMotion } = potateman.attr;
     if (sinkMotion) {
       const strength = getStrength(potateman.attr);
       const scale = strength / sinkMotion.circleRadius;
@@ -96,9 +96,20 @@ export default function ({
       });
       Body.scale(sinkMotion, scale, scale);
     }
+    if (gardMotion) {
+      const strength = potateman.attr.gardGage;
+      const scale = (strength / gardMotion.circleRadius) / 5;
+      Body.setPosition(gardMotion, {
+        x: potateman.position.x,
+        y: potateman.position.y,
+      });
+      Body.scale(gardMotion, scale, scale);
+    }
   });
   potateman.attr = {
     punchGage: 0,
+    gardGage: 100,
+    garding: false,
     power: 100,
     damage: 0,
     magic: 1,
@@ -128,6 +139,8 @@ export function sink({ engine, body, sprite }) {
   sprite.setState('gard');
   // eslint-disable-next-line no-param-reassign
   body.attr.punchGage += 1;
+  // eslint-disable-next-line no-param-reassign
+  body.attr.garding = true;
   const strength = getStrength(body.attr);
   if (!body.attr.sinkMotion) {
     const sinkMotion = Bodies.circle(body.position.x, body.position.y, 1, {
@@ -190,4 +203,43 @@ export function punch({ engine, body, sprite }) {
       World.remove(engine.world, shockWave);
     }
   });
+}
+
+export function gard({ engine, body, sprite }) {
+  sprite.setState('gard');
+  if (body.attr.gardGage > 10) {
+    // eslint-disable-next-line no-param-reassign
+    body.attr.gardGage -= 1;
+  }
+  if (!body.attr.gardMotion) {
+    const gardMotion = Bodies.circle(body.position.x, body.position.y, 1, {
+      render: {
+        strokeStyle: '#ffffff',
+        fillStyle: '#67A70C',
+        opacity: 0.8,
+        lineWidth: 1,
+      },
+      isStatic: true,
+    });
+    // eslint-disable-next-line no-param-reassign
+    body.attr.gardMotion = gardMotion;
+    World.add(engine.world, [gardMotion]);
+  }
+  // eslint-disable-next-line no-param-reassign
+  body.attr.gardMotion.attr = {
+    strength: body.attr.gardGage,
+    type: 'gard',
+  };
+}
+
+export function gardCancel({ engine, body }) {
+  // eslint-disable-next-line no-param-reassign
+  body.attr.gardGage = 100;
+  // eslint-disable-next-line no-param-reassign
+  body.attr.garding = false;
+  if (body.attr.gardMotion) {
+    World.remove(engine.world, body.attr.gardMotion);
+  }
+  // eslint-disable-next-line no-param-reassign
+  body.attr.gardMotion = undefined;
 }

@@ -3,7 +3,7 @@ import {
   Events,
 } from 'matter-js';
 import input from '../helpers/input';
-import { sink, punch } from './potateman';
+import { sink, punch, gard, gardCancel } from './potateman';
 
 export default function ({
   act,
@@ -27,7 +27,11 @@ export default function ({
         // when potateman collision with some others, reset fly count
         bodies.find(body => body === pair.bodyA).attr.flycount = 0;
         if (pair.bodyB.attr && pair.bodyB.attr.type === 'shockWave') {
-          pair.bodyA.attr.damage += pair.bodyB.attr.strength;
+          let damage = pair.bodyB.attr.strength;
+          if (pair.bodyA.attr.garding) {
+            damage -= pair.bodyA.attr.gardGage / 10;
+          }
+          pair.bodyA.attr.damage += damage > 0 ? damage : 0;
           pair.bodyA.attr.magic += pair.bodyB.attr.strength / 3;
           // eslint-disable-next-line no-param-reassign
           players[pair.bodyB.attr.player].body.attr.magic += pair.bodyB.attr.strength;
@@ -94,7 +98,17 @@ export default function ({
 
       // guard
       if (direction.b) {
-        sprite.setState('gard');
+        gard({
+          engine,
+          sprite,
+          body,
+        });
+      } else {
+        gardCancel({
+          engine,
+          sprite,
+          body,
+        });
       }
 
       // squat
