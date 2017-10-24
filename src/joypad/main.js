@@ -86,7 +86,7 @@
       ws.onclose = () => {
         console.log('connection closed!');
       };
-      window.addEventListener('onhashchange', () => {
+      window.addEventListener('hashchange', () => {
         const stage = window.location.hash.substr(1);
         if (stage) {
           input(stage);
