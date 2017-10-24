@@ -28,11 +28,13 @@ const send = (ws, from, data) => {
 
 const colors = [
   '#ff0000',
-  '#00ff00',
-  '#0000ff',
-  '#ffff00',
-  '#ff00ff',
-  '#00ffff',
+  '#00cc00',
+  '#3714b0',
+  '#ffd200',
+  '#ff9200',
+  '#0b61a4',
+  '#a101a6',
+  '#cff700',
 ];
 
 const act = {
@@ -55,16 +57,20 @@ const act = {
       act: data.act,
       stage: data.stage,
       player: from,
-      color: colors[from],
     };
     if (
       act.stage[data.stage] &&
-      !act.started[data.stage]
+      !act.started[data.stage] &&
+      act.stage[data.stage].length < 8 &&
+      !act.stage[data.stage].includes(from)
     ) {
       act.stage[data.stage].push(from);
       act.player[from] = data.stage;
-      send(ws, from, attend);
     }
+    send(ws, from, {
+      ...attend,
+      color: colors[act.stage[data.stage].length - 1],
+    });
   },
   jp: (ws, from, data) => {
     send(ws, act.player[from], data);
