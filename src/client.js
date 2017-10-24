@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import QRious from 'qrious';
-import renderer from './helpers/renderer';
+import renderer from './renders/renderer';
 import ws from './helpers/ws';
 import prefetch from './helpers/prefetch';
 

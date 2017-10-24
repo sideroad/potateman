@@ -53,7 +53,14 @@ export default function (act) {
   // eslint-disable-next-line no-param-reassign
   act.attend = (data) => {
     stack.push(data);
-    document.getElementById('attendee').innerHTML = `${stack.length} potatemans are connected.`;
+    document.getElementById('attendee').innerHTML = stack.map(attendeeData =>
+      `<div class="attendee-container">
+          <div class="attendee-caset" style="border-color: ${attendeeData.color} transparent;"></div>
+          <img class="attendee-character" src="/images/potateman-stand-left-1.png"/>
+       </div>`).join('');
+    if (stack.length >= 2) {
+      document.getElementById('start').disabled = false;
+    }
   };
 
   // eslint-disable-next-line no-param-reassign

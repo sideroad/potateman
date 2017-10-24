@@ -2,7 +2,7 @@ import {
   Body,
   Events,
 } from 'matter-js';
-import input from './input';
+import input from '../helpers/input';
 import { sink, punch } from './potateman';
 
 export default function ({
