@@ -29,7 +29,7 @@ export default function ({
         if (pair.bodyB.attr && pair.bodyB.attr.type === 'shockWave') {
           let damage = pair.bodyB.attr.strength;
           if (pair.bodyA.attr.garding) {
-            damage -= pair.bodyA.attr.gardGage / 10;
+            damage -= ((pair.bodyA.attr.gardGage / 100) * damage);
           }
           pair.bodyA.attr.damage += damage > 0 ? damage : 0;
           pair.bodyA.attr.magic += pair.bodyB.attr.strength / 3;
