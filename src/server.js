@@ -53,13 +53,15 @@ const act = {
     send(ws, from, data);
   },
   attend: (ws, from, data) => {
+    if (!act.stage[data.stage]) {
+      return;
+    }
     const attend = {
       act: data.act,
       stage: data.stage,
       player: from,
     };
     if (
-      act.stage[data.stage] &&
       !act.started[data.stage] &&
       act.stage[data.stage].length < 8 &&
       !act.stage[data.stage].includes(from)
