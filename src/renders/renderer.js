@@ -19,8 +19,8 @@ export default function (act) {
 
   // create renderer
   const size = {
-    width: 1024,
-    height: 800,
+    width: document.body.clientWidth,
+    height: document.body.clientHeight,
   };
 
   const render = Render.create({
