@@ -83,9 +83,6 @@ export default function ({
       x: potateman.position.x,
       y: potateman.position.y - 30,
     });
-    Body.set(potateman, {
-      angle: 0,
-    });
     const { sinkMotion, gardMotion } = potateman.attr;
     if (sinkMotion) {
       const strength = getStrength(potateman.attr);
@@ -105,6 +102,25 @@ export default function ({
       });
       Body.scale(gardMotion, scale, scale);
     }
+    Body.set(potateman, {
+      angle: 0,
+      collisionFilter: {
+        category: potateman.attr.category,
+        mask: potateman.velocity.y >= 0 ?
+        // eslint-disable-next-line no-bitwise
+          COLLISION.GROUND |
+          COLLISION.VOLCANO |
+          COLLISION.POTATEMANS |
+          COLLISION.ATTACK |
+          COLLISION.BOUNDARY
+          :
+          // eslint-disable-next-line no-bitwise
+          COLLISION.VOLCANO |
+          COLLISION.POTATEMANS |
+          COLLISION.ATTACK |
+          COLLISION.BOUNDARY,
+      },
+    });
   });
   potateman.attr = {
     punchGage: 0,
@@ -216,7 +232,7 @@ export function gard({ engine, body, sprite }) {
       render: {
         strokeStyle: '#ffffff',
         fillStyle: '#67A70C',
-        opacity: 0.8,
+        opacity: 0.3,
         lineWidth: 1,
       },
       isStatic: true,

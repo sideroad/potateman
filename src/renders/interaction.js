@@ -21,27 +21,32 @@ export default function ({
   Events.on(engine, 'collisionStart', (event) => {
     const { pairs } = event;
     const bodies = Object.keys(players).map(id => players[id].body);
+    const collisionConfirm = (bodyA, bodyB) => {
+      if (bodies.includes(bodyA)) {
+        // when potateman collision with some others, reset fly count
+        bodies.find(body => body === bodyA).attr.flycount = 0;
+        if (bodyB.attr && bodyB.attr.type === 'shockWave') {
+          let damage = bodyB.attr.strength;
+          if (bodyA.attr.garding) {
+            damage -= ((bodyA.attr.gardGage / 100) * damage);
+          }
+          // eslint-disable-next-line no-param-reassign
+          bodyA.attr.damage += damage > 0 ? damage : 0;
+          // eslint-disable-next-line no-param-reassign
+          bodyA.attr.magic += bodyB.attr.strength / 3;
+          // eslint-disable-next-line no-param-reassign
+          players[bodyB.attr.player].body.attr.magic += bodyB.attr.strength;
+          const density = 0.5 - (bodyA.attr.damage / 1000);
+          Body.setDensity(bodyA, density > 0.005 ? density : 0.005);
+          console.log(`density:${density > 0.005 ? density : 0.005} damage:${bodyA.attr.damage}`);
+        }
+      }
+    };
+
     for (let i = 0, j = pairs.length; i < j; i += 1) {
       const pair = pairs[i];
-      if (bodies.includes(pair.bodyA)) {
-        // when potateman collision with some others, reset fly count
-        bodies.find(body => body === pair.bodyA).attr.flycount = 0;
-        if (pair.bodyB.attr && pair.bodyB.attr.type === 'shockWave') {
-          let damage = pair.bodyB.attr.strength;
-          if (pair.bodyA.attr.garding) {
-            damage -= ((pair.bodyA.attr.gardGage / 100) * damage);
-          }
-          pair.bodyA.attr.damage += damage > 0 ? damage : 0;
-          pair.bodyA.attr.magic += pair.bodyB.attr.strength / 3;
-          // eslint-disable-next-line no-param-reassign
-          players[pair.bodyB.attr.player].body.attr.magic += pair.bodyB.attr.strength;
-          const density = 0.5 - (pair.bodyA.attr.damage / 1000);
-          Body.setDensity(pair.bodyA, density > 0.005 ? density : 0.005);
-          console.log(`density:${density > 0.005 ? density : 0.005} damage:${pair.bodyA.attr.damage}`);
-        }
-      } else if (bodies.includes(pair.bodyB)) {
-        bodies.find(body => body === pair.bodyB).attr.flycount = 0;
-      }
+      collisionConfirm(pair.bodyA, pair.bodyB);
+      collisionConfirm(pair.bodyB, pair.bodyA);
     }
   });
 
