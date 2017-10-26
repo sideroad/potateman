@@ -33,6 +33,7 @@
               b: param.b,
               // eslint-disable-next-line
               player: player,
+              t: new Date().valueOf(),
             });
             if (data === prev) return;
             prev = data;

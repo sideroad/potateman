@@ -15,7 +15,6 @@ export default function () {
     console.log('connected!');
     ws.onmessage = (msg) => {
       const data = JSON.parse(msg.data);
-      console.log(data, act);
       if (act[data.act]) {
         act[data.act](data);
       }

@@ -13,6 +13,7 @@ export default function ({
   // eslint-disable-next-line no-param-reassign
   act.jp = (data) => {
     if (players[data.player]) {
+      console.log('duration', new Date().valueOf() - data.t);
       // eslint-disable-next-line no-param-reassign
       players[data.player].direction = input(data);
     }
