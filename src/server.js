@@ -38,10 +38,19 @@ const colors = [
 ];
 
 const act = {
+  broadcastable: (ws, data, from) =>
+    act.stage[data.stage] &&
+    (
+      ws.id === Number(data.stage) ||
+      ws.id === from
+    ),
   stage: {},
   player: {},
   started: {},
   init: (ws, from, data) => {
+    if (ws.id !== from) {
+      return;
+    }
     act.stage[from] = [];
     send(ws, from, {
       act: data.act,
@@ -49,29 +58,33 @@ const act = {
     });
   },
   start: (ws, from, data) => {
+    if (!act.broadcastable(ws, data, from)) {
+      return;
+    }
     act.started[from] = true;
     send(ws, from, data);
   },
   attend: (ws, from, data) => {
-    if (!act.stage[data.stage]) {
+    const stage = Number(data.stage);
+    if (!act.broadcastable(ws, data, from)) {
       return;
     }
     const attend = {
       act: data.act,
-      stage: data.stage,
+      stage,
       player: from,
     };
     if (
-      !act.started[data.stage] &&
-      act.stage[data.stage].length < 8 &&
-      !act.stage[data.stage].includes(from)
+      !act.started[stage] &&
+      act.stage[stage].length < 8 &&
+      !act.stage[stage].includes(from)
     ) {
-      act.stage[data.stage].push(from);
-      act.player[from] = data.stage;
+      act.stage[stage].push(from);
+      act.player[from] = stage;
     }
     send(ws, from, {
       ...attend,
-      color: colors[act.stage[data.stage].length - 1],
+      color: colors[act.stage[stage].length - 1],
     });
   },
   jp: (ws, from, data) => {

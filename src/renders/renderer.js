@@ -94,7 +94,6 @@ export default function (act) {
     if (Object.keys(players).length === 1) {
       const player = Object.values(players)[0];
       document.getElementById('winner-caset').style.borderColor = `${player.body.attr.color} transparent`;
-      console.log(player.image);
       document.getElementById('winner-character').style.backgroundImage = `url(${player.image})`;
       document.getElementById('winner').style.display = 'block';
       dead({ engine, body: player.body });
