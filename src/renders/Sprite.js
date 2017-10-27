@@ -9,7 +9,6 @@ class Sprite {
 
   setState(state) {
     if (state !== this.state) {
-      console.log(state);
       this.state = state;
       this.count = 0;
       this.step = 1;

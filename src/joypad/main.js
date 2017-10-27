@@ -50,11 +50,6 @@
       reinput: () => {
         input();
       },
-      dead: (data) => {
-        if (data.player === player) {
-          $('#joypad').joypad('destroy');
-        }
-      },
     };
 
     (() => {

@@ -16,9 +16,12 @@ act.init = (data) => {
   });
 };
 
-document.getElementById('start').addEventListener('click', () => {
-  act.send({
-    act: 'start',
+document.querySelectorAll('.start').forEach((elem) => {
+  elem.addEventListener('click', () => {
+    document.getElementById('winner').style.display = 'none';
+    act.send({
+      act: 'start',
+    });
   });
 });
 

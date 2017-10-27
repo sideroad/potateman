@@ -136,6 +136,7 @@ export default function ({
     type: 'potateman',
     player,
     color,
+    caset,
   };
   return {
     body: potateman,
@@ -258,4 +259,9 @@ export function gardCancel({ engine, body }) {
   }
   // eslint-disable-next-line no-param-reassign
   body.attr.gardMotion = undefined;
+}
+
+export function dead({ engine, body }) {
+  World.remove(engine.world, body.attr.caset);
+  World.remove(engine.world, body);
 }

@@ -39,7 +39,7 @@ body {
   width: 500px;
 }
 
-#start {
+.start {
   font-size: 2em;
   outline: none;
   border: none;
@@ -49,7 +49,7 @@ body {
   box-shadow: 0 1px 6px rgba(0,0,0,.117647), 0 1px 4px rgba(0,0,0,.117647);
   padding: 10px 20px;
 }
-#start:disabled {
+.start:disabled {
   background-color: grey;
   color: #ffffff;
   box-shadow: none;

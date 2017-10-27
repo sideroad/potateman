@@ -37,9 +37,12 @@ export default function ({
           bodyA.attr.magic += bodyB.attr.strength / 3;
           // eslint-disable-next-line no-param-reassign
           players[bodyB.attr.player].body.attr.magic += bodyB.attr.strength;
-          const density = 0.5 - (bodyA.attr.damage / 1000);
-          Body.setDensity(bodyA, density > 0.005 ? density : 0.005);
-          console.log(`density:${density > 0.005 ? density : 0.005} damage:${bodyA.attr.damage}`);
+          const velocity = (bodyB.attr.strength * bodyA.attr.damage) / 100;
+          Body.setVelocity(bodyA, {
+            x: bodyB.velocity.x > 0 ? velocity : velocity * -1,
+            y: velocity / -2,
+          });
+          console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage}`);
         }
       }
     };

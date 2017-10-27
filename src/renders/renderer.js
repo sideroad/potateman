@@ -7,7 +7,7 @@ import {
   World,
 } from 'matter-js';
 import grounds from './grounds';
-import potateman from './potateman';
+import potateman, { dead } from './potateman';
 import volcano from './volcano';
 import boundary from './boundary';
 import interaction from './interaction';
@@ -88,7 +88,7 @@ export default function (act) {
   // eslint-disable-next-line no-param-reassign
   act.dead = (data) => {
     console.log(`dead:${data.player}`);
-    World.remove(engine.world, players[data.player].body);
+    dead({ engine, body: players[data.player].body });
     // eslint-disable-next-line no-param-reassign
     delete players[data.player];
     if (Object.keys(players).length === 1) {
@@ -97,6 +97,9 @@ export default function (act) {
       console.log(player.image);
       document.getElementById('winner-character').style.backgroundImage = `url(${player.image})`;
       document.getElementById('winner').style.display = 'block';
+      dead({ engine, body: player.body });
+      // eslint-disable-next-line no-param-reassign
+      delete players[player.player];
     }
   };
   volcano({ engine, size });
