@@ -71,7 +71,7 @@
           }
         };
 
-        const stage = window.location.hash.substr(1);
+        const stage = window.location.pathname.match(/\/joypad\/([^/]+)\//)[1];
         if (stage) {
           input(stage);
         } else {
@@ -82,15 +82,6 @@
       ws.onclose = () => {
         console.log('connection closed!');
       };
-      window.addEventListener('hashchange', () => {
-        const stage = window.location.hash.substr(1);
-        if (stage) {
-          input(stage);
-        } else {
-          // eslint-disable-next-line
-          window.alert('Please read QR code to join');
-        }
-      });
     })();
   });
 })(window.jQuery);

@@ -6,13 +6,17 @@ import http from 'http';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import { Server as WebSocketServer } from 'ws';
+import fs from 'fs';
 
 const app = new Express();
-
+const joypadHtml = fs.readFileSync(path.join(__dirname, '../dist/static/joypad/index.html'), 'utf8');
 app.use(compression());
 app.use(Express.static(path.join(__dirname, '../dist/static'), {
   maxAge: '1d',
 }));
+app.get('/joypad/:stage/', (req, res) => {
+  res.send(joypadHtml);
+});
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -97,9 +101,7 @@ const act = {
 const clients = [];
 const broadcast = (msg, from) => {
   clients.forEach((ws) => {
-    if (
-      ws.id === null
-    ) {
+    if (ws.id === null) {
       return;
     }
     if (act[msg.act]) {
@@ -109,6 +111,19 @@ const broadcast = (msg, from) => {
     }
   });
 };
+const keepAlive = () => {
+  clients.forEach((ws) => {
+    if (ws.id === null) {
+      return;
+    }
+    send(ws, ws.id, {
+      act: 'keepAlive',
+    });
+  });
+  setTimeout(keepAlive, 10000);
+};
+keepAlive();
+
 let connectionId = 0;
 
 wss.on('connection', (ws) => {
