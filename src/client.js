@@ -11,7 +11,7 @@ act.init = (data) => {
   // eslint-disable-next-line no-new
   new QRious({
     element: document.getElementById('qr'),
-    value: `http://${window.location.host}/joypad/#${data.stage}`,
+    value: `http://${window.location.host}/joypad/${data.stage}/`,
   });
   document.querySelectorAll('.start').forEach((elem) => {
     elem.addEventListener('click', () => {

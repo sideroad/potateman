@@ -17,10 +17,14 @@ export default function ({
     },
   };
   const boundaries = [
+    // top
     Bodies.rectangle(0 - size.width, 0 - size.height, size.width * 3, 100, options),
+    // left
     Bodies.rectangle(0 - size.width, 0 - size.height, 100, size.height * 3, options),
+    // right
     Bodies.rectangle(size.width * 2, 0 - size.height, 100, size.height * 3, options),
-    Bodies.rectangle(size.width / 2, size.height * 2, size.width * 3, 100, options),
+    // bottom
+    Bodies.rectangle(0 - (size.width * 2), size.height * 2, size.width * 5, 300, options),
   ];
   World.add(engine.world, boundaries);
 
