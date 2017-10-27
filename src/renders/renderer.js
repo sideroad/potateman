@@ -7,9 +7,9 @@ import {
   World,
 } from 'matter-js';
 import grounds from './grounds';
-import potateman, { dead } from './potateman';
-import volcano from './volcano';
+import potateman, { destroy } from './potateman';
 import boundary from './boundary';
+import volcano from './volcano';
 import interaction from './interaction';
 
 export default function (act) {
@@ -88,7 +88,7 @@ export default function (act) {
   // eslint-disable-next-line no-param-reassign
   act.dead = (data) => {
     console.log(`dead:${data.player}`);
-    dead({ engine, body: players[data.player].body });
+    destroy({ engine, body: players[data.player].body });
     // eslint-disable-next-line no-param-reassign
     delete players[data.player];
     if (Object.keys(players).length === 1) {
@@ -96,13 +96,18 @@ export default function (act) {
       document.getElementById('winner-caset').style.borderColor = `${player.body.attr.color} transparent`;
       document.getElementById('winner-character').style.backgroundImage = `url(${player.image})`;
       document.getElementById('winner').style.display = 'block';
-      dead({ engine, body: player.body });
+      destroy({ engine, body: player.body });
       // eslint-disable-next-line no-param-reassign
       delete players[player.player];
     }
   };
   volcano({ engine, size });
-  boundary({ engine, size, act });
+  boundary({
+    engine,
+    size,
+    act,
+    players,
+  });
 
   // add mouse control
   const mouse = Mouse.create(render.canvas);

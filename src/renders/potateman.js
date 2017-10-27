@@ -261,7 +261,7 @@ export function gardCancel({ engine, body }) {
   body.attr.gardMotion = undefined;
 }
 
-export function dead({ engine, body }) {
+export function destroy({ engine, body }) {
   World.remove(engine.world, body.attr.caset);
   World.remove(engine.world, body);
 }
