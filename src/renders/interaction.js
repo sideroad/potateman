@@ -64,14 +64,14 @@ export default function ({
 
       // left / right moving
       if (direction.left) {
-        if (x >= -5) {
+        if (x >= -4) {
           x -= 1;
         }
         sprite.setState('walk');
         sprite.setDirection('left');
       }
       if (direction.right) {
-        if (x <= 5) {
+        if (x <= 4) {
           x += 1;
         }
         sprite.setState('walk');
