@@ -45,6 +45,16 @@ export default function (act) {
   grounds({ engine, size });
   const players = {};
   const stack = [];
+  const colors = [
+    '#ff0000',
+    '#00cc00',
+    '#3714b0',
+    '#ffd200',
+    '#ff9200',
+    '#0b61a4',
+    '#a101a6',
+    '#cff700',
+  ];
   interaction({
     act,
     engine,
@@ -52,7 +62,14 @@ export default function (act) {
   });
   // eslint-disable-next-line no-param-reassign
   act.attend = (data) => {
-    stack.push(data);
+    act.send({
+      ...data,
+      color: colors[stack.length],
+    });
+    stack.push({
+      ...data,
+      color: colors[stack.length],
+    });
     document.getElementById('attendee').innerHTML = stack.map(attendeeData =>
       `<div class="attendee-container">
           <div class="attendee-caset" style="border-color: ${attendeeData.color} transparent;"></div>

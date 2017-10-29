@@ -1,25 +1,24 @@
 import 'babel-polyfill';
 import QRious from 'qrious';
 import renderer from './renders/renderer';
-import ws from './helpers/ws';
+import peer from './helpers/peer';
 import prefetch from './helpers/prefetch';
 
 prefetch();
 
-const act = ws();
+const act = peer();
 act.init = (data) => {
+  const url = `http://${window.location.host}/joypad/${data.stage}/`;
   // eslint-disable-next-line no-new
   new QRious({
     element: document.getElementById('qr'),
-    value: `http://${window.location.host}/joypad/${data.stage}/`,
+    value: url,
   });
+  console.log(url);
   document.querySelectorAll('.start').forEach((elem) => {
     elem.addEventListener('click', () => {
       document.getElementById('winner').style.display = 'none';
-      act.send({
-        act: 'start',
-        stage: data.stage,
-      });
+      act.start();
     });
   });
 };
