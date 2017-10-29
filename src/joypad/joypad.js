@@ -116,7 +116,6 @@
 
       $(window).bind('keyup', (e) => {
         const code = e.keyCode;
-        console.log('keyup', code);
         if (keyMap[code] !== undefined) {
           event.ck = 0;
         }
