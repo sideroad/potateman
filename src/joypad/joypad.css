@@ -39,10 +39,21 @@ body {
 #ck {
 	width : 180px;
 	height : 180px;
+  background-image: url(./cross-key.png);
+  user-select: none;
 }
 
 .button{
 	width: 180px;
 	height: 85px;
   margin: 10px;
+}
+
+#a {
+  background-image: url(./A-button.png);
+  user-select: none;
+}
+#b {
+  background-image: url(./B-button.png);
+  user-select: none;
 }
