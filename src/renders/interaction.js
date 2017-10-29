@@ -37,7 +37,7 @@ export default function ({
           bodyA.attr.magic += bodyB.attr.strength / 3;
           // eslint-disable-next-line no-param-reassign
           players[bodyB.attr.player].body.attr.magic += bodyB.attr.strength;
-          const velocity = (bodyB.attr.strength * bodyA.attr.damage) / 100;
+          const velocity = (bodyB.attr.strength * bodyA.attr.damage) / 200;
           Body.setVelocity(bodyA, {
             x: bodyB.velocity.x > 0 ? velocity : velocity * -1,
             y: velocity / -2,
