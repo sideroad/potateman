@@ -36,7 +36,7 @@
             if (JSON.stringify(data) === prev) return;
             prev = JSON.stringify(data);
             conn.send(data);
-            $('#test').text(data);
+            $('#test').text(prev);
           });
         };
         window.addEventListener('orientationchange', () => {

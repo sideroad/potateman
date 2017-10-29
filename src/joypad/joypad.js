@@ -87,20 +87,46 @@
         e.preventDefault();
       });
 
-      $(window).bind('keyup keypress', (e) => {
+      const keyMap = {
+        38: 2, // up
+        87: 2, // up
+        37: 4, // left
+        65: 4, // left
+        39: 0, // right
+        68: 0, // right
+        40: 6, // bottom
+        90: 6, // bottom
+      };
+      $(window).bind('keydown', (e) => {
         const code = e.keyCode;
-        const keyMap = {
-          100: 0,
-          119: 2,
-          97: 4,
-          122: 6,
-        };
+        if (keyMap[code] !== undefined) {
+          event.ck = {
+            ang: keyMap[code],
+            ran: 100,
+          };
+        }
+        if (code === 70) {
+          event.a = 1;
+        }
+        if (code === 71) {
+          event.b = 1;
+        }
+        elem.trigger('joypad', event);
+      });
 
-        elem.trigger('joypad', {
-          ang: keyMap[code],
-          a: (code === 102 ? 1 : 0),
-          b: (code === 103 ? 1 : 0),
-        });
+      $(window).bind('keyup', (e) => {
+        const code = e.keyCode;
+        console.log('keyup', code);
+        if (keyMap[code] !== undefined) {
+          event.ck = 0;
+        }
+        if (code === 70) {
+          event.a = 0;
+        }
+        if (code === 71) {
+          event.b = 0;
+        }
+        elem.trigger('joypad', event);
       });
     });
   };
