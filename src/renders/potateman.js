@@ -54,6 +54,26 @@ export default function ({
       },
     },
   });
+  const outsiderOption = {
+    render: {
+      fillStyle: color,
+      opacity: 0,
+    },
+    isSensor: true,
+    isStatic: true,
+  };
+  const outsiderBottom = Bodies.polygon(0, 50, 3, 5, outsiderOption);
+  Body.setAngle(outsiderBottom, -22.5);
+  World.add(engine.world, [outsiderBottom]);
+  const outsiderTop = Bodies.polygon(0, 50, 3, 5, outsiderOption);
+  Body.setAngle(outsiderTop, 22.5);
+  World.add(engine.world, [outsiderTop]);
+  const outsiderLeft = Bodies.polygon(0, 50, 3, 5, outsiderOption);
+  Body.setAngle(outsiderLeft, 0);
+  World.add(engine.world, [outsiderLeft]);
+  const outsiderRight = Bodies.polygon(0, 50, 3, 5, outsiderOption);
+  Body.setAngle(outsiderRight, 45);
+  World.add(engine.world, [outsiderRight]);
 
   const caset = Bodies.polygon(0, 50, 3, 5, {
     render: {
@@ -88,9 +108,29 @@ export default function ({
 
   Events.on(engine, 'beforeUpdate', () => {
     sprite.render();
+
+    // caset position
     Body.setPosition(caset, {
       x: potateman.position.x,
       y: potateman.position.y - 30,
+    });
+
+    // outsider
+    Body.setPosition(outsiderBottom, {
+      x: potateman.position.x,
+      y: size.height - 15,
+    });
+    Body.setPosition(outsiderTop, {
+      x: potateman.position.x,
+      y: 15,
+    });
+    Body.setPosition(outsiderLeft, {
+      x: 15,
+      y: potateman.position.y,
+    });
+    Body.setPosition(outsiderRight, {
+      x: size.width - 15,
+      y: potateman.position.y,
     });
     const { sinkMotion, gardMotion } = potateman.attr;
     if (sinkMotion) {
@@ -146,6 +186,10 @@ export default function ({
     player,
     color,
     caset,
+    outsiderBottom,
+    outsiderTop,
+    outsiderLeft,
+    outsiderRight,
   };
   return {
     body: potateman,
@@ -325,5 +369,9 @@ export function gardCancel({ engine, body }) {
 
 export function destroy({ engine, body }) {
   World.remove(engine.world, body.attr.caset);
+  World.remove(engine.world, body.attr.outsiderTop);
+  World.remove(engine.world, body.attr.outsiderLeft);
+  World.remove(engine.world, body.attr.outsiderRight);
+  World.remove(engine.world, body.attr.outsiderBottom);
   World.remove(engine.world, body);
 }
