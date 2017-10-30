@@ -12,7 +12,7 @@ const getPunchStrength = ({ punchGage, power }) => {
   // eslint-disable-next-line no-nested-ternary
   const strength = punchStrength < 5 ? 5 :
   // eslint-disable-next-line indent
-                   punchStrength > 30 ? 30 : punchStrength;
+                   punchStrength > 20 ? 20 : punchStrength;
   return strength;
 };
 
@@ -184,7 +184,12 @@ export function sink({ engine, body, sprite }) {
   };
 }
 
-export function punch({ engine, body, sprite }) {
+export function punch({
+  engine,
+  body,
+  sprite,
+  direction,
+}) {
   const { x = 0, y = 0 } = body.position;
   const { category } = body.attr;
 
@@ -193,6 +198,20 @@ export function punch({ engine, body, sprite }) {
   body.attr.sinkMotion = undefined;
   sprite.setState('punch');
   const strength = getPunchStrength(body.attr);
+  // eslint-disable-next-line no-nested-ternary
+  const speed = strength < 15 ? 15 : strength > 25 ? 25 : strength;
+  const velocity = {
+    x:
+    direction.left ? speed * -1 :
+    direction.right ? speed * 1 :
+    !direction.down && !direction.up && sprite.direction === 'left' ? speed * -1 :
+    !direction.down && !direction.up && sprite.direction === 'right' ? speed * 1 :
+    0,
+    y:
+    !direction.left && !direction.right && direction.up ? speed * -1 :
+    !direction.left && !direction.right && direction.down ? speed * 1 :
+    0,
+  };
   const shockWave = Bodies.circle(x, y, strength, {
     render: shockWaveRender,
     density: 0.025,
@@ -201,10 +220,7 @@ export function punch({ engine, body, sprite }) {
       // eslint-disable-next-line no-bitwise
       mask: COLLISION.POTATEMANS - category,
     },
-    force: {
-      x: sprite.direction === 'left' ? -0.005 * (strength ** 2) : 0.005 * (strength ** 2),
-      y: 0,
-    },
+    velocity,
   });
   World.add(engine.world, [
     shockWave,
@@ -218,10 +234,7 @@ export function punch({ engine, body, sprite }) {
   body.attr.punchGage = 0;
 
   Events.on(engine, 'beforeUpdate', () => {
-    Body.setVelocity(shockWave, {
-      x: shockWave.velocity.x,
-      y: 0,
-    });
+    Body.setVelocity(shockWave, velocity);
     const scale = shockWave.attr.strength / strength;
     Body.scale(shockWave, scale, scale);
     shockWave.attr.strength -= 1;
