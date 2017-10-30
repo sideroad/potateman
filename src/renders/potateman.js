@@ -268,10 +268,10 @@ export function meteorite({ engine, body, sprite }) {
     },
     force: {
       x: sprite.direction === 'left' ? -3 : 3,
-      y: 0,
+      y: -0.5,
     },
-    rotate: 1,
   });
+  Body.setAngularVelocity(meteoriteMotion, sprite.direction === 'left' ? -0.4 : 0.4);
   World.add(engine.world, [
     meteoriteMotion,
   ]);

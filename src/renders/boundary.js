@@ -10,7 +10,10 @@ export default function ({
 }) {
   Events.on(engine, 'beforeUpdate', () => {
     Object.keys(players).forEach((player) => {
-      if (players[player].body.position.y > size.height * 2) {
+      if (
+        players[player].body.position.y > size.height * 3 ||
+        players[player].body.position.y < size.height * -2
+      ) {
         act.send({
           act: 'dead',
           player,
