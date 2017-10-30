@@ -38,7 +38,7 @@
         event[id] = 0;
 
         keyElem.bind('touchstart touchmove', (e) => {
-          const t = e.originalEvent.touches[0];
+          const t = Array.from(e.originalEvent.touches).find(touch => touch.target.id === 'ck');
           const { pageX, pageY } = t;
           const x = Math.round(((pageX - ck.centerX) / (ck.width / 2)) * 100);
           const y = Math.round(((pageY - ck.centerY) / (ck.height / 2)) * -100);
