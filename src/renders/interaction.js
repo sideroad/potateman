@@ -3,7 +3,7 @@ import {
   Events,
 } from 'matter-js';
 import input from '../helpers/input';
-import { sink, punch, gard, gardCancel } from './potateman';
+import { sink, punch, gard, gardCancel, meteorite } from './potateman';
 
 export default function ({
   act,
@@ -26,7 +26,13 @@ export default function ({
       if (bodies.includes(bodyA)) {
         // when potateman collision with some others, reset fly count
         bodies.find(body => body === bodyA).attr.flycount = 0;
-        if (bodyB.attr && bodyB.attr.type === 'shockWave') {
+        if (
+          bodyB.attr &&
+          (
+            bodyB.attr.type === 'shockWave' ||
+            bodyB.attr.type === 'meteorite'
+          )
+        ) {
           let damage = bodyB.attr.strength;
           if (bodyA.attr.garding) {
             damage -= ((bodyA.attr.gardGage / 100) * damage);
@@ -34,15 +40,15 @@ export default function ({
           // eslint-disable-next-line no-param-reassign
           bodyA.attr.damage += damage > 0 ? damage : 0;
           // eslint-disable-next-line no-param-reassign
-          bodyA.attr.magic += bodyB.attr.strength / 3;
+          bodyA.attr.magic += bodyB.attr.strength / 6;
           // eslint-disable-next-line no-param-reassign
-          players[bodyB.attr.player].body.attr.magic += bodyB.attr.strength;
+          players[bodyB.attr.player].body.attr.magic += bodyB.attr.strength / 2;
           const velocity = (bodyB.attr.strength * bodyA.attr.damage) / 200;
           Body.setVelocity(bodyA, {
             x: bodyB.velocity.x > 0 ? velocity : velocity * -1,
             y: velocity / -2,
           });
-          console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage}`);
+          console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} magic:${players[bodyB.attr.player].body.attr.magic}`);
         }
       }
     };
@@ -114,6 +120,18 @@ export default function ({
         });
       } else {
         gardCancel({
+          engine,
+          sprite,
+          body,
+        });
+      }
+
+      // meteorite
+      if (
+        direction.a &&
+        direction.b
+      ) {
+        meteorite({
           engine,
           sprite,
           body,

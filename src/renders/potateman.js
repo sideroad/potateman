@@ -7,12 +7,21 @@ import {
 import Sprite from './Sprite';
 import COLLISION from './collision';
 
-const getStrength = ({ punchGage, power }) => {
+const getPunchStrength = ({ punchGage, power }) => {
   const punchStrength = (punchGage * power) / 100;
   // eslint-disable-next-line no-nested-ternary
   const strength = punchStrength < 5 ? 5 :
   // eslint-disable-next-line indent
                    punchStrength > 30 ? 30 : punchStrength;
+  return strength;
+};
+
+const getMeteoriteStrength = ({ magic }) => {
+  const maticStrength = magic / 3;
+  // eslint-disable-next-line no-nested-ternary
+  const strength = maticStrength < 1 ? 1 :
+  // eslint-disable-next-line indent
+                   maticStrength > 300 ? 300 : maticStrength;
   return strength;
 };
 
@@ -85,7 +94,7 @@ export default function ({
     });
     const { sinkMotion, gardMotion } = potateman.attr;
     if (sinkMotion) {
-      const strength = getStrength(potateman.attr);
+      const strength = getPunchStrength(potateman.attr);
       const scale = strength / sinkMotion.circleRadius;
       Body.setPosition(sinkMotion, {
         x: potateman.position.x,
@@ -128,7 +137,7 @@ export default function ({
     garding: false,
     power: 100,
     damage: 0,
-    magic: 1,
+    magic: 100,
     flycount: 0,
     flying: false,
     index,
@@ -158,7 +167,7 @@ export function sink({ engine, body, sprite }) {
   body.attr.punchGage += 1;
   // eslint-disable-next-line no-param-reassign
   body.attr.garding = true;
-  const strength = getStrength(body.attr);
+  const strength = getPunchStrength(body.attr);
   if (!body.attr.sinkMotion) {
     const sinkMotion = Bodies.circle(body.position.x, body.position.y, 1, {
       render: shockWaveRender,
@@ -183,7 +192,7 @@ export function punch({ engine, body, sprite }) {
   // eslint-disable-next-line no-param-reassign
   body.attr.sinkMotion = undefined;
   sprite.setState('punch');
-  const strength = getStrength(body.attr);
+  const strength = getPunchStrength(body.attr);
   const shockWave = Bodies.circle(x, y, strength, {
     render: shockWaveRender,
     density: 0.025,
@@ -220,6 +229,46 @@ export function punch({ engine, body, sprite }) {
       World.remove(engine.world, shockWave);
     }
   });
+}
+
+export function meteorite({ engine, body, sprite }) {
+  if (!body.attr.magic) {
+    return;
+  }
+  const { x = 0, y = 0 } = body.position;
+  const { category } = body.attr;
+
+  sprite.setState('punch');
+  const strength = getMeteoriteStrength(body.attr);
+  const meteoriteMotion = Bodies.rectangle(x, y, 20, 20, {
+    density: 0.1,
+    frictionAir: 0,
+    render: {
+      sprite: {
+        texture: '/images/ground.png',
+      },
+    },
+    collisionFilter: {
+      category: COLLISION.ATTACK,
+      // eslint-disable-next-line no-bitwise
+      mask: COLLISION.POTATEMANS - category,
+    },
+    force: {
+      x: sprite.direction === 'left' ? -3 : 3,
+      y: 0,
+    },
+    rotate: 1,
+  });
+  World.add(engine.world, [
+    meteoriteMotion,
+  ]);
+  meteoriteMotion.attr = {
+    strength,
+    type: 'meteorite',
+    player: body.attr.player,
+  };
+  // eslint-disable-next-line no-param-reassign
+  body.attr.magic = 0;
 }
 
 export function gard({ engine, body, sprite }) {
