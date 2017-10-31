@@ -294,7 +294,7 @@ export function punch({
 }
 
 export function meteorite({ engine, body, sprite }) {
-  if (body.attr.magic < 10) {
+  if (body.attr.magic < 2) {
     return;
   }
   const { x = 0, y = 0 } = body.position;
