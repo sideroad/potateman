@@ -87,7 +87,7 @@ export default function ({
       // jump
       if (direction.up) {
         if (body.attr.flycount < 2 && !body.attr.flying) {
-          y -= 10;
+          y = -10;
           body.attr.flycount += 1;
           body.attr.flying = true;
         }
