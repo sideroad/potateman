@@ -55,7 +55,7 @@ export default function (act) {
     stack.push(data);
     document.getElementById('attendee').innerHTML = stack.map(attendeeData =>
       `<div class="attendee-container">
-          <div class="attendee-caset" style="border-color: ${attendeeData.color} transparent;"></div>
+          <div class="attendee-caret" style="border-color: ${attendeeData.color} transparent;"></div>
           <img class="attendee-character" src="/images/potateman-stand-left-1.png"/>
        </div>`).join('');
     if (stack.length >= 2) {
@@ -93,7 +93,7 @@ export default function (act) {
     delete players[data.player];
     if (Object.keys(players).length === 1) {
       const player = Object.values(players)[0];
-      document.getElementById('winner-caset').style.borderColor = `${player.body.attr.color} transparent`;
+      document.getElementById('winner-caret').style.borderColor = `${player.body.attr.color} transparent`;
       document.getElementById('winner-character').style.backgroundImage = `url(${player.image})`;
       document.getElementById('winner').style.display = 'block';
       destroy({ engine, body: player.body });

@@ -75,15 +75,15 @@ export default function ({
   Body.setAngle(outsiderRight, 45);
   World.add(engine.world, [outsiderRight]);
 
-  const caset = Bodies.polygon(0, 50, 3, 5, {
+  const caret = Bodies.polygon(0, 50, 3, 5, {
     render: {
       fillStyle: color,
     },
     isSensor: true,
     isStatic: true,
   });
-  Body.setAngle(caset, -22.5);
-  World.add(engine.world, [caset]);
+  Body.setAngle(caret, -22.5);
+  World.add(engine.world, [caret]);
 
   const sprite = new Sprite(potateman, 'potateman', [
     { state: 'stand' },
@@ -109,11 +109,15 @@ export default function ({
   Events.on(engine, 'beforeUpdate', () => {
     sprite.render();
 
-    // caset position
-    Body.setPosition(caset, {
+    // caret
+    Body.setPosition(caret, {
       x: potateman.position.x,
       y: potateman.position.y - 30,
     });
+    const caretScore = 1 + (potateman.attr.magic / 50);
+    const caretScale = caretScore / potateman.attr.caretScore;
+    potateman.attr.caretScore = caretScore;
+    Body.scale(caret, caretScale, caretScale);
 
     // outsider
     Body.setPosition(outsiderBottom, {
@@ -177,7 +181,7 @@ export default function ({
     garding: false,
     power: 100,
     damage: 0,
-    magic: 100,
+    magic: 1,
     flycount: 0,
     flying: false,
     index,
@@ -185,11 +189,12 @@ export default function ({
     type: 'potateman',
     player,
     color,
-    caset,
+    caret,
     outsiderBottom,
     outsiderTop,
     outsiderLeft,
     outsiderRight,
+    caretScore: 1,
   };
   return {
     body: potateman,
@@ -243,7 +248,7 @@ export function punch({
   sprite.setState('punch');
   const strength = getPunchStrength(body.attr);
   // eslint-disable-next-line no-nested-ternary
-  const speed = strength < 15 ? 15 : strength > 25 ? 25 : strength;
+  const speed = strength < 15 ? 15 : strength > 20 ? 20 : strength;
   const velocity = {
     x:
     direction.left ? speed * -1 :
@@ -289,7 +294,7 @@ export function punch({
 }
 
 export function meteorite({ engine, body, sprite }) {
-  if (!body.attr.magic) {
+  if (body.attr.magic < 10) {
     return;
   }
   const { x = 0, y = 0 } = body.position;
@@ -325,7 +330,7 @@ export function meteorite({ engine, body, sprite }) {
     player: body.attr.player,
   };
   // eslint-disable-next-line no-param-reassign
-  body.attr.magic = 0;
+  body.attr.magic = 1;
 }
 
 export function gard({ engine, body, sprite }) {
@@ -368,7 +373,7 @@ export function gardCancel({ engine, body }) {
 }
 
 export function destroy({ engine, body }) {
-  World.remove(engine.world, body.attr.caset);
+  World.remove(engine.world, body.attr.caret);
   World.remove(engine.world, body.attr.outsiderTop);
   World.remove(engine.world, body.attr.outsiderLeft);
   World.remove(engine.world, body.attr.outsiderRight);
