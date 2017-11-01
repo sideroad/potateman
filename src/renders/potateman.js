@@ -36,7 +36,7 @@ export default function ({
   const potateman = Bodies.rectangle(size.width / 2, size.height / 3, 23, 29, {
     frictionAir: 0,
     frictionStatic: 20,
-    density: 0.5,
+    density: 0.75,
     collisionFilter: {
       category,
       // eslint-disable-next-line no-bitwise
@@ -181,7 +181,7 @@ export default function ({
     garding: false,
     power: 100,
     damage: 0,
-    magic: 1,
+    magic: 100,
     flycount: 0,
     flying: false,
     index,
@@ -293,7 +293,12 @@ export function punch({
   });
 }
 
-export function meteorite({ engine, body, sprite }) {
+export function meteorite({
+  engine,
+  body,
+  sprite,
+  size,
+}) {
   if (body.attr.magic < 2) {
     return;
   }
@@ -302,12 +307,15 @@ export function meteorite({ engine, body, sprite }) {
 
   sprite.setState('punch');
   const strength = getMeteoriteStrength(body.attr);
-  const meteoriteMotion = Bodies.rectangle(x, y, 20, 20, {
+  const radius = 20 + (strength / 10);
+  const meteoriteMotion = Bodies.circle(x, y, radius, {
     density: 0.1,
     frictionAir: 0,
     render: {
       sprite: {
-        texture: '/images/ground.png',
+        texture: '/images/meteorite.png',
+        xScale: 1 + (strength / 200),
+        yScale: 1 + (strength / 200),
       },
     },
     collisionFilter: {
@@ -316,8 +324,8 @@ export function meteorite({ engine, body, sprite }) {
       mask: COLLISION.POTATEMANS - category,
     },
     force: {
-      x: sprite.direction === 'left' ? -3 : 3,
-      y: -0.5,
+      x: sprite.direction === 'left' ? -5 - (strength / 5) : 5 + (strength / 5),
+      y: -1 - (strength / 40),
     },
   });
   Body.setAngularVelocity(meteoriteMotion, sprite.direction === 'left' ? -0.4 : 0.4);
@@ -331,6 +339,12 @@ export function meteorite({ engine, body, sprite }) {
   };
   // eslint-disable-next-line no-param-reassign
   body.attr.magic = 1;
+
+  Events.on(engine, 'beforeUpdate', () => {
+    if (!meteoriteMotion.position.y > size.height * 2) {
+      World.remove(engine.world, meteoriteMotion);
+    }
+  });
 }
 
 export function gard({ engine, body, sprite }) {

@@ -49,6 +49,7 @@ export default function (act) {
     act,
     engine,
     players,
+    size,
   });
   // eslint-disable-next-line no-param-reassign
   act.attend = (data) => {
