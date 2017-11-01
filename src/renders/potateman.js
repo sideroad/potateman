@@ -159,7 +159,7 @@ export default function ({
       angle: 0,
       collisionFilter: {
         category: potateman.attr.category,
-        mask: potateman.velocity.y >= 0 ?
+        mask: potateman.velocity.y >= 0 && !potateman.attr.transparent ?
         // eslint-disable-next-line no-bitwise
           COLLISION.GROUND |
           COLLISION.VOLCANO |
@@ -184,6 +184,7 @@ export default function ({
     magic: 1,
     flycount: 0,
     flying: false,
+    keepTouchingJump: false,
     index,
     category,
     type: 'potateman',
@@ -195,6 +196,7 @@ export default function ({
     outsiderLeft,
     outsiderRight,
     caretScore: 1,
+    transparent: false,
   };
   return {
     body: potateman,

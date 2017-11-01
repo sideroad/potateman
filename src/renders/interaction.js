@@ -49,18 +49,21 @@ export default function ({
 
       // jump
       if (direction.up) {
-        if (body.attr.flycount < 2 && !body.attr.flying) {
-          if (body.velocity.y > 0) {
-            y = -7;
+        if (body.attr.flycount < 2 && !body.attr.keepTouchingJump) {
+          if (!body.attr.flying) {
+            y = -10;
+          } else if (body.velocity.y > 0) {
+            y = -5;
           } else {
-            y -= 10;
+            y -= 5;
           }
           body.attr.flycount += 1;
           body.attr.flying = true;
+          body.attr.keepTouchingJump = true;
         }
         sprite.setState('walk');
       } else {
-        body.attr.flying = false;
+        body.attr.keepTouchingJump = false;
       }
 
       // attack
@@ -111,6 +114,16 @@ export default function ({
       if (direction.down) {
         y += 0.5;
         sprite.setState('squat');
+      }
+
+      // squat gard
+      if (
+        direction.down &&
+        direction.b
+      ) {
+        body.attr.transparent = true;
+      } else {
+        body.attr.transparent = false;
       }
 
       // neutral
