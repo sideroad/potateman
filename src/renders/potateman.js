@@ -181,7 +181,7 @@ export default function ({
     garding: false,
     power: 100,
     damage: 0,
-    magic: 100,
+    magic: 1,
     flycount: 0,
     flying: false,
     index,
