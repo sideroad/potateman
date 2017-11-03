@@ -3,7 +3,11 @@ import {
   Events,
 } from 'matter-js';
 import input from '../helpers/input';
-import { sink, punch, gard, gardCancel, meteorite } from './potateman';
+import sink from './commands/sink';
+import punch from './commands/punch';
+import gard from './commands/gard';
+import gardCancel from './commands/gardCancel';
+import meteorite from './commands/meteorite';
 import { check as collisionCheck } from './collision';
 
 export default function ({

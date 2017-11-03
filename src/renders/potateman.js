@@ -7,23 +7,23 @@ import {
 import Sprite from './Sprite';
 import COLLISION from './collision';
 
-const getPunchStrength = ({ punchGage, power }) => {
+export function getPunchStrength({ punchGage, power }) {
   const punchStrength = (punchGage * power) / 100;
   // eslint-disable-next-line no-nested-ternary
   const strength = punchStrength < 5 ? 5 :
   // eslint-disable-next-line indent
                    punchStrength > 20 ? 20 : punchStrength;
   return strength;
-};
+}
 
-const getMeteoriteStrength = ({ magic }) => {
+export function getMeteoriteStrength({ magic }) {
   const maticStrength = magic / 3;
   // eslint-disable-next-line no-nested-ternary
   const strength = maticStrength < 1 ? 1 :
   // eslint-disable-next-line indent
                    maticStrength > 300 ? 300 : maticStrength;
   return strength;
-};
+}
 
 export default function ({
   engine,
@@ -205,188 +205,6 @@ export default function ({
   };
 }
 
-const shockWaveRender = {
-  strokeStyle: '#ffffff',
-  fillStyle: '#38a1db',
-  opacity: 0.5,
-  lineWidth: 1,
-};
-
-export function sink({ engine, body, sprite }) {
-  sprite.setState('gard');
-  // eslint-disable-next-line no-param-reassign
-  body.attr.punchGage += 1;
-  // eslint-disable-next-line no-param-reassign
-  body.attr.garding = true;
-  const strength = getPunchStrength(body.attr);
-  if (!body.attr.sinkMotion) {
-    const sinkMotion = Bodies.circle(body.position.x, body.position.y, 1, {
-      render: shockWaveRender,
-      isStatic: true,
-    });
-    // eslint-disable-next-line no-param-reassign
-    body.attr.sinkMotion = sinkMotion;
-    World.add(engine.world, [sinkMotion]);
-  }
-  // eslint-disable-next-line no-param-reassign
-  body.attr.sinkMotion.attr = {
-    strength,
-    type: 'sink',
-  };
-}
-
-export function punch({
-  engine,
-  body,
-  sprite,
-  direction,
-}) {
-  const { x = 0, y = 0 } = body.position;
-  const { category } = body.attr;
-
-  World.remove(engine.world, body.attr.sinkMotion);
-  // eslint-disable-next-line no-param-reassign
-  body.attr.sinkMotion = undefined;
-  sprite.setState('punch');
-  const strength = getPunchStrength(body.attr);
-  // eslint-disable-next-line no-nested-ternary
-  const speed = strength < 15 ? 15 : strength > 20 ? 20 : strength;
-  const velocity = {
-    x:
-    direction.left ? speed * -1 :
-    direction.right ? speed * 1 :
-    !direction.down && !direction.up && sprite.direction === 'left' ? speed * -1 :
-    !direction.down && !direction.up && sprite.direction === 'right' ? speed * 1 :
-    0,
-    y:
-    !direction.left && !direction.right && direction.up ? speed * -1 :
-    !direction.left && !direction.right && direction.down ? speed * 1 :
-    0,
-  };
-  const shockWave = Bodies.circle(x, y, strength, {
-    render: shockWaveRender,
-    density: 0.025,
-    collisionFilter: {
-      category: COLLISION.ATTACK,
-      // eslint-disable-next-line no-bitwise
-      mask: COLLISION.POTATEMANS - category,
-    },
-    velocity,
-  });
-  World.add(engine.world, [
-    shockWave,
-  ]);
-  shockWave.attr = {
-    strength,
-    type: 'shockWave',
-    player: body.attr.player,
-  };
-  // eslint-disable-next-line no-param-reassign
-  body.attr.punchGage = 0;
-
-  Events.on(engine, 'beforeUpdate', () => {
-    Body.setVelocity(shockWave, velocity);
-    const scale = shockWave.attr.strength / strength;
-    Body.scale(shockWave, scale, scale);
-    shockWave.attr.strength -= 1;
-    if (!shockWave.attr.strength) {
-      World.remove(engine.world, shockWave);
-    }
-  });
-}
-
-export function meteorite({
-  engine,
-  body,
-  sprite,
-  size,
-}) {
-  if (body.attr.magic < 2) {
-    return;
-  }
-  const { x = 0, y = 0 } = body.position;
-  const { category } = body.attr;
-
-  sprite.setState('punch');
-  const strength = getMeteoriteStrength(body.attr);
-  const radius = 20 + (strength / 10);
-  const meteoriteMotion = Bodies.circle(x, y, radius, {
-    density: 0.1,
-    frictionAir: 0,
-    render: {
-      sprite: {
-        texture: '/images/meteorite.png',
-        xScale: 1 + (strength / 200),
-        yScale: 1 + (strength / 200),
-      },
-    },
-    collisionFilter: {
-      category: COLLISION.ATTACK,
-      // eslint-disable-next-line no-bitwise
-      mask: COLLISION.POTATEMANS - category,
-    },
-    force: {
-      x: sprite.direction === 'left' ? -5 - (strength / 5) : 5 + (strength / 5),
-      y: -1 - (strength / 40),
-    },
-  });
-  Body.setAngularVelocity(meteoriteMotion, sprite.direction === 'left' ? -0.4 : 0.4);
-  World.add(engine.world, [
-    meteoriteMotion,
-  ]);
-  meteoriteMotion.attr = {
-    strength,
-    type: 'meteorite',
-    player: body.attr.player,
-  };
-  // eslint-disable-next-line no-param-reassign
-  body.attr.magic = 1;
-
-  Events.on(engine, 'beforeUpdate', () => {
-    if (!meteoriteMotion.position.y > size.height * 2) {
-      World.remove(engine.world, meteoriteMotion);
-    }
-  });
-}
-
-export function gard({ engine, body, sprite }) {
-  sprite.setState('gard');
-  if (body.attr.gardGage > 10) {
-    // eslint-disable-next-line no-param-reassign
-    body.attr.gardGage -= 1;
-  }
-  if (!body.attr.gardMotion) {
-    const gardMotion = Bodies.circle(body.position.x, body.position.y, 1, {
-      render: {
-        strokeStyle: '#ffffff',
-        fillStyle: '#67A70C',
-        opacity: 0.3,
-        lineWidth: 1,
-      },
-      isStatic: true,
-    });
-    // eslint-disable-next-line no-param-reassign
-    body.attr.gardMotion = gardMotion;
-    World.add(engine.world, [gardMotion]);
-  }
-  // eslint-disable-next-line no-param-reassign
-  body.attr.gardMotion.attr = {
-    strength: body.attr.gardGage,
-    type: 'gard',
-  };
-}
-
-export function gardCancel({ engine, body }) {
-  // eslint-disable-next-line no-param-reassign
-  body.attr.gardGage = 100;
-  // eslint-disable-next-line no-param-reassign
-  body.attr.garding = false;
-  if (body.attr.gardMotion) {
-    World.remove(engine.world, body.attr.gardMotion);
-  }
-  // eslint-disable-next-line no-param-reassign
-  body.attr.gardMotion = undefined;
-}
 
 export function destroy({ engine, body }) {
   World.remove(engine.world, body.attr.caret);
