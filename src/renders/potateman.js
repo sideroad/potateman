@@ -71,7 +71,6 @@ export default function ({
       },
     },
   });
-  console.log(potateman);
   const outsiderOption = {
     render: {
       fillStyle: color,

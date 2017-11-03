@@ -2,9 +2,6 @@ import 'babel-polyfill';
 import QRious from 'qrious';
 import renderer from './renders/renderer';
 import ws from './helpers/ws';
-import prefetch from './helpers/prefetch';
-
-prefetch();
 
 const act = ws();
 act.init = (data) => {

@@ -11,6 +11,7 @@ import potateman, { destroy } from './potateman';
 import boundary from './boundary';
 import volcano from './volcano';
 import interaction from './interaction';
+import prefetch from './prefetch';
 
 export default function (act) {
   // create engine
@@ -132,6 +133,8 @@ export default function (act) {
     min: { x: 0, y: 0 },
     max: { x: size.width, y: size.height },
   });
+
+  prefetch({ size, engine });
 
   window.patch = (attr) => {
     Object.keys(players).forEach((id) => {
