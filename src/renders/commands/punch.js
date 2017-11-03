@@ -4,15 +4,8 @@ import {
   Body,
   Bodies,
 } from 'matter-js';
-import { getPunchStrength } from '../potateman';
+import { getPunchStrength, shockWaveRender } from '../potateman';
 import COLLISION from '../collision';
-
-const shockWaveRender = {
-  strokeStyle: '#ffffff',
-  fillStyle: '#38a1db',
-  opacity: 0.5,
-  lineWidth: 1,
-};
 
 export default function punch({
   engine,

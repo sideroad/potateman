@@ -2,14 +2,7 @@ import {
   World,
   Bodies,
 } from 'matter-js';
-import { getPunchStrength } from '../potateman';
-
-const shockWaveRender = {
-  strokeStyle: '#ffffff',
-  fillStyle: '#38a1db',
-  opacity: 0.5,
-  lineWidth: 1,
-};
+import { getPunchStrength, shockWaveRender } from '../potateman';
 
 export default function sink({ engine, body, sprite }) {
   sprite.setState('gard');

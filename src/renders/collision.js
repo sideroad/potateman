@@ -46,7 +46,8 @@ export function check({ players, engine }) {
           bodyB.attr &&
           (
             bodyB.attr.type === 'shockWave' ||
-            bodyB.attr.type === 'meteorite'
+            bodyB.attr.type === 'meteorite' ||
+            bodyB.attr.type === 'thunder'
           )
         ) {
           let damage = bodyB.attr.strength;
@@ -64,10 +65,15 @@ export function check({ players, engine }) {
             velocity -= ((bodyA.attr.gardGage / 100) * velocity);
           }
           Body.setVelocity(bodyA, {
-            x: bodyB.velocity.x > 0 ? velocity : velocity * -1,
-            y: velocity / -1,
+            x: (
+              bodyB.velocity.x > 0 ? velocity :
+              bodyB.velocity.x < 0 ? velocity * -1 :
+              bodyA.position.x > bodyB.position.x ? velocity :
+              velocity * -1
+            ) + bodyA.velocity.x,
+            y: (velocity / -1) + bodyA.velocity.y,
           });
-          console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} magic:${players[bodyB.attr.player].body.attr.magic}`);
+          console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} magic:${players[bodyB.attr.player].body.attr.magic} type: ${bodyB.attr.type}`);
         }
       }
     };

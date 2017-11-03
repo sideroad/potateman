@@ -8,6 +8,7 @@ import punch from './commands/punch';
 import gard from './commands/gard';
 import gardCancel from './commands/gardCancel';
 import meteorite from './commands/meteorite';
+import thunder from './commands/thunder';
 import { check as collisionCheck } from './collision';
 
 export default function ({
@@ -37,14 +38,14 @@ export default function ({
 
       // left / right moving
       if (direction.left) {
-        if (x >= -4) {
+        if (x >= -3) {
           x -= 1;
         }
         sprite.setState('walk');
         sprite.setDirection('left');
       }
       if (direction.right) {
-        if (x <= 4) {
+        if (x <= 3) {
           x += 1;
         }
         sprite.setState('walk');
@@ -71,7 +72,10 @@ export default function ({
       }
 
       // attack
-      if (direction.a) {
+      if (
+        direction.a &&
+        !direction.b
+      ) {
         sink({
           engine,
           sprite,
@@ -104,9 +108,24 @@ export default function ({
       // meteorite
       if (
         direction.a &&
-        direction.b
+        direction.b &&
+        !direction.down
       ) {
         meteorite({
+          engine,
+          sprite,
+          body,
+          size,
+        });
+      }
+
+      // thunder
+      if (
+        direction.a &&
+        direction.b &&
+        direction.down
+      ) {
+        thunder({
           engine,
           sprite,
           body,

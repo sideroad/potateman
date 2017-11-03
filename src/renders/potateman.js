@@ -4,8 +4,16 @@ import {
   Body,
   Bodies,
 } from 'matter-js';
+import queryString from 'query-string';
 import Sprite from './Sprite';
 import COLLISION from './collision';
+
+export const shockWaveRender = {
+  strokeStyle: '#ffffff',
+  fillStyle: '#38a1db',
+  opacity: 0.5,
+  lineWidth: 1,
+};
 
 export function getPunchStrength({ punchGage, power }) {
   const punchStrength = (punchGage * power) / 100;
@@ -17,7 +25,16 @@ export function getPunchStrength({ punchGage, power }) {
 }
 
 export function getMeteoriteStrength({ magic }) {
-  const maticStrength = magic / 3;
+  const maticStrength = magic / 4;
+  // eslint-disable-next-line no-nested-ternary
+  const strength = maticStrength < 1 ? 1 :
+  // eslint-disable-next-line indent
+                   maticStrength > 300 ? 300 : maticStrength;
+  return strength;
+}
+
+export function getThunderStrength({ magic }) {
+  const maticStrength = magic / 6;
   // eslint-disable-next-line no-nested-ternary
   const strength = maticStrength < 1 ? 1 :
   // eslint-disable-next-line indent
@@ -54,6 +71,7 @@ export default function ({
       },
     },
   });
+  console.log(potateman);
   const outsiderOption = {
     render: {
       fillStyle: color,
@@ -175,13 +193,14 @@ export default function ({
       },
     });
   });
+  const params = queryString.parse(window.location.search);
   potateman.attr = {
     punchGage: 0,
     gardGage: 100,
     garding: false,
     power: 100,
     damage: 0,
-    magic: 1,
+    magic: Number(params.magic) || 1,
     flycount: 0,
     flying: false,
     keepTouchingJump: false,

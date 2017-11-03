@@ -9,10 +9,14 @@
   "keywords": [
     "potateman"
   ],
+  "watch": {
+    "start": "src/**/*.js"
+  },
   "scripts": {
     "start": "npm run build && node dist/server.js",
     "build": "sh dist.sh && babel src -d dist && node prefetch-json-generator.js && webpack webpack.config.js",
-    "lint": "eslint -c .eslintrc src"
+    "lint": "eslint -c .eslintrc src",
+    "watch": "npm-watch"
   },
   "dependencies": {
     "async": "^2.0.1",
@@ -26,6 +30,7 @@
     "lodash": "^4.17.2",
     "matter-js": "^0.13.0",
     "qrious": "^4.0.2",
+    "query-string": "^5.0.1",
     "socket.io": "^2.0.3",
     "ws": "^3.2.0"
   },

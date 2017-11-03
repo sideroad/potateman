@@ -132,4 +132,13 @@ export default function (act) {
     min: { x: 0, y: 0 },
     max: { x: size.width, y: size.height },
   });
+
+  window.patch = (attr) => {
+    Object.keys(players).forEach((id) => {
+      players[id].body.attr = {
+        ...players[id].body.attr,
+        ...attr,
+      };
+    });
+  };
 }
