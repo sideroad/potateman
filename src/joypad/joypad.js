@@ -133,16 +133,14 @@
 
 (($) => {
   $(() => {
-    let ws;
-
-    const input = (stage) => {
-      ws.send(JSON.stringify({
-        act: 'attend',
-        // eslint-disable-next-line
-        stage: stage,
-      }));
-    };
+    let conn;
     let player;
+
+    const peer = new window.Peer({
+      host: window.location.hostname,
+      port: window.location.port,
+      path: '/peerjs',
+    });
     const act = {
       attend: (msg) => {
         if (player) {
@@ -159,7 +157,7 @@
             const { ran } = param.ck;
             if (ran && ran < 50) return;
 
-            const data = JSON.stringify({
+            const data = {
               act: 'jp',
               ang: param.ck.ang,
               a: param.a,
@@ -167,11 +165,11 @@
               // eslint-disable-next-line
               player: player,
               t: new Date().valueOf(),
-            });
-            if (data === prev) return;
-            prev = data;
-            ws.send(data);
-            $('#test').text(data);
+            };
+            if (JSON.stringify(data) === prev) return;
+            prev = JSON.stringify(data);
+            conn.send(data);
+            $('#test').text(prev);
           });
         };
         window.addEventListener('orientationchange', () => {
@@ -180,41 +178,40 @@
         });
         bind();
       },
-      reinput: () => {
-        input();
-      },
     };
 
-    (() => {
-      const WebSocket = window.WebSocket || window.MozWebsocket;
-      if (!WebSocket) {
-        console.log('WebSocket is not defined');
-        return;
-      }
-
-      ws = new WebSocket(`ws://${window.location.host}`);
-      ws.onopen = () => {
-        console.log('connected!');
-
-        ws.onmessage = (msg) => {
-          const data = JSON.parse(msg.data);
-          console.log(data);
-          if (act[data.act]) {
-            act[data.act](data);
-          }
-        };
-
-        const stage = window.location.pathname.match(/\/joypad\/([^/]+)\//)[1];
-        if (stage) {
-          input(stage);
-        } else {
+    const input = (stage, _player) => {
+      conn = peer.connect(stage);
+      conn.on('open', () => {
+        conn.send({
+          act: 'attend',
           // eslint-disable-next-line
-          window.alert('Please read QR code to join');
+          stage: stage,
+          // eslint-disable-next-line
+          player: _player,
+        });
+      });
+      conn.on('data', (data) => {
+        if (act[data.act]) {
+          act[data.act](data);
         }
-      };
-      ws.onclose = () => {
-        console.log('connection closed!');
-      };
-    })();
+      });
+      conn.on('error', (msg) => {
+        console.log(msg);
+      });
+    };
+
+    peer.on('open', (_player) => {
+      const stage = window.location.pathname.match(/\/joypad\/([^/]+)\//)[1];
+      if (stage) {
+        input(stage, _player);
+      } else {
+        // eslint-disable-next-line
+        window.alert('Please read QR code to join');
+      }
+    });
+    peer.on('error', (err) => {
+      console.log(err);
+    });
   });
 })(window.jQuery);
