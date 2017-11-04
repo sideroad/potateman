@@ -2,6 +2,41 @@ body {
   font-family: 'Raleway', sans-serif;
 }
 
+.first {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#stream {
+  width: 100vw;
+  height: 100vh;
+}
+
+#dummy {
+  display: none;
+}
+
+.tooltip {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 2em;
+  color: white;
+  background-color: black;
+  border-radius: 3px;
+}
+
+#share {
+  color: #38a1db;
+  font-size: 2em;
+  margin-left: 1em;
+  cursor: pointer;
+}
+
 #attendee {
   font-size: 2em;
   display: flex;

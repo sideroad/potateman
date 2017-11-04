@@ -49,18 +49,35 @@ export default function (act) {
   const players = {};
   const ghosts = {};
   const stack = [];
-
+  const colors = [
+    '#ff0000',
+    '#00cc00',
+    '#3714b0',
+    '#ffd200',
+    '#ff9200',
+    '#0b61a4',
+    '#a101a6',
+    '#cff700',
+  ];
   // eslint-disable-next-line no-param-reassign
   act.attend = (data) => {
+    const color = colors[stack.length];
+    act.send({
+      ...data,
+      color,
+    });
     const attendee = document.getElementById('attendee');
     if (!stack.length) {
       attendee.innerHTML = '';
     }
-    stack.push(data);
+    stack.push({
+      ...data,
+      color,
+    });
     const div = document.createElement('div');
     div.setAttribute('class', 'attendee-container');
     div.innerHTML = `
-      <div class="attendee-caret" style="border-color: ${data.color} transparent;"></div>
+      <div class="attendee-caret" style="border-color: ${color} transparent;"></div>
       <img class="attendee-character" src="/images/potateman-stand-left-1.png"/>
     `;
     attendee.appendChild(div);
@@ -76,7 +93,10 @@ export default function (act) {
     if (document.getElementById('qr-container')) {
       document.getElementById('qr-container').remove();
     }
-
+    act.stream(document.getElementsByTagName('canvas')[0]);
+    act.send({
+      act: 'start',
+    });
     Events.off(engine);
     interaction({
       act,

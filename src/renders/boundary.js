@@ -40,7 +40,7 @@ export default function ({
         position.y > size.height * 3 ||
         position.y < size.height * -2
       ) {
-        act.send({
+        act.dead({
           act: 'dead',
           player,
         });
