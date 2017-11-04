@@ -49,7 +49,7 @@ export default function ({
       }
       if (direction.right) {
         if (
-          (x <= 3 && direction.b) ||
+          (x <= 3 && !direction.b) ||
           (x <= 5 && direction.b)
         ) {
           x += 1;
