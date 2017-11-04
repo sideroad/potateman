@@ -1,5 +1,6 @@
 import {
   Engine,
+  Events,
   Render,
   Runner,
   MouseConstraint,
@@ -11,6 +12,7 @@ import potateman, { destroy } from './potateman';
 import boundary from './boundary';
 import volcano from './volcano';
 import interaction from './interaction';
+import prefetch from './prefetch';
 
 export default function (act) {
   // create engine
@@ -55,11 +57,6 @@ export default function (act) {
     '#a101a6',
     '#cff700',
   ];
-  interaction({
-    act,
-    engine,
-    players,
-  });
   // eslint-disable-next-line no-param-reassign
   act.attend = (data) => {
     act.send({
@@ -72,7 +69,7 @@ export default function (act) {
     });
     document.getElementById('attendee').innerHTML = stack.map(attendeeData =>
       `<div class="attendee-container">
-          <div class="attendee-caset" style="border-color: ${attendeeData.color} transparent;"></div>
+          <div class="attendee-caret" style="border-color: ${attendeeData.color} transparent;"></div>
           <img class="attendee-character" src="/images/potateman-stand-left-1.png"/>
        </div>`).join('');
     if (stack.length >= 2) {
@@ -85,6 +82,14 @@ export default function (act) {
     if (document.getElementById('qr-container')) {
       document.getElementById('qr-container').remove();
     }
+
+    Events.off(engine);
+    interaction({
+      act,
+      engine,
+      players,
+      size,
+    });
     stack.forEach((data, index) => {
       players[data.player] = potateman({
         act,
@@ -101,6 +106,13 @@ export default function (act) {
         player: data.player,
       });
     });
+    volcano({ engine, size });
+    boundary({
+      engine,
+      size,
+      act,
+      players,
+    });
   };
   // eslint-disable-next-line no-param-reassign
   act.dead = (data) => {
@@ -110,7 +122,7 @@ export default function (act) {
     delete players[data.player];
     if (Object.keys(players).length === 1) {
       const player = Object.values(players)[0];
-      document.getElementById('winner-caset').style.borderColor = `${player.body.attr.color} transparent`;
+      document.getElementById('winner-caret').style.borderColor = `${player.body.attr.color} transparent`;
       document.getElementById('winner-character').style.backgroundImage = `url(${player.image})`;
       document.getElementById('winner').style.display = 'block';
       destroy({ engine, body: player.body });
@@ -118,13 +130,6 @@ export default function (act) {
       delete players[player.player];
     }
   };
-  volcano({ engine, size });
-  boundary({
-    engine,
-    size,
-    act,
-    players,
-  });
 
   // add mouse control
   const mouse = Mouse.create(render.canvas);
@@ -148,4 +153,15 @@ export default function (act) {
     min: { x: 0, y: 0 },
     max: { x: size.width, y: size.height },
   });
+
+  prefetch({ size, engine });
+
+  window.patch = (attr) => {
+    Object.keys(players).forEach((id) => {
+      players[id].body.attr = {
+        ...players[id].body.attr,
+        ...attr,
+      };
+    });
+  };
 }

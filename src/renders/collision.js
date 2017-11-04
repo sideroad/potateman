@@ -1,3 +1,8 @@
+import {
+  Events,
+  Body,
+} from 'matter-js';
+
 const COLLISION = {
   DEFAULT: 0x0001,
   GROUND: 0x0002,
@@ -26,3 +31,57 @@ COLLISION.POTATEMANS =
   COLLISION.POTATEMAN7;
 
 export default COLLISION;
+
+export function check({ players, engine }) {
+  Events.on(engine, 'collisionStart', (event) => {
+    const { pairs } = event;
+    const bodies = Object.keys(players).map(id => players[id].body);
+    const collisionConfirm = (bodyA, bodyB) => {
+      if (bodies.includes(bodyA)) {
+        // when potateman collision with some others, reset fly count
+        const collisioned = bodies.find(body => body === bodyA);
+        collisioned.attr.flycount = 0;
+        collisioned.attr.flying = false;
+        if (
+          bodyB.attr &&
+          (
+            bodyB.attr.type === 'shockWave' ||
+            bodyB.attr.type === 'meteorite' ||
+            bodyB.attr.type === 'thunder'
+          )
+        ) {
+          let damage = bodyB.attr.strength;
+          if (bodyA.attr.garding) {
+            damage -= ((bodyA.attr.gardGage / 100) * damage);
+          }
+          // eslint-disable-next-line no-param-reassign
+          bodyA.attr.damage += damage > 0 ? damage : 0;
+          // eslint-disable-next-line no-param-reassign
+          bodyA.attr.magic += bodyB.attr.strength / 6;
+          // eslint-disable-next-line no-param-reassign
+          players[bodyB.attr.player].body.attr.magic += bodyB.attr.strength / 2;
+          let velocity = (bodyB.attr.strength * bodyA.attr.damage) / 300;
+          if (bodyA.attr.garding) {
+            velocity -= ((bodyA.attr.gardGage / 100) * velocity);
+          }
+          Body.setVelocity(bodyA, {
+            x: (
+              bodyB.velocity.x > 0 ? velocity :
+              bodyB.velocity.x < 0 ? velocity * -1 :
+              bodyA.position.x > bodyB.position.x ? velocity :
+              velocity * -1
+            ) + bodyA.velocity.x,
+            y: (velocity / -1) + bodyA.velocity.y,
+          });
+          console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} magic:${players[bodyB.attr.player].body.attr.magic} type: ${bodyB.attr.type}`);
+        }
+      }
+    };
+
+    for (let i = 0, j = pairs.length; i < j; i += 1) {
+      const pair = pairs[i];
+      collisionConfirm(pair.bodyA, pair.bodyB);
+      collisionConfirm(pair.bodyB, pair.bodyA);
+    }
+  });
+}

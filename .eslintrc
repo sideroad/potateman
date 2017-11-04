@@ -2,5 +2,9 @@
   "extends": "airbnb",
   "env": {
     "browser": true
+  },
+  "rules": {
+    "no-nested-ternary": 0,
+    "indent": ["error", 2, { "flatTernaryExpressions": true }]
   }
 }

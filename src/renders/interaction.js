@@ -3,12 +3,19 @@ import {
   Events,
 } from 'matter-js';
 import input from '../helpers/input';
-import { sink, punch, gard, gardCancel } from './potateman';
+import sink from './commands/sink';
+import punch from './commands/punch';
+import gard from './commands/gard';
+import gardCancel from './commands/gardCancel';
+import meteorite from './commands/meteorite';
+import thunder from './commands/thunder';
+import { check as collisionCheck } from './collision';
 
 export default function ({
   act,
   engine,
   players,
+  size,
 }) {
   // eslint-disable-next-line no-param-reassign
   act.jp = (data) => {
@@ -19,40 +26,7 @@ export default function ({
     }
   };
 
-  Events.on(engine, 'collisionStart', (event) => {
-    const { pairs } = event;
-    const bodies = Object.keys(players).map(id => players[id].body);
-    const collisionConfirm = (bodyA, bodyB) => {
-      if (bodies.includes(bodyA)) {
-        // when potateman collision with some others, reset fly count
-        bodies.find(body => body === bodyA).attr.flycount = 0;
-        if (bodyB.attr && bodyB.attr.type === 'shockWave') {
-          let damage = bodyB.attr.strength;
-          if (bodyA.attr.garding) {
-            damage -= ((bodyA.attr.gardGage / 100) * damage);
-          }
-          // eslint-disable-next-line no-param-reassign
-          bodyA.attr.damage += damage > 0 ? damage : 0;
-          // eslint-disable-next-line no-param-reassign
-          bodyA.attr.magic += bodyB.attr.strength / 3;
-          // eslint-disable-next-line no-param-reassign
-          players[bodyB.attr.player].body.attr.magic += bodyB.attr.strength;
-          const velocity = (bodyB.attr.strength * bodyA.attr.damage) / 100;
-          Body.setVelocity(bodyA, {
-            x: bodyB.velocity.x > 0 ? velocity : velocity * -1,
-            y: velocity / -2,
-          });
-          console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage}`);
-        }
-      }
-    };
-
-    for (let i = 0, j = pairs.length; i < j; i += 1) {
-      const pair = pairs[i];
-      collisionConfirm(pair.bodyA, pair.bodyB);
-      collisionConfirm(pair.bodyB, pair.bodyA);
-    }
-  });
+  collisionCheck({ players, engine });
 
   Events.on(engine, 'beforeUpdate', () => {
     Object.keys(players).forEach((id) => {
@@ -64,14 +38,20 @@ export default function ({
 
       // left / right moving
       if (direction.left) {
-        if (x >= -5) {
+        if (
+          (x >= -3 && !direction.b) ||
+          (x >= -5 && direction.b)
+        ) {
           x -= 1;
         }
         sprite.setState('walk');
         sprite.setDirection('left');
       }
       if (direction.right) {
-        if (x <= 5) {
+        if (
+          (x <= 3 && !direction.b) ||
+          (x <= 5 && direction.b)
+        ) {
           x += 1;
         }
         sprite.setState('walk');
@@ -80,18 +60,28 @@ export default function ({
 
       // jump
       if (direction.up) {
-        if (body.attr.flycount < 2 && !body.attr.flying) {
-          y -= 10;
+        if (body.attr.flycount < 2 && !body.attr.keepTouchingJump) {
+          if (!body.attr.flying) {
+            y = -10;
+          } else if (body.velocity.y > 0) {
+            y = -5;
+          } else {
+            y -= 5;
+          }
           body.attr.flycount += 1;
           body.attr.flying = true;
+          body.attr.keepTouchingJump = true;
         }
         sprite.setState('walk');
       } else {
-        body.attr.flying = false;
+        body.attr.keepTouchingJump = false;
       }
 
       // attack
-      if (direction.a) {
+      if (
+        direction.a &&
+        !direction.b
+      ) {
         sink({
           engine,
           sprite,
@@ -102,6 +92,7 @@ export default function ({
           engine,
           sprite,
           body,
+          direction,
         });
       }
 
@@ -120,10 +111,48 @@ export default function ({
         });
       }
 
+      // meteorite
+      if (
+        direction.a &&
+        direction.b &&
+        !direction.down
+      ) {
+        meteorite({
+          engine,
+          sprite,
+          body,
+          size,
+        });
+      }
+
+      // thunder
+      if (
+        direction.a &&
+        direction.b &&
+        direction.down
+      ) {
+        thunder({
+          engine,
+          sprite,
+          body,
+          size,
+        });
+      }
+
       // squat
       if (direction.down) {
         y += 0.5;
         sprite.setState('squat');
+      }
+
+      // squat gard
+      if (
+        direction.down &&
+        direction.b
+      ) {
+        body.attr.transparent = true;
+      } else {
+        body.attr.transparent = false;
       }
 
       // neutral

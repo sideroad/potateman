@@ -2,9 +2,6 @@ import 'babel-polyfill';
 import QRious from 'qrious';
 import renderer from './renders/renderer';
 import peer from './helpers/peer';
-import prefetch from './helpers/prefetch';
-
-prefetch();
 
 const act = peer();
 act.init = (data) => {

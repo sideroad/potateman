@@ -4,17 +4,43 @@ import {
   Body,
   Bodies,
 } from 'matter-js';
+import queryString from 'query-string';
 import Sprite from './Sprite';
 import COLLISION from './collision';
 
-const getStrength = ({ punchGage, power }) => {
+export const shockWaveRender = {
+  strokeStyle: '#ffffff',
+  fillStyle: '#38a1db',
+  opacity: 0.5,
+  lineWidth: 1,
+};
+
+export function getPunchStrength({ punchGage, power }) {
   const punchStrength = (punchGage * power) / 100;
   // eslint-disable-next-line no-nested-ternary
   const strength = punchStrength < 5 ? 5 :
   // eslint-disable-next-line indent
-                   punchStrength > 30 ? 30 : punchStrength;
+                   punchStrength > 20 ? 20 : punchStrength;
   return strength;
-};
+}
+
+export function getMeteoriteStrength({ magic }) {
+  const maticStrength = magic / 4;
+  // eslint-disable-next-line no-nested-ternary
+  const strength = maticStrength < 1 ? 1 :
+  // eslint-disable-next-line indent
+                   maticStrength > 300 ? 300 : maticStrength;
+  return strength;
+}
+
+export function getThunderStrength({ magic }) {
+  const maticStrength = magic / 6;
+  // eslint-disable-next-line no-nested-ternary
+  const strength = maticStrength < 1 ? 1 :
+  // eslint-disable-next-line indent
+                   maticStrength > 300 ? 300 : maticStrength;
+  return strength;
+}
 
 export default function ({
   engine,
@@ -24,10 +50,11 @@ export default function ({
   player,
 }) {
   const category = COLLISION[`POTATEMAN${index}`];
-  const potateman = Bodies.rectangle(size.width / 2, size.height / 3, 23, 29, {
+  const startX = (size.width / 2) + (index % 2 ? (index * 20) + 20 : index * -20);
+  const potateman = Bodies.rectangle(startX, size.height / 3, 23, 29, {
     frictionAir: 0,
     frictionStatic: 20,
-    density: 0.5,
+    density: 0.75,
     collisionFilter: {
       category,
       // eslint-disable-next-line no-bitwise
@@ -45,16 +72,36 @@ export default function ({
       },
     },
   });
+  const outsiderOption = {
+    render: {
+      fillStyle: color,
+      opacity: 0,
+    },
+    isSensor: true,
+    isStatic: true,
+  };
+  const outsiderBottom = Bodies.polygon(0, 50, 3, 5, outsiderOption);
+  Body.setAngle(outsiderBottom, -22.5);
+  World.add(engine.world, [outsiderBottom]);
+  const outsiderTop = Bodies.polygon(0, 50, 3, 5, outsiderOption);
+  Body.setAngle(outsiderTop, 22.5);
+  World.add(engine.world, [outsiderTop]);
+  const outsiderLeft = Bodies.polygon(0, 50, 3, 5, outsiderOption);
+  Body.setAngle(outsiderLeft, 0);
+  World.add(engine.world, [outsiderLeft]);
+  const outsiderRight = Bodies.polygon(0, 50, 3, 5, outsiderOption);
+  Body.setAngle(outsiderRight, 45);
+  World.add(engine.world, [outsiderRight]);
 
-  const caset = Bodies.polygon(0, 50, 3, 5, {
+  const caret = Bodies.polygon(0, 50, 3, 5, {
     render: {
       fillStyle: color,
     },
     isSensor: true,
     isStatic: true,
   });
-  Body.setAngle(caset, -22.5);
-  World.add(engine.world, [caset]);
+  Body.setAngle(caret, -22.5);
+  World.add(engine.world, [caret]);
 
   const sprite = new Sprite(potateman, 'potateman', [
     { state: 'stand' },
@@ -77,36 +124,97 @@ export default function ({
   sprite.render();
   World.add(engine.world, [potateman]);
 
+  let count = 0;
+  const damageParticles = [];
   Events.on(engine, 'beforeUpdate', () => {
+    const { x = 0, y = 0 } = potateman.position;
     sprite.render();
-    Body.setPosition(caset, {
-      x: potateman.position.x,
-      y: potateman.position.y - 30,
+
+    // caret
+    Body.setPosition(caret, {
+      x,
+      y: y - 30,
+    });
+    const caretScore = 1 + (potateman.attr.magic / 50);
+    const caretScale = caretScore / potateman.attr.caretScore;
+    potateman.attr.caretScore = caretScore;
+    Body.scale(caret, caretScale, caretScale);
+
+    // outsider
+    Body.setPosition(outsiderBottom, {
+      x,
+      y: size.height - 15,
+    });
+    Body.setPosition(outsiderTop, {
+      x,
+      y: 15,
+    });
+    Body.setPosition(outsiderLeft, {
+      x: 15,
+      y,
+    });
+    Body.setPosition(outsiderRight, {
+      x: size.width - 15,
+      y,
     });
     const { sinkMotion, gardMotion } = potateman.attr;
+
+    // sink
     if (sinkMotion) {
-      const strength = getStrength(potateman.attr);
+      const strength = getPunchStrength(potateman.attr);
       const scale = strength / sinkMotion.circleRadius;
       Body.setPosition(sinkMotion, {
-        x: potateman.position.x,
-        y: potateman.position.y,
+        x,
+        y,
       });
       Body.scale(sinkMotion, scale, scale);
     }
+
+    // gard
     if (gardMotion) {
       const strength = potateman.attr.gardGage;
       const scale = (strength / gardMotion.circleRadius) / 5;
       Body.setPosition(gardMotion, {
-        x: potateman.position.x,
-        y: potateman.position.y,
+        x,
+        y,
       });
       Body.scale(gardMotion, scale, scale);
     }
+
+    // damage
+    if (count > 10) {
+      const particle = Bodies.circle(x, y, (potateman.attr.damage / 10) + 1, {
+        frictionAir: 0,
+        force: {
+          x: sprite.direction === 'left' ? (potateman.attr.damage / 100000) : (potateman.attr.damage / -100000),
+          y: (potateman.attr.damage / -100000),
+        },
+        render: {
+          opacity: 0.3,
+          fillStyle: '#ec6d71',
+        },
+        isSensor: true,
+      });
+      damageParticles.push(particle);
+      World.add(engine.world, particle);
+      count = 0;
+    }
+    count += 1;
+    damageParticles.forEach((particle) => {
+      if (particle.circleRadius < 1) {
+        damageParticles.shift();
+        World.remove(engine.world, particle);
+      } else {
+        Body.scale(particle, 0.9, 0.9);
+      }
+    });
+
+    // potateman
     Body.set(potateman, {
       angle: 0,
       collisionFilter: {
         category: potateman.attr.category,
-        mask: potateman.velocity.y >= 0 ?
+        mask: potateman.velocity.y >= 0 && !potateman.attr.transparent ?
         // eslint-disable-next-line no-bitwise
           COLLISION.GROUND |
           COLLISION.VOLCANO |
@@ -122,21 +230,29 @@ export default function ({
       },
     });
   });
+  const params = queryString.parse(window.location.search);
   potateman.attr = {
     punchGage: 0,
     gardGage: 100,
     garding: false,
     power: 100,
     damage: 0,
-    magic: 1,
+    magic: Number(params.magic) || 1,
     flycount: 0,
     flying: false,
+    keepTouchingJump: false,
     index,
     category,
     type: 'potateman',
     player,
     color,
-    caset,
+    caret,
+    outsiderBottom,
+    outsiderTop,
+    outsiderLeft,
+    outsiderRight,
+    caretScore: 1,
+    transparent: false,
   };
   return {
     body: potateman,
@@ -145,123 +261,15 @@ export default function ({
   };
 }
 
-const shockWaveRender = {
-  strokeStyle: '#ffffff',
-  fillStyle: '#38a1db',
-  opacity: 0.5,
-  lineWidth: 1,
-};
-
-export function sink({ engine, body, sprite }) {
-  sprite.setState('gard');
-  // eslint-disable-next-line no-param-reassign
-  body.attr.punchGage += 1;
-  // eslint-disable-next-line no-param-reassign
-  body.attr.garding = true;
-  const strength = getStrength(body.attr);
-  if (!body.attr.sinkMotion) {
-    const sinkMotion = Bodies.circle(body.position.x, body.position.y, 1, {
-      render: shockWaveRender,
-      isStatic: true,
-    });
-    // eslint-disable-next-line no-param-reassign
-    body.attr.sinkMotion = sinkMotion;
-    World.add(engine.world, [sinkMotion]);
-  }
-  // eslint-disable-next-line no-param-reassign
-  body.attr.sinkMotion.attr = {
-    strength,
-    type: 'sink',
-  };
-}
-
-export function punch({ engine, body, sprite }) {
-  const { x = 0, y = 0 } = body.position;
-  const { category } = body.attr;
-
-  World.remove(engine.world, body.attr.sinkMotion);
-  // eslint-disable-next-line no-param-reassign
-  body.attr.sinkMotion = undefined;
-  sprite.setState('punch');
-  const strength = getStrength(body.attr);
-  const shockWave = Bodies.circle(x, y, strength, {
-    render: shockWaveRender,
-    density: 0.025,
-    collisionFilter: {
-      category: COLLISION.ATTACK,
-      // eslint-disable-next-line no-bitwise
-      mask: COLLISION.POTATEMANS - category,
-    },
-    force: {
-      x: sprite.direction === 'left' ? -0.005 * (strength ** 2) : 0.005 * (strength ** 2),
-      y: 0,
-    },
-  });
-  World.add(engine.world, [
-    shockWave,
-  ]);
-  shockWave.attr = {
-    strength,
-    type: 'shockWave',
-    player: body.attr.player,
-  };
-  // eslint-disable-next-line no-param-reassign
-  body.attr.punchGage = 0;
-
-  Events.on(engine, 'beforeUpdate', () => {
-    Body.setVelocity(shockWave, {
-      x: shockWave.velocity.x,
-      y: 0,
-    });
-    const scale = shockWave.attr.strength / strength;
-    Body.scale(shockWave, scale, scale);
-    shockWave.attr.strength -= 1;
-    if (!shockWave.attr.strength) {
-      World.remove(engine.world, shockWave);
-    }
-  });
-}
-
-export function gard({ engine, body, sprite }) {
-  sprite.setState('gard');
-  if (body.attr.gardGage > 10) {
-    // eslint-disable-next-line no-param-reassign
-    body.attr.gardGage -= 1;
-  }
-  if (!body.attr.gardMotion) {
-    const gardMotion = Bodies.circle(body.position.x, body.position.y, 1, {
-      render: {
-        strokeStyle: '#ffffff',
-        fillStyle: '#67A70C',
-        opacity: 0.3,
-        lineWidth: 1,
-      },
-      isStatic: true,
-    });
-    // eslint-disable-next-line no-param-reassign
-    body.attr.gardMotion = gardMotion;
-    World.add(engine.world, [gardMotion]);
-  }
-  // eslint-disable-next-line no-param-reassign
-  body.attr.gardMotion.attr = {
-    strength: body.attr.gardGage,
-    type: 'gard',
-  };
-}
-
-export function gardCancel({ engine, body }) {
-  // eslint-disable-next-line no-param-reassign
-  body.attr.gardGage = 100;
-  // eslint-disable-next-line no-param-reassign
-  body.attr.garding = false;
-  if (body.attr.gardMotion) {
-    World.remove(engine.world, body.attr.gardMotion);
-  }
-  // eslint-disable-next-line no-param-reassign
-  body.attr.gardMotion = undefined;
-}
 
 export function destroy({ engine, body }) {
-  World.remove(engine.world, body.attr.caset);
+  World.remove(engine.world, body.attr.caret);
+  World.remove(engine.world, body.attr.outsiderTop);
+  World.remove(engine.world, body.attr.outsiderLeft);
+  World.remove(engine.world, body.attr.outsiderRight);
+  World.remove(engine.world, body.attr.outsiderBottom);
+  if (body.attr.sinkMotion) {
+    World.remove(engine.world, body.attr.sinkMotion);
+  }
   World.remove(engine.world, body);
 }

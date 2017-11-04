@@ -1,6 +1,10 @@
 class Sprite {
   constructor(body, image, states) {
-    this.body = body;
+    if (body.bodies) {
+      this.bodies = body.bodies;
+    } else {
+      this.bodies = [body];
+    }
     this.image = image;
     this.states = states;
     this.direction = 'left';
@@ -31,7 +35,10 @@ class Sprite {
       step,
     } = this;
     const { duration = 0, steps = 1, next } = this.states.find((_state => _state.state === state));
-    this.body.render.sprite.texture = `/images/${image}-${state}-${direction}-${step}.png`;
+    this.bodies.forEach((body) => {
+      // eslint-disable-next-line no-param-reassign
+      body.render.sprite.texture = `/images/${image}-${state}-${direction}-${step}.png`;
+    });
     if (duration) {
       this.count += 1;
       if (duration < this.count) {
@@ -43,8 +50,10 @@ class Sprite {
             this.setState(next);
           }
         }
-        // eslint-disable-next-line
-        this.body.render.sprite.texture = `/images/${image}-${state}-${direction}-${step}.png`;
+        this.bodies.forEach((body) => {
+          // eslint-disable-next-line no-param-reassign
+          body.render.sprite.texture = `/images/${image}-${state}-${direction}-${step}.png`;
+        });
       }
     }
   }
