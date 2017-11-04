@@ -16,10 +16,12 @@ export default function punch({
   const { x = 0, y = 0 } = body.position;
   const { category } = body.attr;
 
-  World.remove(engine.world, body.attr.sinkMotion);
-  // eslint-disable-next-line no-param-reassign
-  body.attr.sinkMotion = undefined;
-  sprite.setState('punch');
+  if (body.attr.sinkMotion) {
+    World.remove(engine.world, body.attr.sinkMotion);
+    // eslint-disable-next-line no-param-reassign
+    body.attr.sinkMotion = undefined;
+    sprite.setState('punch');
+  }
   const strength = getPunchStrength(body.attr);
   // eslint-disable-next-line no-nested-ternary
   const speed = strength < 15 ? 15 : strength > 20 ? 20 : strength;

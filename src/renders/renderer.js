@@ -9,6 +9,7 @@ import {
 } from 'matter-js';
 import grounds from './grounds';
 import potateman, { destroy } from './potateman';
+import createGhost, { destroy as destroyGhost } from './ghost';
 import boundary from './boundary';
 import volcano from './volcano';
 import interaction from './interaction';
@@ -46,6 +47,7 @@ export default function (act) {
 
   grounds({ engine, size });
   const players = {};
+  const ghosts = {};
   const stack = [];
 
   // eslint-disable-next-line no-param-reassign
@@ -72,6 +74,7 @@ export default function (act) {
       act,
       engine,
       players,
+      ghosts,
       size,
     });
     stack.forEach((data, index) => {
@@ -101,7 +104,15 @@ export default function (act) {
   // eslint-disable-next-line no-param-reassign
   act.dead = (data) => {
     console.log(`dead:${data.player}`);
+    const { color } = players[data.player].body.attr;
     destroy({ engine, body: players[data.player].body });
+    ghosts[data.player] = createGhost({
+      act,
+      engine,
+      size,
+      color,
+      player: data.player,
+    });
     // eslint-disable-next-line no-param-reassign
     delete players[data.player];
     if (Object.keys(players).length === 1) {
@@ -112,6 +123,10 @@ export default function (act) {
       destroy({ engine, body: player.body });
       // eslint-disable-next-line no-param-reassign
       delete players[player.player];
+      Object.keys(ghosts).forEach((ghostId) => {
+        destroyGhost({ engine, body: ghosts[ghostId].body });
+        delete ghosts[ghostId];
+      });
     }
   };
 

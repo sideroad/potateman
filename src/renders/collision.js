@@ -16,6 +16,7 @@ const COLLISION = {
   POTATEMAN6: 0x0200,
   POTATEMAN7: 0x0400,
   BOUNDARY: 0x0800,
+  GHOST: 0x1000,
 };
 
 
@@ -58,8 +59,10 @@ export function check({ players, engine }) {
           bodyA.attr.damage += damage > 0 ? damage : 0;
           // eslint-disable-next-line no-param-reassign
           bodyA.attr.magic += bodyB.attr.strength / 6;
-          // eslint-disable-next-line no-param-reassign
-          players[bodyB.attr.player].body.attr.magic += bodyB.attr.strength / 2;
+          if (players[bodyB.attr.player]) {
+            // eslint-disable-next-line no-param-reassign
+            players[bodyB.attr.player].body.attr.magic += bodyB.attr.strength / 2;
+          }
           let velocity = (bodyB.attr.strength * bodyA.attr.damage) / 300;
           if (bodyA.attr.garding) {
             velocity -= ((bodyA.attr.gardGage / 100) * velocity);
@@ -73,7 +76,7 @@ export function check({ players, engine }) {
             ) + bodyA.velocity.x,
             y: (velocity / -1) + bodyA.velocity.y,
           });
-          console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} magic:${players[bodyB.attr.player].body.attr.magic} type: ${bodyB.attr.type}`);
+          console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} type: ${bodyB.attr.type}`);
         }
       }
     };

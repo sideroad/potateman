@@ -37,9 +37,10 @@ body {
 }
 
 #ck {
-	width : 180px;
-	height : 180px;
+	width : 250px;
+	height : 250px;
   background-image: url(./cross-key.png);
+  background-size: cover;
   user-select: none;
 }
 
