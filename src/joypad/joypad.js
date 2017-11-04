@@ -181,7 +181,9 @@
     };
 
     const input = (stage, _player) => {
-      conn = peer.connect(stage);
+      conn = peer.connect(stage, {
+        serialization: 'json',
+      });
       conn.on('open', () => {
         conn.send({
           act: 'attend',

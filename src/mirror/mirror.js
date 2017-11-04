@@ -21,7 +21,9 @@ const peer = new window.Peer({
   path: '/peerjs',
 });
 peer.on('open', (id) => {
-  const conn = peer.connect(stage);
+  const conn = peer.connect(stage, {
+    serialization: 'json',
+  });
   const call = peer.call(stage, document.getElementById('dummy').captureStream(25));
   console.log(id, stage);
   conn.on('data', (data) => {
