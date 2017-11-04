@@ -102,7 +102,7 @@ export default function ghost({
     });
   });
   body.attr = {
-    punchGage: 5,
+    punchGage: 1,
     power: 50,
     category,
     magic: 0,
