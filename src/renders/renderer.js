@@ -61,9 +61,10 @@ export default function (act) {
   ];
   // eslint-disable-next-line no-param-reassign
   act.attend = (data) => {
+    const color = colors[stack.length];
     act.send({
       ...data,
-      color: colors[stack.length],
+      color,
     });
     const attendee = document.getElementById('attendee');
     if (!stack.length) {
@@ -71,12 +72,12 @@ export default function (act) {
     }
     stack.push({
       ...data,
-      color: colors[stack.length],
+      color,
     });
     const div = document.createElement('div');
     div.setAttribute('class', 'attendee-container');
     div.innerHTML = `
-      <div class="attendee-caret" style="border-color: ${data.color} transparent;"></div>
+      <div class="attendee-caret" style="border-color: ${color} transparent;"></div>
       <img class="attendee-character" src="/images/potateman-stand-left-1.png"/>
     `;
     attendee.appendChild(div);
