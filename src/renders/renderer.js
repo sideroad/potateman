@@ -93,7 +93,10 @@ export default function (act) {
     if (document.getElementById('qr-container')) {
       document.getElementById('qr-container').remove();
     }
-
+    act.stream(document.getElementsByTagName('canvas')[0]);
+    act.send({
+      act: 'start',
+    });
     Events.off(engine);
     interaction({
       act,

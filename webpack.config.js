@@ -4,6 +4,7 @@ const WebpackOnBuildPlugin = require('on-build-webpack');
 module.exports = {
   entry: {
     main: ['./src/client.js'],
+    mirror: ['./src/mirror/mirror.js'],
     joypad: ['./src/joypad/joypad.js'],
   },
   output: {
@@ -27,16 +28,24 @@ module.exports = {
     new WebpackOnBuildPlugin((stats) => {
       // eslint-disable-next-line
       const fs = require('fs');
+      const assetNames = Object.keys(stats.compilation.assets);
 
       // replace to bundle
-      const bundleName = Object.keys(stats.compilation.assets)[0];
+      const bundleName = assetNames.find(name => /^main-/.test(name));
       const htmlPath = path.resolve(__dirname, 'dist/static/index.html');
       const html = fs.readFileSync(htmlPath, 'utf8');
       // eslint-disable-next-line prefer-template
       fs.writeFileSync(htmlPath, html.replace('/bundle.js', '/' + bundleName), 'utf8');
 
+      // replace to mirror
+      const mirrorName = assetNames.find(name => /^mirror-/.test(name));
+      const mirrorHtmlPath = path.resolve(__dirname, 'dist/static/mirror/index.html');
+      const mirrorHtml = fs.readFileSync(mirrorHtmlPath, 'utf8');
+      // eslint-disable-next-line prefer-template
+      fs.writeFileSync(mirrorHtmlPath, mirrorHtml.replace('/bundle-mirror.js', '/' + mirrorName), 'utf8');
+
       // replace to joypad
-      const joypadName = Object.keys(stats.compilation.assets)[1];
+      const joypadName = assetNames.find(name => /^joypad-/.test(name));
       const joypadHtmlPath = path.resolve(__dirname, 'dist/static/joypad/index.html');
       const joypadHtml = fs.readFileSync(joypadHtmlPath, 'utf8');
       // eslint-disable-next-line prefer-template
@@ -45,5 +54,6 @@ module.exports = {
   ],
   externals: {
     fs: {},
+    express: {},
   },
 };

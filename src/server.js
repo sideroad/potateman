@@ -10,12 +10,16 @@ import fs from 'fs';
 
 const app = new Express();
 const joypadHtml = fs.readFileSync(path.join(__dirname, '../dist/static/joypad/index.html'), 'utf8');
+const mirrorHtml = fs.readFileSync(path.join(__dirname, '../dist/static/mirror/index.html'), 'utf8');
 app.use(compression());
 app.use(Express.static(path.join(__dirname, '../dist/static'), {
   maxAge: '1d',
 }));
 app.get('/joypad/:stage/', (req, res) => {
   res.send(joypadHtml);
+});
+app.get('/mirror/:stage/', (req, res) => {
+  res.send(mirrorHtml);
 });
 app.use(cookieParser());
 app.use(bodyParser.json());

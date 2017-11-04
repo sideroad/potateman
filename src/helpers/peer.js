@@ -6,13 +6,21 @@ export default function () {
     path: '/peerjs',
   });
   const conns = [];
+  const mirrors = [];
   const act = {
     send: (data) => {
       conns.forEach((conn) => {
         conn.send(data);
       });
     },
+    stream: (elem) => {
+      const stream = elem.captureStream(60);
+      mirrors.forEach(mirror => mirror.answer(stream));
+    },
   };
+  peer.on('call', (mirror) => {
+    mirrors.push(mirror);
+  });
   peer.on('open', (id) => {
     act.init({
       act: 'init',
