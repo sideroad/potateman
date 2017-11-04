@@ -12,7 +12,25 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+	animation: bounce 0.5s ease-out;
+	animation-fill-mode: forwards;
 }
+
+@keyframes bounce {
+  20%, 60%, 60%, 100% {
+    transform: translateY(0px);
+  }
+  0% {
+    transform: translateY(-200px);
+  },
+  40% {
+    transform: translateY(-50px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
 .attendee-caret {
   width: 0;
   height: 0;
@@ -46,13 +64,15 @@ body {
   border-radius: 5px;
   background-color: #38a1db;
   color: #ffffff;
-  box-shadow: 0 1px 6px rgba(0,0,0,.117647), 0 1px 4px rgba(0,0,0,.117647);
+  box-shadow: 0 2px 8px rgba(0,0,0,.117647), 0 1px 4px rgba(0,0,0,.117647);
   padding: 10px 20px;
+  cursor: pointer;
 }
 .start:disabled {
   background-color: grey;
   color: #ffffff;
   box-shadow: none;
+  cursor: initial;
 }
 #winner {
   display: none;

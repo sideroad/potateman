@@ -52,14 +52,22 @@ export default function (act) {
 
   // eslint-disable-next-line no-param-reassign
   act.attend = (data) => {
+    const attendee = document.getElementById('attendee');
+    if (!stack.length) {
+      attendee.innerHTML = '';
+    }
     stack.push(data);
-    document.getElementById('attendee').innerHTML = stack.map(attendeeData =>
-      `<div class="attendee-container">
-          <div class="attendee-caret" style="border-color: ${attendeeData.color} transparent;"></div>
-          <img class="attendee-character" src="/images/potateman-stand-left-1.png"/>
-       </div>`).join('');
+    const div = document.createElement('div');
+    div.setAttribute('class', 'attendee-container');
+    div.innerHTML = `
+      <div class="attendee-caret" style="border-color: ${data.color} transparent;"></div>
+      <img class="attendee-character" src="/images/potateman-stand-left-1.png"/>
+    `;
+    attendee.appendChild(div);
     if (stack.length >= 2) {
-      document.getElementById('start').disabled = false;
+      const startButton = document.getElementById('start');
+      startButton.innerHTML = 'Crash Potate!';
+      startButton.disabled = false;
     }
   };
 
