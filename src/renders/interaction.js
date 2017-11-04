@@ -15,14 +15,20 @@ export default function ({
   act,
   engine,
   players,
+  ghosts,
   size,
 }) {
   // eslint-disable-next-line no-param-reassign
   act.jp = (data) => {
+    const direction = input(data);
     if (players[data.player]) {
       console.log('duration', new Date().valueOf() - data.t);
       // eslint-disable-next-line no-param-reassign
-      players[data.player].direction = input(data);
+      players[data.player].direction = direction;
+    }
+    if (ghosts[data.player]) {
+      // eslint-disable-next-line no-param-reassign
+      ghosts[data.player].direction = direction;
     }
   };
 
@@ -44,7 +50,6 @@ export default function ({
         ) {
           x -= 1;
         }
-        sprite.setState('walk');
         sprite.setDirection('left');
       }
       if (direction.right) {
@@ -54,13 +59,12 @@ export default function ({
         ) {
           x += 1;
         }
-        sprite.setState('walk');
         sprite.setDirection('right');
       }
 
       // jump
       if (direction.up) {
-        if (body.attr.flycount < 2 && !body.attr.keepTouchingJump) {
+        if (body.attr.flycount < 3 && !body.attr.keepTouchingJump) {
           if (!body.attr.flying) {
             y = -10;
           } else if (body.velocity.y > 0) {
@@ -111,6 +115,22 @@ export default function ({
         });
       }
 
+      // squat
+      if (direction.down) {
+        y += 0.5;
+        sprite.setState('squat');
+      }
+
+      // squat gard
+      if (
+        direction.down &&
+        direction.b
+      ) {
+        body.attr.transparent = true;
+      } else {
+        body.attr.transparent = false;
+      }
+
       // meteorite
       if (
         direction.a &&
@@ -137,22 +157,9 @@ export default function ({
           body,
           size,
         });
-      }
-
-      // squat
-      if (direction.down) {
-        y += 0.5;
-        sprite.setState('squat');
-      }
-
-      // squat gard
-      if (
-        direction.down &&
-        direction.b
-      ) {
-        body.attr.transparent = true;
-      } else {
-        body.attr.transparent = false;
+        x = 0;
+        y = -3;
+        body.attr.flycount = 0;
       }
 
       // neutral
@@ -169,6 +176,39 @@ export default function ({
       }
 
       Body.setVelocity(body, {
+        x,
+        y,
+      });
+    });
+    Object.keys(ghosts).forEach((id) => {
+      const { body, sprite, direction } = ghosts[id];
+      if (!body.position || !direction) {
+        return;
+      }
+      let { x, y } = body.position;
+
+      // left / right moving
+      if (direction.left) {
+        sprite.setDirection('left');
+      }
+      if (direction.right) {
+        sprite.setDirection('right');
+      }
+      // attack
+      if (direction.a && !body.attr.punched) {
+        punch({
+          engine,
+          sprite,
+          body,
+          direction,
+        });
+        body.attr.punched = true;
+      } else if (!direction.a) {
+        body.attr.punched = false;
+      }
+      x = direction.left ? x - 3 : direction.right ? x + 3 : x;
+      y = direction.up ? y - 3 : direction.down ? y + 3 : y;
+      Body.setPosition(body, {
         x,
         y,
       });

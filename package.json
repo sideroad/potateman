@@ -10,7 +10,7 @@
     "potateman"
   ],
   "watch": {
-    "start": "src/**/*.js"
+    "start": "src/**/*.{js,css,png}"
   },
   "scripts": {
     "start": "npm run build && node dist/server.js",
