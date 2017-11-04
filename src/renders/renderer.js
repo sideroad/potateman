@@ -1,5 +1,6 @@
 import {
   Engine,
+  Events,
   Render,
   Runner,
   MouseConstraint,
@@ -46,12 +47,7 @@ export default function (act) {
   grounds({ engine, size });
   const players = {};
   const stack = [];
-  interaction({
-    act,
-    engine,
-    players,
-    size,
-  });
+
   // eslint-disable-next-line no-param-reassign
   act.attend = (data) => {
     stack.push(data);
@@ -70,6 +66,14 @@ export default function (act) {
     if (document.getElementById('qr-container')) {
       document.getElementById('qr-container').remove();
     }
+
+    Events.off(engine);
+    interaction({
+      act,
+      engine,
+      players,
+      size,
+    });
     stack.forEach((data, index) => {
       players[data.player] = potateman({
         act,
@@ -85,6 +89,13 @@ export default function (act) {
         b: 0,
         player: data.player,
       });
+    });
+    volcano({ engine, size });
+    boundary({
+      engine,
+      size,
+      act,
+      players,
     });
   };
   // eslint-disable-next-line no-param-reassign
@@ -103,13 +114,6 @@ export default function (act) {
       delete players[player.player];
     }
   };
-  volcano({ engine, size });
-  boundary({
-    engine,
-    size,
-    act,
-    players,
-  });
 
   // add mouse control
   const mouse = Mouse.create(render.canvas);

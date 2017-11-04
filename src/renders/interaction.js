@@ -38,14 +38,20 @@ export default function ({
 
       // left / right moving
       if (direction.left) {
-        if (x >= -3) {
+        if (
+          (x >= -3 && !direction.b) ||
+          (x >= -5 && direction.b)
+        ) {
           x -= 1;
         }
         sprite.setState('walk');
         sprite.setDirection('left');
       }
       if (direction.right) {
-        if (x <= 3) {
+        if (
+          (x <= 3 && direction.b) ||
+          (x <= 5 && direction.b)
+        ) {
           x += 1;
         }
         sprite.setState('walk');

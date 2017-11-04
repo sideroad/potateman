@@ -124,13 +124,16 @@ export default function ({
   sprite.render();
   World.add(engine.world, [potateman]);
 
+  let count = 0;
+  const damageParticles = [];
   Events.on(engine, 'beforeUpdate', () => {
+    const { x = 0, y = 0 } = potateman.position;
     sprite.render();
 
     // caret
     Body.setPosition(caret, {
-      x: potateman.position.x,
-      y: potateman.position.y - 30,
+      x,
+      y: y - 30,
     });
     const caretScore = 1 + (potateman.attr.magic / 50);
     const caretScale = caretScore / potateman.attr.caretScore;
@@ -139,40 +142,74 @@ export default function ({
 
     // outsider
     Body.setPosition(outsiderBottom, {
-      x: potateman.position.x,
+      x,
       y: size.height - 15,
     });
     Body.setPosition(outsiderTop, {
-      x: potateman.position.x,
+      x,
       y: 15,
     });
     Body.setPosition(outsiderLeft, {
       x: 15,
-      y: potateman.position.y,
+      y,
     });
     Body.setPosition(outsiderRight, {
       x: size.width - 15,
-      y: potateman.position.y,
+      y,
     });
     const { sinkMotion, gardMotion } = potateman.attr;
+
+    // sink
     if (sinkMotion) {
       const strength = getPunchStrength(potateman.attr);
       const scale = strength / sinkMotion.circleRadius;
       Body.setPosition(sinkMotion, {
-        x: potateman.position.x,
-        y: potateman.position.y,
+        x,
+        y,
       });
       Body.scale(sinkMotion, scale, scale);
     }
+
+    // gard
     if (gardMotion) {
       const strength = potateman.attr.gardGage;
       const scale = (strength / gardMotion.circleRadius) / 5;
       Body.setPosition(gardMotion, {
-        x: potateman.position.x,
-        y: potateman.position.y,
+        x,
+        y,
       });
       Body.scale(gardMotion, scale, scale);
     }
+
+    // damage
+    if (count > 10) {
+      const particle = Bodies.circle(x, y, (potateman.attr.damage / 10) + 1, {
+        frictionAir: 0,
+        force: {
+          x: sprite.direction === 'left' ? (potateman.attr.damage / 100000) : (potateman.attr.damage / -100000),
+          y: (potateman.attr.damage / -100000),
+        },
+        render: {
+          opacity: 0.3,
+          fillStyle: '#ec6d71',
+        },
+        isSensor: true,
+      });
+      damageParticles.push(particle);
+      World.add(engine.world, particle);
+      count = 0;
+    }
+    count += 1;
+    damageParticles.forEach((particle) => {
+      if (particle.circleRadius < 1) {
+        damageParticles.shift();
+        World.remove(engine.world, particle);
+      } else {
+        Body.scale(particle, 0.9, 0.9);
+      }
+    });
+
+    // potateman
     Body.set(potateman, {
       angle: 0,
       collisionFilter: {
@@ -231,5 +268,8 @@ export function destroy({ engine, body }) {
   World.remove(engine.world, body.attr.outsiderLeft);
   World.remove(engine.world, body.attr.outsiderRight);
   World.remove(engine.world, body.attr.outsiderBottom);
+  if (body.attr.sinkMotion) {
+    World.remove(engine.world, body.attr.sinkMotion);
+  }
   World.remove(engine.world, body);
 }
