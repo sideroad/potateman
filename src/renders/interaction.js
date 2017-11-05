@@ -118,7 +118,9 @@ export default function ({
       // squat
       if (direction.down) {
         if (direction.b) {
-          y += 0.5;
+          y += 0.3;
+        } else {
+          y += 0.1;
         }
         sprite.setState('squat');
       }
@@ -151,7 +153,8 @@ export default function ({
       if (
         direction.a &&
         direction.b &&
-        direction.down
+        direction.down &&
+        body.attr.gardGage > 10
       ) {
         thunder({
           engine,
