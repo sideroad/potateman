@@ -27,6 +27,11 @@ const peer = new window.Peer({
   port: window.location.port,
   path: '/peerjs',
 });
+setInterval(() => {
+  peer.socket.send({
+    type: 'KEEPALIVE',
+  });
+}, 5000);
 peer.on('open', (id) => {
   const conn = peer.connect(stage, {
     serialization: 'json',

@@ -18,6 +18,11 @@ export default function () {
       mirrors.forEach(mirror => mirror.answer(stream));
     },
   };
+  setInterval(() => {
+    peer.socket.send({
+      type: 'KEEPALIVE',
+    });
+  }, 5000);
   peer.on('call', (mirror) => {
     mirrors.push(mirror);
   });

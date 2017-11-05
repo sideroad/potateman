@@ -147,6 +147,11 @@
       port: window.location.port,
       path: '/peerjs',
     });
+    setInterval(() => {
+      peer.socket.send({
+        type: 'KEEPALIVE',
+      });
+    }, 5000);
     const act = {
       attend: (msg) => {
         if (player) {
