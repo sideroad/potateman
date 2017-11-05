@@ -9,7 +9,9 @@ import gard from './commands/gard';
 import gardCancel from './commands/gardCancel';
 import meteorite from './commands/meteorite';
 import thunder from './commands/thunder';
+import volcano from './commands/volcano';
 import { check as collisionCheck } from './collision';
+import MAGIC from './magic';
 
 export default function ({
   act,
@@ -152,7 +154,8 @@ export default function ({
       // meteorite
       if (
         direction.c &&
-        !direction.down
+        !direction.down &&
+        !direction.up
       ) {
         meteorite({
           engine,
@@ -175,7 +178,7 @@ export default function ({
       if (
         direction.c &&
         direction.down &&
-        body.attr.magic > 2
+        body.attr.magic > MAGIC.thunder
       ) {
         thunder({
           engine,
@@ -188,6 +191,19 @@ export default function ({
           y = 20;
         }
         body.attr.flycount = 0;
+      }
+
+      // volcano
+      if (
+        direction.c &&
+        direction.up
+      ) {
+        volcano({
+          engine,
+          sprite,
+          body,
+          size,
+        });
       }
 
       // neutral

@@ -37,6 +37,7 @@ const adjuster = {
   shockWave: 0.5,
   meteorite: 1,
   thunder: 2,
+  volcano: 0.2,
 };
 
 export function check({ players, engine }) {
@@ -53,7 +54,8 @@ export function check({ players, engine }) {
         if (
           type === 'shockWave' ||
           type === 'meteorite' ||
-          type === 'thunder'
+          type === 'thunder' ||
+          type === 'volcano'
         ) {
           let damage = bodyB.attr.strength;
           if (bodyA.attr.garding) {

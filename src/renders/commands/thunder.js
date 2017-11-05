@@ -7,6 +7,7 @@ import _ from 'lodash';
 import { getThunderStrength } from '../potateman';
 import Sprite from '../Sprite';
 import COLLISION from '../collision';
+import MAGIC from '../magic';
 
 export default function thunder({
   engine,
@@ -14,7 +15,7 @@ export default function thunder({
   sprite,
   size,
 }) {
-  if (body.attr.magic < 2) {
+  if (body.attr.magic < MAGIC.thunder) {
     return;
   }
   const { x = 0 } = body.position;

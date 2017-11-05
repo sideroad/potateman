@@ -6,6 +6,7 @@ import {
 } from 'matter-js';
 import { getMeteoriteStrength } from '../potateman';
 import COLLISION from '../collision';
+import MAGIC from '../magic';
 
 export default function meteorite({
   engine,
@@ -13,7 +14,7 @@ export default function meteorite({
   sprite,
   size,
 }) {
-  if (body.attr.magic < 2) {
+  if (body.attr.magic < MAGIC.meteorite) {
     return;
   }
   const { x = 0, y = 0 } = body.position;

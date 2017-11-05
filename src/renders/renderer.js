@@ -14,7 +14,6 @@ import grounds from './grounds';
 import potateman, { destroy } from './potateman';
 import createGhost, { destroy as destroyGhost } from './ghost';
 import boundary from './boundary';
-import volcano from './volcano';
 import interaction from './interaction';
 import prefetch from './prefetch';
 
@@ -112,7 +111,6 @@ export default function (act) {
           player: data.player,
         });
       });
-      volcano({ engine, size });
       boundary({
         engine,
         size,
