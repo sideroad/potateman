@@ -15,7 +15,7 @@ export default function thunder({
   sprite,
   size,
 }) {
-  if (body.attr.magic < MAGIC.thunder) {
+  if (body.attr.magic < MAGIC.thunder.min) {
     return;
   }
   const { x = 0 } = body.position;
@@ -28,7 +28,7 @@ export default function thunder({
     frictionAir: 0,
     render: {
       sprite: {
-        texture: '/images/thunder-attack-left-1.png',
+        texture: MAGIC.thunder.image,
         xScale: 2,
         yScale: 2,
       },

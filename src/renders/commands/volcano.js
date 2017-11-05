@@ -24,7 +24,7 @@ export default function ({
   size,
 }) {
   const { category } = body.attr;
-  if (body.attr.magic < MAGIC.volcano) {
+  if (body.attr.magic < MAGIC.volcano.min) {
     return;
   }
   const volcanos = [];
@@ -34,7 +34,7 @@ export default function ({
       friction: 0,
       render: {
         sprite: {
-          texture: '/images/ground.png',
+          texture: MAGIC.volcano.image,
         },
       },
       force: {

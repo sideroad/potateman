@@ -14,7 +14,7 @@ export default function meteorite({
   sprite,
   size,
 }) {
-  if (body.attr.magic < MAGIC.meteorite) {
+  if (body.attr.magic < MAGIC.meteorite.min) {
     return;
   }
   const { x = 0, y = 0 } = body.position;
@@ -28,7 +28,7 @@ export default function meteorite({
     frictionAir: 0,
     render: {
       sprite: {
-        texture: '/images/meteorite.png',
+        texture: MAGIC.meteorite.image,
         xScale: 1 + (strength / 100),
         yScale: 1 + (strength / 100),
       },

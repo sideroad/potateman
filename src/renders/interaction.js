@@ -178,7 +178,7 @@ export default function ({
       if (
         direction.c &&
         direction.down &&
-        body.attr.magic > MAGIC.thunder
+        body.attr.magic > MAGIC.thunder.min
       ) {
         thunder({
           engine,

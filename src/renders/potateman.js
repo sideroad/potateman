@@ -7,6 +7,7 @@ import {
 import queryString from 'query-string';
 import Sprite from './Sprite';
 import COLLISION from './collision';
+import MAGIC from './magic';
 
 export const shockWaveRender = {
   strokeStyle: '#ffffff',
@@ -102,6 +103,16 @@ export default function ({
   });
   Body.setAngle(caret, -22.5);
   World.add(engine.world, [caret]);
+
+  const indicators = Object.keys(MAGIC).map(magic =>
+    Bodies.circle(0, 0, 5, {
+      render: {
+        fillStyle: MAGIC[magic].color,
+      },
+      isSensor: true,
+      isStatic: true,
+    }));
+  World.add(engine.world, indicators);
 
   const sprite = new Sprite(potateman, 'potateman', [
     { state: 'stand' },
@@ -209,6 +220,16 @@ export default function ({
       }
     });
 
+    // magic indicator
+    Object.keys(MAGIC).forEach((magic, magicIndex) => {
+      const indicator = potateman.attr.indicators[magicIndex];
+      indicator.render.opacity = potateman.attr.magic >= MAGIC[magic].min ? 0.5 : 0;
+      Body.setPosition(indicator, {
+        x: (x - (magicIndex * 15)) + 15,
+        y: y - 45,
+      });
+    });
+
     // potateman
     Body.set(potateman, {
       angle: 0,
@@ -247,6 +268,7 @@ export default function ({
     player,
     color,
     caret,
+    indicators,
     outsiderBottom,
     outsiderTop,
     outsiderLeft,
@@ -268,6 +290,8 @@ export function destroy({ engine, body }) {
   World.remove(engine.world, body.attr.outsiderLeft);
   World.remove(engine.world, body.attr.outsiderRight);
   World.remove(engine.world, body.attr.outsiderBottom);
+  body.attr.indicators.forEach(indicator =>
+    World.remove(engine.world, indicator));
   if (body.attr.sinkMotion) {
     World.remove(engine.world, body.attr.sinkMotion);
   }
