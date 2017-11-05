@@ -183,6 +183,10 @@
           $('#joypad').joypad('destroy');
           bind();
         });
+        window.addEventListener('resize', () => {
+          $('#joypad').joypad('destroy');
+          bind();
+        });
         bind();
       },
     };
