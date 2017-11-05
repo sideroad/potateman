@@ -184,7 +184,7 @@ export default function ({
           size,
         });
         x = 0;
-        y = -5;
+        y = 10;
         body.attr.flycount = 0;
       }
 
