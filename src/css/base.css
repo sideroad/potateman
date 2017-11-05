@@ -132,7 +132,6 @@ body {
   color: white;
   font-size: 50vh;
   transform: translate(-50%, -50%) scale(0);
-	animation: countdown 1s linear;
 	animation-fill-mode: forwards;
 }
 #countdown.activate .counts {
@@ -140,13 +139,20 @@ body {
 	animation-fill-mode: forwards;
 }
 #countdown.activate .count-3 {
+  animation: countdown 1s linear;
   animation-delay: 0s;
 }
 #countdown.activate .count-2 {
+  animation: countdown 1s linear;
   animation-delay: 1s;
 }
 #countdown.activate .count-1 {
+  animation: countdown 1s linear;
   animation-delay: 2s;
+}
+#countdown.activate .count-go {
+  animation: go 0.5s linear;
+  animation-delay: 3s;
 }
 @keyframes jiggle {
   0% {
@@ -159,14 +165,27 @@ body {
 @keyframes countdown {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0);
+    transform: translate(-50%, -50%) scale(1);
   }
   95% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
   }
   100% {
     opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
+@keyframes go {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 #winner {

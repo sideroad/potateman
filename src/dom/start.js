@@ -9,5 +9,5 @@ export default function startFn(callback) {
     if (callback) {
       callback();
     }
-  }, 3000);
+  }, 3500);
 }
