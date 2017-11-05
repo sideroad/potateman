@@ -83,41 +83,42 @@ export default function (act) {
 
   // eslint-disable-next-line no-param-reassign
   act.start = () => {
-    start();
-    act.stream(document.getElementsByTagName('canvas')[0]);
     act.send({
       act: 'start',
     });
-    Events.off(engine);
-    interaction({
-      act,
-      engine,
-      players,
-      ghosts,
-      size,
-    });
-    stack.forEach((data, index) => {
-      players[data.player] = potateman({
+    start(() => {
+      act.stream(document.getElementsByTagName('canvas')[0]);
+      Events.off(engine);
+      interaction({
         act,
         engine,
+        players,
+        ghosts,
         size,
-        color: data.color,
-        index,
-        player: data.player,
       });
-      act.jp({
-        act: 'jp',
-        a: 0,
-        b: 0,
-        player: data.player,
+      stack.forEach((data, index) => {
+        players[data.player] = potateman({
+          act,
+          engine,
+          size,
+          color: data.color,
+          index,
+          player: data.player,
+        });
+        act.jp({
+          act: 'jp',
+          a: 0,
+          b: 0,
+          player: data.player,
+        });
       });
-    });
-    volcano({ engine, size });
-    boundary({
-      engine,
-      size,
-      act,
-      players,
+      volcano({ engine, size });
+      boundary({
+        engine,
+        size,
+        act,
+        players,
+      });
     });
   };
   // eslint-disable-next-line no-param-reassign
