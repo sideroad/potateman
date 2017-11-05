@@ -48,8 +48,17 @@ module.exports = {
       const joypadName = assetNames.find(name => /^joypad-/.test(name));
       const joypadHtmlPath = path.resolve(__dirname, 'dist/static/joypad/index.html');
       const joypadHtml = fs.readFileSync(joypadHtmlPath, 'utf8');
+      const joypadCssPath = path.resolve(__dirname, 'dist/static/joypad/joypad.css');
+      const joypadCss = fs.readFileSync(joypadCssPath, 'utf8');
+      const version = new Date().getTime();
       // eslint-disable-next-line prefer-template
-      fs.writeFileSync(joypadHtmlPath, joypadHtml.replace('/joypad.js', '/' + joypadName), 'utf8');
+      const joypadNewCssPath = path.resolve(__dirname, 'dist/static/joypad/joypad-' + version + '.css');
+      fs.writeFileSync(joypadNewCssPath, joypadCss, 'utf8');
+      fs.writeFileSync(joypadHtmlPath, joypadHtml
+        // eslint-disable-next-line prefer-template
+        .replace('/joypad.js', '/' + joypadName)
+        // eslint-disable-next-line prefer-template
+        .replace('/joypad.css', '/joypad-' + version + '.css'), 'utf8');
     }),
   ],
   externals: {

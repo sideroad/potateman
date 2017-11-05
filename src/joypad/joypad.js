@@ -111,6 +111,9 @@
         if (code === 71) {
           event.b = 1;
         }
+        if (code === 72) {
+          event.c = 1;
+        }
         elem.trigger('joypad', event);
       });
 
@@ -124,6 +127,9 @@
         }
         if (code === 71) {
           event.b = 0;
+        }
+        if (code === 72) {
+          event.c = 0;
         }
         elem.trigger('joypad', event);
       });
@@ -162,6 +168,7 @@
               ang: param.ck.ang,
               a: param.a,
               b: param.b,
+              c: param.c,
               // eslint-disable-next-line
               player: player,
               t: new Date().valueOf(),

@@ -45,20 +45,34 @@ export default function ({
       // left / right moving
       if (direction.left) {
         if (
-          (x >= -3 && !direction.b) ||
-          (x >= -5 && direction.b)
+          (x >= -3 && !direction.b && !body.attr.flying) ||
+          (x >= -5 && direction.b && !body.attr.flying)
         ) {
           x -= 1;
         }
+        if (
+          (x >= -3 && !direction.b && body.attr.flying) ||
+          (x >= -5 && direction.b && body.attr.flying)
+        ) {
+          x -= 0.5;
+        }
+        sprite.setState('walk');
         sprite.setDirection('left');
       }
       if (direction.right) {
         if (
-          (x <= 3 && !direction.b) ||
-          (x <= 5 && direction.b)
+          (x <= 3 && !direction.b && !body.attr.flying) ||
+          (x <= 5 && direction.b && !body.attr.flying)
         ) {
           x += 1;
         }
+        if (
+          (x <= 3 && !direction.b && body.attr.flying) ||
+          (x <= 5 && direction.b && body.attr.flying)
+        ) {
+          x += 0.5;
+        }
+        sprite.setState('walk');
         sprite.setDirection('right');
       }
 
@@ -137,8 +151,7 @@ export default function ({
 
       // meteorite
       if (
-        direction.a &&
-        direction.b &&
+        direction.c &&
         !direction.down
       ) {
         meteorite({
@@ -149,12 +162,20 @@ export default function ({
         });
       }
 
+      // floating
+      if (
+        direction.b &&
+        body.attr.flying &&
+        body.attr.gardGage > 50
+      ) {
+        y = -3;
+      }
+
       // thunder
       if (
-        direction.a &&
-        direction.b &&
+        direction.c &&
         direction.down &&
-        body.attr.gardGage > 10
+        body.attr.magic > 2
       ) {
         thunder({
           engine,
@@ -163,7 +184,7 @@ export default function ({
           size,
         });
         x = 0;
-        y = -3;
+        y = -5;
         body.attr.flycount = 0;
       }
 
@@ -175,6 +196,7 @@ export default function ({
         !direction.down &&
         !direction.a &&
         !direction.b &&
+        !direction.c &&
         sprite.state !== 'punch'
       ) {
         sprite.setState('stand');
