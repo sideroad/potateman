@@ -117,7 +117,9 @@ export default function ({
 
       // squat
       if (direction.down) {
-        y += 0.5;
+        if (direction.b) {
+          y += 0.5;
+        }
         sprite.setState('squat');
       }
 

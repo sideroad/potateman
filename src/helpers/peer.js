@@ -14,7 +14,7 @@ export default function () {
       });
     },
     stream: (elem) => {
-      const stream = elem.captureStream(60);
+      const stream = elem.captureStream();
       mirrors.forEach(mirror => mirror.answer(stream));
     },
   };

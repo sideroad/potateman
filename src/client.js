@@ -16,7 +16,6 @@ act.init = (data) => {
   console.log(url);
   document.querySelectorAll('.start').forEach((elem) => {
     elem.addEventListener('click', () => {
-      document.getElementById('winner').style.display = 'none';
       act.start();
     });
   });
