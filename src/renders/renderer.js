@@ -7,6 +7,9 @@ import {
   Mouse,
   World,
 } from 'matter-js';
+import attendee from '../dom/attendee';
+import start from '../dom/start';
+import win from '../dom/win';
 import grounds from './grounds';
 import potateman, { destroy } from './potateman';
 import createGhost, { destroy as destroyGhost } from './ghost';
@@ -66,21 +69,11 @@ export default function (act) {
       ...data,
       color,
     });
-    const attendee = document.getElementById('attendee');
-    if (!stack.length) {
-      attendee.innerHTML = '';
-    }
-    const div = document.createElement('div');
-    div.setAttribute('class', 'attendee-container');
-    div.innerHTML = `
-      <div class="attendee-caret" style="border-color: ${color} transparent;"></div>
-      <img class="attendee-character" src="/images/potateman-stand-left-1.png"/>
-    `;
+    attendee({ stack, color });
     stack.push({
       ...data,
       color,
     });
-    attendee.appendChild(div);
     if (stack.length >= 2) {
       const startButton = document.getElementById('start');
       startButton.innerHTML = 'Crash Potate!';
@@ -90,10 +83,7 @@ export default function (act) {
 
   // eslint-disable-next-line no-param-reassign
   act.start = () => {
-    document.getElementById('winner').style.display = 'none';
-    if (document.getElementById('qr-container')) {
-      document.getElementById('qr-container').remove();
-    }
+    start();
     act.stream(document.getElementsByTagName('canvas')[0]);
     act.send({
       act: 'start',
@@ -160,9 +150,7 @@ export default function (act) {
   // eslint-disable-next-line
   act.win = (data) => {
     const player = players[data.player];
-    document.getElementById('winner-caret').style.borderColor = `${data.color} transparent`;
-    document.getElementById('winner-character').style.backgroundImage = `url(${data.image})`;
-    document.getElementById('winner').style.display = 'block';
+    win(data);
     destroy({ engine, body: player.body });
     // eslint-disable-next-line no-param-reassign
     delete players[player.player];

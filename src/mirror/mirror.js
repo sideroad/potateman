@@ -1,27 +1,18 @@
 import 'babel-polyfill';
 import QRious from 'qrious';
+import attendee from '../dom/attendee';
+import start from '../dom/start';
+import win from '../dom/win';
 
 const act = {
   attend: ({ color }) => {
-    const attendee = document.getElementById('attendee');
-    const div = document.createElement('div');
-    div.setAttribute('class', 'attendee-container');
-    div.innerHTML = `
-      <div class="attendee-caret" style="border-color: ${color} transparent;"></div>
-      <img class="attendee-character" src="/images/potateman-stand-left-1.png"/>
-    `;
-    attendee.appendChild(div);
+    attendee({ color });
   },
   start: () => {
-    document.getElementById('winner').style.display = 'none';
-    if (document.getElementById('qr-container')) {
-      document.getElementById('qr-container').remove();
-    }
+    start();
   },
   win: (data) => {
-    document.getElementById('winner-caret').style.borderColor = `${data.color} transparent`;
-    document.getElementById('winner-character').style.backgroundImage = `url(${data.image})`;
-    document.getElementById('winner').style.display = 'block';
+    win(data);
   },
 };
 const stage = window.location.pathname.match(/\/mirror\/([^/]+)\//)[1];
