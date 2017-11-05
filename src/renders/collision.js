@@ -33,6 +33,12 @@ COLLISION.POTATEMANS =
 
 export default COLLISION;
 
+const adjuster = {
+  shockWave: 0.5,
+  meteorite: 1,
+  thunder: 2,
+};
+
 export function check({ players, engine }) {
   Events.on(engine, 'collisionStart', (event) => {
     const { pairs } = event;
@@ -43,13 +49,11 @@ export function check({ players, engine }) {
         const collisioned = bodies.find(body => body === bodyA);
         collisioned.attr.flycount = 0;
         collisioned.attr.flying = false;
+        const { type } = bodyB.attr ? bodyB.attr : {};
         if (
-          bodyB.attr &&
-          (
-            bodyB.attr.type === 'shockWave' ||
-            bodyB.attr.type === 'meteorite' ||
-            bodyB.attr.type === 'thunder'
-          )
+          type === 'shockWave' ||
+          type === 'meteorite' ||
+          type === 'thunder'
         ) {
           let damage = bodyB.attr.strength;
           if (bodyA.attr.garding) {
@@ -63,7 +67,7 @@ export function check({ players, engine }) {
             // eslint-disable-next-line no-param-reassign
             players[bodyB.attr.player].body.attr.magic += bodyB.attr.strength / 2;
           }
-          let velocity = (bodyB.attr.strength * bodyA.attr.damage) / 300;
+          let velocity = (bodyB.attr.strength * bodyA.attr.damage * adjuster[type]) / 300;
           if (bodyA.attr.garding) {
             velocity -= ((bodyA.attr.gardGage / 100) * velocity);
           }
@@ -76,7 +80,7 @@ export function check({ players, engine }) {
             ) + bodyA.velocity.x,
             y: (velocity / -1) + bodyA.velocity.y,
           });
-          console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} type: ${bodyB.attr.type}`);
+          console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} type: ${type}`);
         }
       }
     };
