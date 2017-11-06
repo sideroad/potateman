@@ -49,16 +49,18 @@ export default function ghost({
     isSensor: true,
   });
 
-  const caret = Bodies.circle(0, 50, 10, {
+  const profile = Bodies.circle(0, 50, 10, {
     render: {
+      strokeStyle: '#ffffff',
       sprite: {
         texture: image,
       },
+      lineWidth: 5,
     },
     isSensor: true,
     isStatic: true,
   });
-  World.add(engine.world, [caret]);
+  World.add(engine.world, [profile]);
 
   const sprite = new Sprite(body, 'ghost', [
     {
@@ -75,8 +77,8 @@ export default function ghost({
     const { x = 0, y = 0 } = body.position;
     sprite.render();
 
-    // caret
-    Body.setPosition(caret, {
+    // profile
+    Body.setPosition(profile, {
       x,
       y: y - 30,
     });
@@ -109,8 +111,8 @@ export default function ghost({
     magic: 0,
     type: 'ghost',
     player,
-    caret,
-    caretScore: 1,
+    profile,
+    profileScore: 1,
     punched: false,
   };
   return {
@@ -122,7 +124,7 @@ export default function ghost({
 
 
 export function destroy({ engine, body }) {
-  World.remove(engine.world, body.attr.caret);
+  World.remove(engine.world, body.attr.profile);
   if (body.attr.sinkMotion) {
     World.remove(engine.world, body.attr.sinkMotion);
   }

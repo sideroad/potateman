@@ -1,5 +1,4 @@
-export default function winFn({ color, image }) {
-  document.getElementById('winner-caret').style.borderColor = `${color} transparent`;
+export default function winFn({ image }) {
   document.getElementById('winner-character').style.backgroundImage = `url(${image})`;
   document.getElementById('winner').style.display = 'block';
 }

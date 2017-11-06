@@ -5,8 +5,8 @@ import start from '../dom/start';
 import win from '../dom/win';
 
 const act = {
-  attend: ({ color }) => {
-    attendee({ color });
+  attend: ({ image }) => {
+    attendee({ image });
   },
   start: () => {
     start();

@@ -92,24 +92,18 @@ export default function ({
   const outsiderRight = Bodies.circle(0, 50, 5, 5, outsiderOption);
   World.add(engine.world, [outsiderRight]);
 
-  const caret = Bodies.circle(0, 50, 10, {
-    sprite: {
-      texture: image,
+  const profile = Bodies.circle(0, 50, 10, {
+    render: {
+      strokeStyle: '#ffffff',
+      sprite: {
+        texture: image,
+      },
+      lineWidth: 5,
     },
     isSensor: true,
     isStatic: true,
   });
-  World.add(engine.world, [caret]);
-
-  const indicators = Object.keys(MAGIC).map(magic =>
-    Bodies.circle(0, 0, 5, {
-      render: {
-        fillStyle: MAGIC[magic].color,
-      },
-      isSensor: true,
-      isStatic: true,
-    }));
-  World.add(engine.world, indicators);
+  World.add(engine.world, [profile]);
 
   const sprite = new Sprite(potateman, 'potateman', [
     { state: 'stand' },
@@ -138,15 +132,18 @@ export default function ({
     const { x = 0, y = 0 } = potateman.position;
     sprite.render();
 
-    // caret
-    Body.setPosition(caret, {
+    // profile
+    Body.setPosition(profile, {
       x,
       y: y - 30,
     });
-    const caretScore = 1 + (potateman.attr.magic / 50);
-    const caretScale = caretScore / potateman.attr.caretScore;
-    potateman.attr.caretScore = caretScore;
-    Body.scale(caret, caretScale, caretScale);
+    const profileScore = 1 + (potateman.attr.magic / 50);
+    const profileScale = (profileScore / potateman.attr.profileScore) / profile.circleRadius;
+    potateman.attr.profileScore = profileScore;
+    Body.scale(profile, profileScale, profileScale);
+    const assignedMagic = Object.keys(MAGIC).filter(magic =>
+      potateman.attr.magic >= MAGIC[magic].min)[0] || { color: '#FFFFFF' };
+    profile.render.strokeStyle = assignedMagic.color;
 
     // outsider
     Body.setPosition(outsiderBottom, {
@@ -217,16 +214,6 @@ export default function ({
       }
     });
 
-    // magic indicator
-    Object.keys(MAGIC).forEach((magic, magicIndex) => {
-      const indicator = potateman.attr.indicators[magicIndex];
-      indicator.render.opacity = potateman.attr.magic >= MAGIC[magic].min ? 0.5 : 0;
-      Body.setPosition(indicator, {
-        x: (x - (magicIndex * 15)) + 15,
-        y: y - 45,
-      });
-    });
-
     // potateman
     Body.set(potateman, {
       angle: 0,
@@ -263,13 +250,12 @@ export default function ({
     category,
     type: 'potateman',
     player,
-    caret,
-    indicators,
+    profile,
     outsiderBottom,
     outsiderTop,
     outsiderLeft,
     outsiderRight,
-    caretScore: 1,
+    profileScore: 1,
     transparent: false,
   };
   return {
@@ -281,13 +267,11 @@ export default function ({
 
 
 export function destroy({ engine, body }) {
-  World.remove(engine.world, body.attr.caret);
+  World.remove(engine.world, body.attr.profile);
   World.remove(engine.world, body.attr.outsiderTop);
   World.remove(engine.world, body.attr.outsiderLeft);
   World.remove(engine.world, body.attr.outsiderRight);
   World.remove(engine.world, body.attr.outsiderBottom);
-  body.attr.indicators.forEach(indicator =>
-    World.remove(engine.world, indicator));
   if (body.attr.sinkMotion) {
     World.remove(engine.world, body.attr.sinkMotion);
   }
