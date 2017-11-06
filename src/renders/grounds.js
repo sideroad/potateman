@@ -39,8 +39,8 @@ export default function ({ engine, size, stage = 'hexagon' }) {
     },
   };
 
-  const make = (x, y, groundWidth) => {
-    const amount = Math.ceil(width / groundWidth / cellSize);
+  const make = (x, y, amount) => {
+    const groundWidth = amount * cellSize;
     const xx = x - (width / (groundWidth * 2)) - adjust;
     const yy = y - adjust;
     const xxx = (x - (width / (groundWidth * 2))) + ((amount * adjust) - adjust);
