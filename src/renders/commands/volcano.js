@@ -8,6 +8,10 @@ import _ from 'lodash';
 import COLLISION from '../collision';
 import MAGIC from '../magic';
 
+const random = (min, max) =>
+  (Math.random() * (max - min)) + min;
+
+
 const getVolcanoStrength = ({ magic }) => {
   const maticStrength = magic / 4;
   // eslint-disable-next-line no-nested-ternary
@@ -30,7 +34,8 @@ export default function ({
   const volcanos = [];
   const strength = getVolcanoStrength(body.attr);
   _.times(body.attr.magic / 10, () => {
-    const volcanoMotion = Bodies.rectangle(sprite.direction === 'left' ? size.width : 0, size.height, 20, 20, {
+    const x = sprite.direction === 'left' ? random(size.width / 2, size.width) : random(0, size.width / 2);
+    const volcanoMotion = Bodies.rectangle(x, size.height, 20, 20, {
       friction: 0,
       render: {
         sprite: {
