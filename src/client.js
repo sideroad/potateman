@@ -6,8 +6,8 @@ import peer from './helpers/peer';
 
 const act = peer();
 act.init = (data) => {
-  const url = `http://${window.location.host}/joypad/${data.stage}/`;
-  const mirrorUrl = `http://${window.location.host}/mirror/${data.stage}/`;
+  const url = `https://${window.location.host}/joypad/${data.stage}/`;
+  const mirrorUrl = `https://${window.location.host}/mirror/${data.stage}/`;
   // eslint-disable-next-line no-new
   new QRious({
     element: document.getElementById('qr'),
