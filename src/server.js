@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import { ExpressPeerServer } from 'peer';
 import fs from 'fs';
+import passporter from './helpers/passporter';
 
 const app = new Express();
 const joypadHtml = fs.readFileSync(path.join(__dirname, '../dist/static/joypad/index.html'), 'utf8');
@@ -24,6 +25,25 @@ app.get('/mirror/:stage/', (req, res) => {
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+function normalize(url) {
+  let protocol = (url.match(/(http|https):\/\//) || [])[1];
+  if (/:443$/.test(url)) {
+    protocol = protocol || 'https';
+  } else {
+    protocol = 'http';
+  }
+  return `${protocol}://${url.replace(/(:80|:443)$/, '')}`;
+}
+
+const appHost = process.env.GLOBAL_HOST || 'localhost';
+const appPort = Number(process.env.GLOBAL_PORT || 3000);
+const base = normalize(`${appHost}:${appPort}`);
+
+passporter.use({
+  appId: process.env.POTATEMAN_FACEBOOK_CLIENT_ID,
+  secret: process.env.POTATEMAN_FACEBOOK_SECRET_ID,
+}, app, base);
 
 const server = new http.Server(app);
 
