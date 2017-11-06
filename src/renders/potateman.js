@@ -77,19 +77,21 @@ export default function ({
     render: {
       sprite: {
         texture: image,
+        xScale: 0.25,
+        yScale: 0.25,
       },
       opacity: 0,
     },
     isSensor: true,
     isStatic: true,
   };
-  const outsiderBottom = Bodies.circle(0, 50, 5, 5, outsiderOption);
+  const outsiderBottom = Bodies.circle(0, 50, 5, outsiderOption);
   World.add(engine.world, [outsiderBottom]);
-  const outsiderTop = Bodies.circle(0, 50, 5, 5, outsiderOption);
+  const outsiderTop = Bodies.circle(0, 50, 5, outsiderOption);
   World.add(engine.world, [outsiderTop]);
-  const outsiderLeft = Bodies.circle(0, 50, 5, 5, outsiderOption);
+  const outsiderLeft = Bodies.circle(0, 50, 5, outsiderOption);
   World.add(engine.world, [outsiderLeft]);
-  const outsiderRight = Bodies.circle(0, 50, 5, 5, outsiderOption);
+  const outsiderRight = Bodies.circle(0, 50, 5, outsiderOption);
   World.add(engine.world, [outsiderRight]);
 
   const profile = Bodies.circle(0, 50, 10, {
@@ -97,6 +99,8 @@ export default function ({
       strokeStyle: '#ffffff',
       sprite: {
         texture: image,
+        xScale: 0.5,
+        yScale: 0.5,
       },
       lineWidth: 5,
     },

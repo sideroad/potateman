@@ -3,8 +3,6 @@ import Express from 'express';
 import compression from 'compression';
 import path from 'path';
 import http from 'http';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
 import { ExpressPeerServer } from 'peer';
 import fs from 'fs';
 import passporter from './helpers/passporter';
@@ -22,10 +20,6 @@ app.get('/joypad/:stage/', (req, res) => {
 app.get('/mirror/:stage/', (req, res) => {
   res.send(mirrorHtml);
 });
-app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
 function normalize(url) {
   let protocol = (url.match(/(http|https):\/\//) || [])[1];
   if (/:443$/.test(url)) {

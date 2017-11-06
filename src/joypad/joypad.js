@@ -25,8 +25,8 @@ auth((user) => {
           }
           // eslint-disable-next-line
           player = msg.player;
-          $('#color').css({
-            borderColor: [msg.color, 'transparent', 'transparent', 'transparent'].join(' '),
+          $('#image').css({
+            backgroundImage: `url(${msg.image})`,
           });
           let prev;
           const bind = () => {
@@ -73,7 +73,8 @@ auth((user) => {
             stage: stage,
             // eslint-disable-next-line
             player: _player,
-            user,
+            name: user.name,
+            image: user.image,
           });
         });
         conn.on('data', (data) => {

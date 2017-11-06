@@ -16,7 +16,7 @@ const act = {
   },
 };
 const stage = window.location.pathname.match(/\/mirror\/([^/]+)\//)[1];
-const url = `https://${window.location.host}/joypad/${stage}/`;
+const url = `${window.location.protocol}://${window.location.host}/joypad/${stage}/`;
 // eslint-disable-next-line no-new
 new QRious({
   element: document.getElementById('qr'),

@@ -9,12 +9,13 @@ const applyStrategy = (authenticator, config, Strategy, origin) => {
     clientID: config.appId,
     clientSecret: config.secret,
     callbackURL: `${origin}/auth/${authenticator}/callback`,
+    profileFields: ['id', 'displayName', 'picture', 'email'],
   }, (accessToken, refreshToken, profile, cb) =>
     cb(null, { ...profile, token: accessToken })));
 };
 
 const applyEndpoint = (app, authenticator) => {
-  app.get(`/auth/${authenticator}`, passport.authenticate(authenticator, { session: true }));
+  app.get(`/auth/${authenticator}`, passport.authenticate(authenticator, { session: true, scope: ['public_profile'] }));
 
   app.get(
     `/auth/${authenticator}/callback`, passport.authenticate(authenticator, { session: true, failureRedirect: `/auth/${authenticator}` }),
@@ -58,8 +59,8 @@ export default {
         return res.status(401).json({});
       }, (req, res) => {
         res.status(200).json({
-          name: req.user.name,
-          image: req.user.picture.data.url,
+          name: req.user.displayName,
+          image: req.user.photos[0].value,
         });
       },
     );
