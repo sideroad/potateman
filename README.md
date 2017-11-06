@@ -22,3 +22,4 @@
 |↓ + B | Ignite down speed |
 |C| Meteorite |
 |↓ + C | Thunderbolt |
+|↑ + C | Volcano |
