@@ -46,7 +46,7 @@ export function getThunderStrength({ magic }) {
 export default function ({
   engine,
   size,
-  color,
+  image,
   index,
   player,
 }) {
@@ -75,33 +75,30 @@ export default function ({
   });
   const outsiderOption = {
     render: {
-      fillStyle: color,
+      sprite: {
+        texture: image,
+      },
       opacity: 0,
     },
     isSensor: true,
     isStatic: true,
   };
-  const outsiderBottom = Bodies.polygon(0, 50, 3, 5, outsiderOption);
-  Body.setAngle(outsiderBottom, -22.5);
+  const outsiderBottom = Bodies.circle(0, 50, 5, 5, outsiderOption);
   World.add(engine.world, [outsiderBottom]);
-  const outsiderTop = Bodies.polygon(0, 50, 3, 5, outsiderOption);
-  Body.setAngle(outsiderTop, 22.5);
+  const outsiderTop = Bodies.circle(0, 50, 5, 5, outsiderOption);
   World.add(engine.world, [outsiderTop]);
-  const outsiderLeft = Bodies.polygon(0, 50, 3, 5, outsiderOption);
-  Body.setAngle(outsiderLeft, 0);
+  const outsiderLeft = Bodies.circle(0, 50, 5, 5, outsiderOption);
   World.add(engine.world, [outsiderLeft]);
-  const outsiderRight = Bodies.polygon(0, 50, 3, 5, outsiderOption);
-  Body.setAngle(outsiderRight, 45);
+  const outsiderRight = Bodies.circle(0, 50, 5, 5, outsiderOption);
   World.add(engine.world, [outsiderRight]);
 
-  const caret = Bodies.polygon(0, 50, 3, 5, {
-    render: {
-      fillStyle: color,
+  const caret = Bodies.circle(0, 50, 10, {
+    sprite: {
+      texture: image,
     },
     isSensor: true,
     isStatic: true,
   });
-  Body.setAngle(caret, -22.5);
   World.add(engine.world, [caret]);
 
   const indicators = Object.keys(MAGIC).map(magic =>
@@ -266,7 +263,6 @@ export default function ({
     category,
     type: 'potateman',
     player,
-    color,
     caret,
     indicators,
     outsiderBottom,
@@ -279,7 +275,7 @@ export default function ({
   return {
     body: potateman,
     sprite,
-    image: '/images/potateman-stand-left-1.png',
+    image,
   };
 }
 

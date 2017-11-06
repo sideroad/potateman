@@ -51,28 +51,12 @@ export default function (act) {
   const players = {};
   const ghosts = {};
   const stack = [];
-  const colors = [
-    '#ff0000',
-    '#00cc00',
-    '#3714b0',
-    '#ffd200',
-    '#ff9200',
-    '#0b61a4',
-    '#a101a6',
-    '#cff700',
-  ];
+
   // eslint-disable-next-line no-param-reassign
   act.attend = (data) => {
-    const color = colors[stack.length];
-    act.send({
-      ...data,
-      color,
-    });
-    attendee({ stack, color });
-    stack.push({
-      ...data,
-      color,
-    });
+    act.send(data);
+    attendee({ stack, image: data.image });
+    stack.push(data);
     if (stack.length >= 2) {
       const startButton = document.getElementById('start');
       startButton.innerHTML = 'Crash Potate!';
@@ -100,14 +84,15 @@ export default function (act) {
           act,
           engine,
           size,
-          color: data.color,
           index,
           player: data.player,
+          image: data.image,
         });
         act.jp({
           act: 'jp',
           a: 0,
           b: 0,
+          c: 0,
           player: data.player,
         });
       });
@@ -122,13 +107,12 @@ export default function (act) {
   // eslint-disable-next-line no-param-reassign
   act.dead = (data) => {
     console.log(`dead:${data.player}`);
-    const { color } = players[data.player].body.attr;
     destroy({ engine, body: players[data.player].body });
     ghosts[data.player] = createGhost({
       act,
       engine,
       size,
-      color,
+      image: data.image,
       player: data.player,
     });
     // eslint-disable-next-line no-param-reassign
@@ -139,7 +123,6 @@ export default function (act) {
         act: 'win',
         player,
         image: players[player].image,
-        color: players[player].body.attr.color,
       };
       act.send(windata);
       act.win(windata);

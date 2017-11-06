@@ -58,7 +58,8 @@ export default {
         return res.status(401).json({});
       }, (req, res) => {
         res.status(200).json({
-          ...req.user,
+          name: req.user.name,
+          image: req.user.picture.data.url,
         });
       },
     );

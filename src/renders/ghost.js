@@ -26,7 +26,7 @@ export function getPunchStrength({ punchGage, power }) {
 export default function ghost({
   engine,
   size,
-  color,
+  image,
   player,
 }) {
   const category = COLLISION.GHOST;
@@ -49,14 +49,15 @@ export default function ghost({
     isSensor: true,
   });
 
-  const caret = Bodies.polygon(0, 50, 3, 5, {
+  const caret = Bodies.circle(0, 50, 10, {
     render: {
-      fillStyle: color,
+      sprite: {
+        texture: image,
+      },
     },
     isSensor: true,
     isStatic: true,
   });
-  Body.setAngle(caret, -22.5);
   World.add(engine.world, [caret]);
 
   const sprite = new Sprite(body, 'ghost', [
@@ -108,7 +109,6 @@ export default function ghost({
     magic: 0,
     type: 'ghost',
     player,
-    color,
     caret,
     caretScore: 1,
     punched: false,
@@ -116,7 +116,7 @@ export default function ghost({
   return {
     body,
     sprite,
-    image: '/images/ghost-stand-left-1.png',
+    image,
   };
 }
 

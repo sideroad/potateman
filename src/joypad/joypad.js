@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import './jquery.joypad';
 import auth from './auth';
 
-auth(() => {
+auth((user) => {
   (($) => {
     $(() => {
       let conn;
@@ -73,6 +73,7 @@ auth(() => {
             stage: stage,
             // eslint-disable-next-line
             player: _player,
+            user,
           });
         });
         conn.on('data', (data) => {
