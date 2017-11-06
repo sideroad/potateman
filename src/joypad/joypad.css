@@ -51,6 +51,11 @@ body {
   height: 100%;
   user-select: none;
   border-radius: 5px;
+  color: white;
+  font-size: 5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #a {
