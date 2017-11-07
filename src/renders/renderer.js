@@ -107,22 +107,23 @@ export default function (act) {
   // eslint-disable-next-line no-param-reassign
   act.dead = (data) => {
     console.log(`dead:${data.player}`);
-    destroy({ engine, body: players[data.player].body });
+    const player = players[data.player];
+    destroy({ engine, body: player.body });
     ghosts[data.player] = createGhost({
       act,
       engine,
       size,
-      image: data.image,
+      image: player.image,
       player: data.player,
     });
     // eslint-disable-next-line no-param-reassign
     delete players[data.player];
     if (Object.keys(players).length === 1) {
-      const player = Object.keys(players)[0];
+      const winner = Object.keys(players)[0];
       const windata = {
         act: 'win',
-        player,
-        image: players[player].image,
+        player: winner,
+        image: players[winner].image,
       };
       act.send(windata);
       act.win(windata);

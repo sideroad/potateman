@@ -49,13 +49,13 @@ export default function ghost({
     isSensor: true,
   });
 
-  const profile = Bodies.circle(0, 50, 10, {
+  const profile = Bodies.circle(0, 50, 25, {
     render: {
-      strokeStyle: '#ffffff',
       sprite: {
         texture: image,
+        xScale: 0.25,
+        yScale: 0.25,
       },
-      lineWidth: 5,
     },
     isSensor: true,
     isStatic: true,
