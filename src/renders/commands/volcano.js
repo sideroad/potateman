@@ -7,10 +7,7 @@ import {
 import _ from 'lodash';
 import COLLISION from '../collision';
 import MAGIC from '../magic';
-
-const random = (min, max) =>
-  (Math.random() * (max - min)) + min;
-
+import random from '../../helpers/random';
 
 const getVolcanoStrength = ({ magic }) => {
   const maticStrength = magic / 4;
