@@ -148,13 +148,13 @@ export default function ({
     // profile
     Body.setPosition(profile, {
       x,
-      y: y - 35,
+      y: y - 40,
     });
 
     // indicator
     Body.setPosition(indicator, {
       x,
-      y: y - 35,
+      y: y - 40,
     });
     const assignedMagic = Object.keys(MAGIC).filter(magic =>
       potateman.attr.magic >= MAGIC[magic].min).reverse()[0];

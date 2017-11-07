@@ -80,7 +80,7 @@ export default function ghost({
     // profile
     Body.setPosition(profile, {
       x,
-      y: y - 35,
+      y: y - 40,
     });
 
     const { sinkMotion } = body.attr;
