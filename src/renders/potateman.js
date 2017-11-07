@@ -85,29 +85,38 @@ export default function ({
     isSensor: true,
     isStatic: true,
   };
-  const outsiderBottom = Bodies.circle(0, 50, 5, outsiderOption);
+  const outsiderBottom = Bodies.circle(0, 50, 25, outsiderOption);
   World.add(engine.world, [outsiderBottom]);
-  const outsiderTop = Bodies.circle(0, 50, 5, outsiderOption);
+  const outsiderTop = Bodies.circle(0, 50, 25, outsiderOption);
   World.add(engine.world, [outsiderTop]);
-  const outsiderLeft = Bodies.circle(0, 50, 5, outsiderOption);
+  const outsiderLeft = Bodies.circle(0, 50, 25, outsiderOption);
   World.add(engine.world, [outsiderLeft]);
-  const outsiderRight = Bodies.circle(0, 50, 5, outsiderOption);
+  const outsiderRight = Bodies.circle(0, 50, 25, outsiderOption);
   World.add(engine.world, [outsiderRight]);
 
-  const profile = Bodies.circle(0, 50, 10, {
+  const profile = Bodies.circle(0, 50, 25, {
     render: {
-      strokeStyle: '#ffffff',
       sprite: {
         texture: image,
-        xScale: 0.5,
-        yScale: 0.5,
+        xScale: 0.25,
+        yScale: 0.25,
       },
-      lineWidth: 5,
     },
     isSensor: true,
     isStatic: true,
   });
   World.add(engine.world, [profile]);
+
+  const indicator = Bodies.circle(0, 50, 15, {
+    render: {
+      strokeStyle: '#ffffff',
+      fillStyle: 'transparent',
+      lineWidth: 5,
+    },
+    isSensor: true,
+    isStatic: true,
+  });
+  World.add(engine.world, [indicator]);
 
   const sprite = new Sprite(potateman, 'potateman', [
     { state: 'stand' },
@@ -141,13 +150,15 @@ export default function ({
       x,
       y: y - 30,
     });
-    const profileScore = 1 + (potateman.attr.magic / 50);
-    const profileScale = (profileScore / potateman.attr.profileScore) / profile.circleRadius;
-    potateman.attr.profileScore = profileScore;
-    Body.scale(profile, profileScale, profileScale);
+
+    // indicator
+    Body.setPosition(indicator, {
+      x,
+      y: y - 30,
+    });
     const assignedMagic = Object.keys(MAGIC).filter(magic =>
-      potateman.attr.magic >= MAGIC[magic].min)[0] || { color: '#FFFFFF' };
-    profile.render.strokeStyle = assignedMagic.color;
+      potateman.attr.magic >= MAGIC[magic].min).reverse()[0];
+    indicator.render.strokeStyle = (MAGIC[assignedMagic] || { color: '#FFFFFF' }).color;
 
     // outsider
     Body.setPosition(outsiderBottom, {
@@ -255,6 +266,7 @@ export default function ({
     type: 'potateman',
     player,
     profile,
+    indicator,
     outsiderBottom,
     outsiderTop,
     outsiderLeft,
@@ -272,6 +284,7 @@ export default function ({
 
 export function destroy({ engine, body }) {
   World.remove(engine.world, body.attr.profile);
+  World.remove(engine.world, body.attr.indicator);
   World.remove(engine.world, body.attr.outsiderTop);
   World.remove(engine.world, body.attr.outsiderLeft);
   World.remove(engine.world, body.attr.outsiderRight);

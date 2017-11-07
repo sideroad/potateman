@@ -2,7 +2,7 @@ export default {
   meteorite: {
     min: 5,
     image: '/images/meteorite.png',
-    color: '#444444',
+    color: '#666666',
   },
   thunder: {
     min: 10,

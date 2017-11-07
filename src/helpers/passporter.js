@@ -60,7 +60,7 @@ export default {
       }, (req, res) => {
         res.status(200).json({
           name: req.user.displayName,
-          image: req.user.photos[0].value,
+          image: `/ic?url=${encodeURIComponent(req.user.photos[0].value)}&size=100`,
         });
       },
     );
