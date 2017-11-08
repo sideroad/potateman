@@ -56,7 +56,7 @@ export default function meteorite({
   body.attr.magic = 1;
 
   Events.on(engine, 'beforeUpdate', () => {
-    if (!meteoriteMotion.position.y > size.height * 2) {
+    if (meteoriteMotion.position.y > size.height * 2) {
       World.remove(engine.world, meteoriteMotion);
     }
   });

@@ -65,7 +65,7 @@ export default function ({
 
   Events.on(engine, 'beforeUpdate', () => {
     volcanos.forEach((volcanoMotion) => {
-      if (!volcanoMotion.position.y > size.height * 2) {
+      if (volcanoMotion.position.y > size.height * 2) {
         World.remove(engine.world, volcanoMotion);
       }
     });
