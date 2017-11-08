@@ -168,12 +168,12 @@ export default function (act) {
 
   prefetch({ size, engine });
 
-  window.patch = (attr) => {
-    Object.keys(players).forEach((id) => {
-      players[id].body.attr = {
-        ...players[id].body.attr,
-        ...attr,
-      };
-    });
-  };
+  // window.patch = (attr) => {
+  //   Object.keys(players).forEach((id) => {
+  //     players[id].body.attr = {
+  //       ...players[id].body.attr,
+  //       ...attr,
+  //     };
+  //   });
+  // };
 }
