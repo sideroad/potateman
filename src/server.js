@@ -21,8 +21,13 @@ app.use(Express.static(path.join(__dirname, '../dist/static'), {
 }));
 app.get('/ic', (req, res) => {
   const size = Number(req.query.size) || 50;
-  const filename = md5(req.query.url + size).replace(/[a-z]/g, '');
+  const filename = Number(md5(req.query.url + size).replace(/[a-z]/g, '').substr(0, 20));
   const file = `./uploads/${filename}`;
+  const circleFile = `./uploads/circle_user_${filename}_${size}.png`;
+  if (fs.existsSync(circleFile)) {
+    res.send(fs.readFileSync(circleFile));
+    return;
+  }
   request(req.query.url)
     .responseType('blob')
     .end((err, binary) => {
