@@ -22,7 +22,7 @@ const appPort = Number(process.env.GLOBAL_PORT || 3000);
 const base = normalize(`${appHost}:${appPort}`);
 
 app.get('*', (req, res, next) => {
-  if (base !== 'http://localhost:3000' && req.headers['x-forwarded-proto'] !== 'https') {
+  if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'] !== 'https') {
     res.redirect(`${base}${req.url}`);
   } else {
     next();

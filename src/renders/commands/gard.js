@@ -5,10 +5,12 @@ import {
 
 export default function gard({ engine, body, sprite }) {
   sprite.setState('gard');
-  if (body.attr.gardGage > 10) {
+  if (body.attr.gardGage > 1) {
     // eslint-disable-next-line no-param-reassign
     body.attr.gardGage -= 1;
   }
+  // eslint-disable-next-line no-param-reassign
+  body.attr.garding = true;
   if (!body.attr.gardMotion) {
     const gardMotion = Bodies.circle(body.position.x, body.position.y, 1, {
       render: {

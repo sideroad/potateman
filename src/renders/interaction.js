@@ -169,7 +169,7 @@ export default function ({
       if (
         direction.b &&
         body.attr.flying &&
-        body.attr.gardGage > 50
+        body.attr.gardGage > 1
       ) {
         y = -3;
       }

@@ -8,8 +8,7 @@ export default function sink({ engine, body, sprite }) {
   sprite.setState('gard');
   // eslint-disable-next-line no-param-reassign
   body.attr.punchGage += 1;
-  // eslint-disable-next-line no-param-reassign
-  body.attr.garding = true;
+
   const strength = getPunchStrength(body.attr);
   if (!body.attr.sinkMotion) {
     const sinkMotion = Bodies.circle(body.position.x, body.position.y, 1, {

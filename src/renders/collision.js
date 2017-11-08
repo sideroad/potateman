@@ -50,6 +50,9 @@ export function check({ players, engine }) {
         const collisioned = bodies.find(body => body === bodyA);
         collisioned.attr.flycount = 0;
         collisioned.attr.flying = false;
+        if (!collisioned.attr.garding) {
+          collisioned.attr.gardGage = 100;
+        }
         const { type } = bodyB.attr ? bodyB.attr : {};
         if (
           type === 'shockWave' ||
