@@ -38,5 +38,3 @@ act.init = (data) => {
 };
 
 renderer(act);
-
-// document.getElementsByTagName('canvas')[0].webkitRequestFullscreen();

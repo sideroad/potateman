@@ -47,7 +47,6 @@ export default function (act) {
 
   world.bodies = [];
 
-  grounds({ engine, size });
   const players = {};
   const ghosts = {};
   const stack = [];
@@ -69,6 +68,11 @@ export default function (act) {
     act.send({
       act: 'start',
     });
+    engine.world.bodies.forEach((body) => {
+      World.remove(engine.world, body);
+    });
+    World.clear(engine.world, false);
+    grounds({ engine, size });
     start(() => {
       act.stream(document.getElementsByTagName('canvas')[0]);
       Events.off(engine);
