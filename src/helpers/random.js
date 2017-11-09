@@ -1,3 +1,3 @@
 export default function random(min, max) {
-  return Math.ceil((Math.random() * (max - min)) + min);
+  return Math.round((Math.random() * (max - min)) + min);
 }
