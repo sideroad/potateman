@@ -13,18 +13,21 @@ act.init = (data) => {
     element: document.getElementById('qr'),
     value: url,
   });
-  console.log(url);
+
   document.querySelectorAll('.start').forEach((elem) => {
     elem.addEventListener('click', () => {
+      document.body.webkitRequestFullscreen();
       act.start();
     });
   });
   const shareElem = document.getElementById('share');
   shareElem.setAttribute('data-clipboard-text', mirrorUrl);
+  const joypadElem = document.getElementById('joypad');
+  joypadElem.setAttribute('data-clipboard-text', url);
   // eslint-disable-next-line no-new
   const clipboard = new Clipboard('.clipboard');
-  clipboard.on('success', () => {
-    const rect = shareElem.getBoundingClientRect();
+  clipboard.on('success', (event) => {
+    const rect = event.trigger.getBoundingClientRect();
     const div = document.createElement('div');
     div.setAttribute('class', 'tooltip');
     div.innerHTML = 'Copied URL!';

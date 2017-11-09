@@ -30,7 +30,8 @@ body {
   border-radius: 3px;
 }
 
-#share {
+#share,
+#joypad {
   color: #38a1db;
   font-size: 2em;
   margin-left: 1em;
@@ -140,19 +141,19 @@ body {
 }
 #countdown.activate .count-3 {
   animation: countdown 1s linear;
-  animation-delay: 0s;
+  animation-delay: 0.5s;
 }
 #countdown.activate .count-2 {
   animation: countdown 1s linear;
-  animation-delay: 1s;
+  animation-delay: 1.5s;
 }
 #countdown.activate .count-1 {
   animation: countdown 1s linear;
-  animation-delay: 2s;
+  animation-delay: 2.5s;
 }
 #countdown.activate .count-go {
   animation: go 0.5s linear;
-  animation-delay: 3s;
+  animation-delay: 3.5s;
 }
 @keyframes jiggle {
   0% {
