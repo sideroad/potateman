@@ -67,3 +67,44 @@ body {
 #c {
   background: linear-gradient(135deg, #f1e767 0%,#feb645 100%);
 }
+
+#loading {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.overlay {
+  background-color: #000000;
+  opacity: 0.75;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#loading-animation {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10em;
+  animation: loading 2s linear infinite;
+  animation-fill-mode: forwards;
+  position: absolute;
+  color: white;
+}
+
+@keyframes loading {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  },
+  50% {
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
