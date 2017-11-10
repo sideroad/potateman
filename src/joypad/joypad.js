@@ -61,6 +61,7 @@ auth((user) => {
           window.addEventListener('orientationchange', () => {
             $('#joypad').joypad('destroy');
             bind();
+            $('#test').text(`${document.body.clientWidth} ${document.body.clientHeight} ${window.clientWidth} ${window.clientHeight}`);
           });
           window.addEventListener('resize', () => {
             $('#joypad').joypad('destroy');
@@ -85,7 +86,12 @@ auth((user) => {
             image: user.image,
           });
           loading.end();
-          expander.start();
+          const ua = window.navigator.userAgent;
+          if (!/iPhone/.test(ua) && !/Safari/.test(ua)) {
+            expander.start();
+          } else {
+            $('#test').text(`${document.body.clientWidth} ${document.body.clientHeight} ${window.clientWidth} ${window.clientHeight}`);
+          }
         });
         conn.on('data', (data) => {
           if (act[data.act]) {
