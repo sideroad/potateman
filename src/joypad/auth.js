@@ -11,7 +11,6 @@ export default function authFn(callback) {
           // eslint-disable-next-line no-new
           const image = new Image();
           image.onload = () => {
-            loading.end();
             callback(user);
           };
           image.src = user.image;

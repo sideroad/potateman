@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import './jquery.joypad';
 import auth from './auth';
+import loading from '../dom/loading';
 
 auth((user) => {
   (($) => {
@@ -76,6 +77,7 @@ auth((user) => {
             name: user.name,
             image: user.image,
           });
+          loading.end();
         });
         conn.on('data', (data) => {
           if (act[data.act]) {
