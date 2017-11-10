@@ -47,14 +47,14 @@ export default function ({
       // left / right moving
       if (direction.left) {
         if (
-          (x >= -3 && !direction.b && !body.attr.flying) ||
-          (x >= -5 && direction.b && !body.attr.flying)
+          (x >= -3 && !direction.a && !body.attr.flying) ||
+          (x >= -5 && direction.a && !body.attr.flying)
         ) {
           x -= 1;
         }
         if (
-          (x >= -3 && !direction.b && body.attr.flying) ||
-          (x >= -5 && direction.b && body.attr.flying)
+          (x >= -3 && !direction.a && body.attr.flying) ||
+          (x >= -5 && direction.a && body.attr.flying)
         ) {
           x -= 0.5;
         }
@@ -63,14 +63,14 @@ export default function ({
       }
       if (direction.right) {
         if (
-          (x <= 3 && !direction.b && !body.attr.flying) ||
-          (x <= 5 && direction.b && !body.attr.flying)
+          (x <= 3 && !direction.a && !body.attr.flying) ||
+          (x <= 5 && direction.a && !body.attr.flying)
         ) {
           x += 1;
         }
         if (
-          (x <= 3 && !direction.b && body.attr.flying) ||
-          (x <= 5 && direction.b && body.attr.flying)
+          (x <= 3 && !direction.a && body.attr.flying) ||
+          (x <= 5 && direction.a && body.attr.flying)
         ) {
           x += 0.5;
         }

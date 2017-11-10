@@ -18,7 +18,7 @@
 |↑ + A | Punch ( sinkable ) |
 |B| Gard |
 |B ( when flying ) | Floating |
-|← or → + B | Dash |
+|← or → + A | Dash |
 |↓ + B | Ignite down speed |
 |C| Meteorite |
 |↓ + C | Thunderbolt |
