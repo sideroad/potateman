@@ -6,8 +6,8 @@ import expander from '../dom/expander';
 
 
 document.getElementById('expander-icon').addEventListener('touchend', () => {
-  document.body.webkitRequestFullscreen();
   expander.end();
+  document.body.webkitRequestFullscreen();
 });
 
 auth((user) => {
