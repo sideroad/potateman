@@ -16,7 +16,6 @@ act.init = (data) => {
 
   document.querySelectorAll('.start').forEach((elem) => {
     elem.addEventListener('click', () => {
-      document.body.webkitRequestFullscreen();
       act.start();
     });
   });
