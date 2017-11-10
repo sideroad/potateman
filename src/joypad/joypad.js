@@ -2,6 +2,13 @@ import 'babel-polyfill';
 import './jquery.joypad';
 import auth from './auth';
 import loading from '../dom/loading';
+import expander from '../dom/expander';
+
+
+document.getElementById('expander-icon').addEventListener('touchend', () => {
+  document.body.webkitRequestFullscreen();
+  expander.end();
+});
 
 auth((user) => {
   (($) => {
@@ -78,6 +85,7 @@ auth((user) => {
             image: user.image,
           });
           loading.end();
+          expander.start();
         });
         conn.on('data', (data) => {
           if (act[data.act]) {
