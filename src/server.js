@@ -29,9 +29,7 @@ app.get('*', (req, res, next) => {
   }
 });
 app.use(compression());
-app.use(Express.static(path.join(__dirname, '../dist/static'), {
-  maxAge: '1d',
-}));
+app.use(Express.static(path.join(__dirname, '../dist/static')));
 app.get('/ic', (req, res) => {
   const size = Number(req.query.size) || 50;
   const filename = Number(md5(req.query.url + size).replace(/[a-z]/g, '').substr(0, 20));
