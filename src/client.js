@@ -6,6 +6,9 @@ import peer from './helpers/peer';
 
 const act = peer();
 act.init = (data) => {
+  fetch(`/api/stages/${data.stage}`, {
+    method: 'PUT',
+  });
   const url = `${window.location.protocol}//${window.location.host}/joypad/${data.stage}/`;
   const mirrorUrl = `${window.location.protocol}//${window.location.host}/mirror/${data.stage}/`;
   // eslint-disable-next-line no-new
@@ -16,7 +19,22 @@ act.init = (data) => {
 
   document.querySelectorAll('.start').forEach((elem) => {
     elem.addEventListener('click', () => {
-      act.start();
+      act.start(data);
+    });
+  });
+
+  document.querySelectorAll('.find').forEach((elem) => {
+    elem.addEventListener('click', () => {
+      fetch(`/api/stages/${data.stage}/other`)
+        .then(res => res.json())
+        .then((json) => {
+          if (json.stage) {
+            window.location.href = `/mirror/${json.stage}/`;
+          } else {
+            // eslint-disable-next-line no-alert
+            window.alert('Other room does not found');
+          }
+        });
     });
   });
   const shareElem = document.getElementById('share');

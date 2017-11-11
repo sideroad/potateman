@@ -96,6 +96,7 @@ auth((user) => {
           }
         });
         conn.on('error', (msg) => {
+          // eslint-disable-next-line no-console
           console.log(msg);
         });
       };
@@ -110,6 +111,7 @@ auth((user) => {
         }
       });
       peer.on('error', (err) => {
+        // eslint-disable-next-line no-console
         console.log(err);
       });
     });

@@ -8,6 +8,9 @@ const act = {
   attend: ({ image }) => {
     attendee({ image });
   },
+  mirror: ({ data: { stack } }) => {
+    stack.forEach(data => act.attend(data));
+  },
   start: () => {
     start();
   },
@@ -32,16 +35,20 @@ setInterval(() => {
     type: 'KEEPALIVE',
   });
 }, 5000);
-peer.on('open', (id) => {
+peer.on('open', () => {
   const conn = peer.connect(stage, {
     serialization: 'json',
   });
   const call = peer.call(stage, document.getElementById('dummy').captureStream());
-  console.log(id, stage);
   conn.on('data', (data) => {
     if (act[data.act]) {
       act[data.act](data);
     }
+  });
+  conn.on('open', () => {
+    conn.send({
+      act: 'mirror',
+    });
   });
   call.on('stream', (stream) => {
     const streamElem = document.getElementById('stream');
@@ -49,9 +56,11 @@ peer.on('open', (id) => {
     streamElem.play();
   });
   call.on('error', (msg) => {
+    // eslint-disable-next-line no-console
     console.log(msg);
   });
 });
 peer.on('error', (err) => {
+  // eslint-disable-next-line no-console
   console.log(err);
 });

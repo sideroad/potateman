@@ -3,8 +3,6 @@ import {
   Events,
   Render,
   Runner,
-  MouseConstraint,
-  Mouse,
   World,
 } from 'matter-js';
 import attendee from '../dom/attendee';
@@ -56,15 +54,27 @@ export default function (act) {
     act.send(data);
     attendee({ stack, image: data.image });
     stack.push(data);
-    if (stack.length >= 2) {
-      const startButton = document.getElementById('start');
-      startButton.innerHTML = 'Crash Potate!';
-      startButton.disabled = false;
+    if (stack.length >= 1) {
+      document.getElementById('find').style.display = 'none';
+      document.getElementById('start').style.display = 'block';
     }
+  };
+  // eslint-disable-next-line no-param-reassign
+  act.mirror = () => {
+    document.getElementById('find').disabled = true;
+    act.send({
+      act: 'mirror',
+      data: {
+        stack,
+      },
+    });
   };
 
   // eslint-disable-next-line no-param-reassign
-  act.start = () => {
+  act.start = ({ stage }) => {
+    fetch(`/api/stages/${stage}`, {
+      method: 'DELETE',
+    });
     act.send({
       act: 'start',
     });
@@ -110,6 +120,7 @@ export default function (act) {
   };
   // eslint-disable-next-line no-param-reassign
   act.dead = (data) => {
+    // eslint-disable-next-line no-console
     console.log(`dead:${data.player}`);
     const player = players[data.player];
     destroy({ engine, body: player.body });
@@ -147,23 +158,6 @@ export default function (act) {
     });
   };
 
-  // add mouse control
-  const mouse = Mouse.create(render.canvas);
-  const mouseConstraint = MouseConstraint.create(engine, {
-    mouse,
-    constraint: {
-      stiffness: 0.2,
-      render: {
-        visible: false,
-      },
-    },
-  });
-
-  World.add(world, mouseConstraint);
-
-  // keep the mouse in sync with rendering
-  render.mouse = mouse;
-
   // fit the render viewport to the scene
   Render.lookAt(render, {
     min: { x: 0, y: 0 },
@@ -171,13 +165,4 @@ export default function (act) {
   });
 
   prefetch({ size, engine });
-
-  // window.patch = (attr) => {
-  //   Object.keys(players).forEach((id) => {
-  //     players[id].body.attr = {
-  //       ...players[id].body.attr,
-  //       ...attr,
-  //     };
-  //   });
-  // };
 }
