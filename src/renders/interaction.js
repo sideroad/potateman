@@ -61,9 +61,7 @@ export default function ({
 
       // left / right moving
       if (
-        direction.left &&
-        !body.attr.teleported &&
-        !body.attr.keepTeleported
+        direction.left
       ) {
         if (
           direction.b &&
@@ -71,7 +69,7 @@ export default function ({
           !direction.down &&
           body.attr.gardGage > 1
         ) {
-          x = -100;
+          x = -50;
           y = -0.5;
           body.attr.teleported = true;
           body.attr.gardGage = 0;
@@ -94,16 +92,15 @@ export default function ({
       }
 
       if (
-        direction.right &&
-        !body.attr.teleported &&
-        !body.attr.keepTeleported) {
+        direction.right
+      ) {
         if (
           direction.b &&
           !direction.up &&
           !direction.down &&
           body.attr.gardGage > 1
         ) {
-          x = 100;
+          x = 50;
           y = -0.5;
           body.attr.teleported = true;
           body.attr.gardGage = 0;
@@ -124,13 +121,6 @@ export default function ({
           sprite.setState('walk');
           sprite.setDirection('right');
         }
-      }
-
-      if (
-        !direction.left &&
-        !direction.right
-      ) {
-        body.attr.keepTeleported = false;
       }
 
       // jump

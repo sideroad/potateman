@@ -8,8 +8,6 @@ export default function teleportFn({
 }) {
   // eslint-disable-next-line no-param-reassign
   body.attr.teleported = false;
-  // eslint-disable-next-line no-param-reassign
-  body.attr.keepTeleported = true;
   shrink({
     engine,
     type: 'particle',
