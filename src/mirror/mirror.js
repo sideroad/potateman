@@ -5,11 +5,11 @@ import start from '../dom/start';
 import win from '../dom/win';
 
 const act = {
-  attend: ({ image }) => {
-    attendee({ image });
+  attend: ({ stack, image }) => {
+    attendee({ stack, image });
   },
   mirror: ({ data: { stack } }) => {
-    stack.forEach(data => act.attend(data));
+    stack.forEach(data => act.attend(stack, data));
   },
   start: () => {
     start();
