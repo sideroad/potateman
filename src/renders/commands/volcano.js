@@ -30,7 +30,7 @@ export default function ({
   }
   const volcanos = [];
   const strength = getVolcanoStrength(body.attr);
-  _.times(body.attr.magic / 10, () => {
+  _.times(10 + (body.attr.magic / 10), () => {
     const x = sprite.direction === 'left' ? random(size.width / 2, size.width) : random(0, size.width / 2);
     const volcanoMotion = Bodies.rectangle(x, size.height, 20, 20, {
       friction: 0,
