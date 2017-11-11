@@ -67,7 +67,8 @@ export default function ({
           direction.b &&
           !direction.up &&
           !direction.down &&
-          body.attr.gardGage > 1
+          body.attr.gardGage > 1 &&
+          !body.attr.flying
         ) {
           x = -50;
           y = -0.5;
@@ -98,7 +99,8 @@ export default function ({
           direction.b &&
           !direction.up &&
           !direction.down &&
-          body.attr.gardGage > 1
+          body.attr.gardGage > 1 &&
+          !body.attr.flying
         ) {
           x = 50;
           y = -0.5;
