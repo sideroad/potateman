@@ -51,6 +51,9 @@ export default function (act) {
 
   // eslint-disable-next-line no-param-reassign
   act.attend = (data) => {
+    if (stack.length > 16) {
+      return;
+    }
     act.send(data);
     stack.push(data);
     attendee({ stack, image: data.image });

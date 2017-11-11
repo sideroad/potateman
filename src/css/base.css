@@ -43,6 +43,7 @@ body {
   font-size: 2em;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 .attendee-container {
   display: flex;
