@@ -13,9 +13,7 @@
 |← or → | Move |
 |↑| Jump |
 |↓| Squat |
-|A| Punch ( sinkable ) |
-|↓ + A | Punch ( sinkable ) |
-|↑ + A | Punch ( sinkable ) |
+|A| Punch ( sinkable, directable ) |
 |B| Gard |
 |B ( when flying ) | Floating |
 |← or → + A | Dash |

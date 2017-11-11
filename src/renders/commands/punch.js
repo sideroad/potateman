@@ -29,12 +29,12 @@ export default function punch({
     x:
     direction.left ? speed * -1 :
     direction.right ? speed * 1 :
-    !direction.down && !direction.up && sprite.direction === 'left' ? speed * -1 :
-    !direction.down && !direction.up && sprite.direction === 'right' ? speed * 1 :
+    !direction.up && !direction.down && sprite.direction === 'left' ? speed * -1 :
+    !direction.up && !direction.down && sprite.direction === 'right' ? speed * 1 :
     0,
     y:
-    !direction.left && !direction.right && direction.up ? speed * -1 :
-    !direction.left && !direction.right && direction.down ? speed * 1 :
+    direction.up ? speed * -1 :
+    direction.down ? speed * 1 :
     0,
   };
   const shockWave = Bodies.circle(x, y, strength, {
