@@ -52,7 +52,7 @@ body {
   align-items: center;
 	animation: bounce 0.5s ease-out;
 	animation-fill-mode: forwards;
-  margin: 20px;
+  margin: 10px;
 }
 
 @keyframes bounce {
@@ -95,13 +95,18 @@ body {
   width: 500px;
 }
 
+.start {
+  background-color: #EC6D71;
+}
+.find {
+  background-color: #38a1db;
+}
 .start,
 .find {
   font-size: 2em;
   outline: none;
   border: none;
   border-radius: 5px;
-  background-color: #38a1db;
   color: #ffffff;
   box-shadow: 0 2px 8px rgba(0,0,0,.117647), 0 1px 4px rgba(0,0,0,.117647);
   padding: 10px 20px;
@@ -176,7 +181,7 @@ body {
     opacity: 0;
     transform: translate(-50%, -50%) scale(1);
   }
-  80% {
+  70% {
     transform: translate(-50%, -50%) scale(0.8);
   }
   95% {

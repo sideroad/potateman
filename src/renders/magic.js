@@ -17,6 +17,6 @@ export default {
   volcano: {
     min: 50,
     image: '/images/volcano.png',
-    color: '#FF0000',
+    color: '#965042',
   },
 };

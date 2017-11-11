@@ -11,6 +11,7 @@ import meteorite from './commands/meteorite';
 import thunder from './commands/thunder';
 import uppercut from './commands/uppercut';
 import volcano from './commands/volcano';
+import teleport from './commands/teleport';
 import { check as collisionCheck } from './collision';
 import MAGIC from './magic';
 
@@ -25,6 +26,7 @@ export default function ({
   act.jp = (data) => {
     const direction = input(data);
     if (players[data.player]) {
+      // eslint-disable-next-line no-console
       console.log('duration', new Date().valueOf() - data.t);
       // eslint-disable-next-line no-param-reassign
       players[data.player].direction = direction;
@@ -45,38 +47,92 @@ export default function ({
       }
       let { x, y } = body.velocity;
 
+      if (
+        body.attr.teleported
+      ) {
+        teleport({
+          engine,
+          body,
+          sprite,
+          x,
+        });
+        x = 0;
+      }
+
       // left / right moving
-      if (direction.left) {
+      if (
+        direction.left &&
+        !body.attr.teleported &&
+        !body.attr.keepTeleported
+      ) {
         if (
+          direction.b &&
+          !body.attr.flying &&
+          !direction.up &&
+          !direction.down &&
+          body.attr.gardGage > 1
+        ) {
+          x = -100;
+          y = -0.5;
+          body.attr.teleported = true;
+          body.attr.gardGage = 0;
+          sprite.setState('gard');
+        } else if (
           (x >= -3 && !direction.a && !body.attr.flying) ||
           (x >= -5 && direction.a && !body.attr.flying)
         ) {
           x -= 1;
-        }
-        if (
+          sprite.setState('walk');
+          sprite.setDirection('left');
+        } else if (
           (x >= -3 && !direction.a && body.attr.flying) ||
           (x >= -5 && direction.a && body.attr.flying)
         ) {
           x -= 0.5;
+          sprite.setState('walk');
+          sprite.setDirection('left');
         }
-        sprite.setState('walk');
-        sprite.setDirection('left');
       }
-      if (direction.right) {
+
+      if (
+        direction.right &&
+        !body.attr.teleported &&
+        !body.attr.keepTeleported) {
         if (
+          direction.b &&
+          !body.attr.flying &&
+          !direction.up &&
+          !direction.down &&
+          body.attr.gardGage > 1
+        ) {
+          x = 100;
+          y = -0.5;
+          body.attr.teleported = true;
+          body.attr.gardGage = 0;
+          sprite.setState('gard');
+        } else if (
           (x <= 3 && !direction.a && !body.attr.flying) ||
           (x <= 5 && direction.a && !body.attr.flying)
         ) {
           x += 1;
+          sprite.setState('walk');
+          sprite.setDirection('right');
         }
         if (
           (x <= 3 && !direction.a && body.attr.flying) ||
           (x <= 5 && direction.a && body.attr.flying)
         ) {
           x += 0.5;
+          sprite.setState('walk');
+          sprite.setDirection('right');
         }
-        sprite.setState('walk');
-        sprite.setDirection('right');
+      }
+
+      if (
+        !direction.left &&
+        !direction.right
+      ) {
+        body.attr.keepTeleported = false;
       }
 
       // jump

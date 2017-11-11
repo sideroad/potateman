@@ -267,6 +267,7 @@ export default function ({
     type: 'potateman',
     player,
     profile,
+    teleported: false,
     indicator,
     outsiderBottom,
     outsiderTop,

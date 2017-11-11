@@ -17,6 +17,7 @@
 |B| Gard |
 |B ( when flying ) | Floating |
 |← or → + A | Dash |
+|← or → + B | Teleport |
 |↓ + B | Ignite down speed |
 |← or → + C| Meteorite |
 |↑ + C| Fire uppercut |
