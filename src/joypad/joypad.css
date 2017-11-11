@@ -16,7 +16,7 @@ body {
 
 #test {
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   left: 0;
 }
 
