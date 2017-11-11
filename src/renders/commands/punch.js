@@ -1,11 +1,8 @@
 import {
   World,
-  Events,
-  Body,
-  Bodies,
 } from 'matter-js';
 import { getPunchStrength, shockWaveRender } from '../potateman';
-import COLLISION from '../collision';
+import shrink from '../motions/shrink';
 
 export default function punch({
   engine,
@@ -13,9 +10,6 @@ export default function punch({
   sprite,
   direction,
 }) {
-  const { x = 0, y = 0 } = body.position;
-  const { category } = body.attr;
-
   if (body.attr.sinkMotion) {
     World.remove(engine.world, body.attr.sinkMotion);
     // eslint-disable-next-line no-param-reassign
@@ -37,34 +31,14 @@ export default function punch({
     direction.down ? speed * 1 :
     0,
   };
-  const shockWave = Bodies.circle(x, y, strength, {
-    render: shockWaveRender,
-    density: 0.025,
-    collisionFilter: {
-      category: COLLISION.ATTACK,
-      // eslint-disable-next-line no-bitwise
-      mask: COLLISION.POTATEMANS - category,
-    },
-    velocity,
-  });
-  World.add(engine.world, [
-    shockWave,
-  ]);
-  shockWave.attr = {
+  shrink({
+    engine,
+    body,
     strength,
     type: 'shockWave',
-    player: body.attr.player,
-  };
+    velocity,
+    render: shockWaveRender,
+  });
   // eslint-disable-next-line no-param-reassign
   body.attr.punchGage = 0;
-
-  Events.on(engine, 'beforeUpdate', () => {
-    Body.setVelocity(shockWave, velocity);
-    const scale = shockWave.attr.strength / strength;
-    Body.scale(shockWave, scale, scale);
-    shockWave.attr.strength -= 1;
-    if (!shockWave.attr.strength) {
-      World.remove(engine.world, shockWave);
-    }
-  });
 }

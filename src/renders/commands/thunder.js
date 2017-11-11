@@ -8,6 +8,7 @@ import { getThunderStrength } from '../potateman';
 import Sprite from '../Sprite';
 import COLLISION from '../collision';
 import MAGIC from '../magic';
+import shrink from '../motions/shrink';
 
 export default function thunder({
   engine,
@@ -21,7 +22,7 @@ export default function thunder({
   const { x = 0 } = body.position;
   const { category } = body.attr;
 
-  sprite.setState('punch');
+  sprite.setState('squat');
   const strength = getThunderStrength(body.attr);
   const thunderOptions = {
     density: 0.1,
@@ -63,6 +64,37 @@ export default function thunder({
       body: motion,
       sprite: thunderSprite,
     });
+  });
+  const shrinkRender = {
+    strokeStyle: '#ffffff',
+    fillStyle: '#FFEC47',
+    opacity: 0.5,
+    lineWidth: 1,
+  };
+  // eslint-disable-next-line no-nested-ternary
+  const speed = strength < 15 ? 15 : strength > 20 ? 20 : strength;
+
+  shrink({
+    engine,
+    body,
+    strength: 20,
+    type: 'shockWave',
+    velocity: {
+      x: 1 * speed,
+      y: -1 * speed,
+    },
+    render: shrinkRender,
+  });
+  shrink({
+    engine,
+    body,
+    strength: 10,
+    type: 'shockWave',
+    velocity: {
+      x: -1 * speed,
+      y: -1 * speed,
+    },
+    render: shrinkRender,
   });
 
   // eslint-disable-next-line no-param-reassign
