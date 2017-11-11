@@ -28,6 +28,14 @@ body {
   height: 100vh;
 }
 
+.help {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  color: #38a1db;
+  font-size: 2em;
+}
+
 .left-pad,
 .right-pad {
   width: 50%;

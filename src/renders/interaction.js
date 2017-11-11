@@ -67,7 +67,6 @@ export default function ({
       ) {
         if (
           direction.b &&
-          !body.attr.flying &&
           !direction.up &&
           !direction.down &&
           body.attr.gardGage > 1
@@ -100,7 +99,6 @@ export default function ({
         !body.attr.keepTeleported) {
         if (
           direction.b &&
-          !body.attr.flying &&
           !direction.up &&
           !direction.down &&
           body.attr.gardGage > 1

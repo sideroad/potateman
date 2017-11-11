@@ -8,18 +8,19 @@
 
 # Controller
 
-| Command | Action|
-|---------|-------|
-|← or → | Move |
-|↑| Jump |
-|↓| Squat |
-|A| Punch ( sinkable, directable ) |
-|B| Gard |
-|B ( when flying ) | Floating |
-|← or → + A | Dash |
-|← or → + B | Teleport |
-|↓ + B | Ignite down speed |
-|← or → + C| Meteorite |
-|↑ + C| Fire uppercut |
-|↓ + C | Thunderbolt |
-|C | Volcano |
+| Command | Action|Remark|
+|---------|-------|------|
+|← or → | Move ||
+|↑| Jump |3 consecutive|
+|↓| Squat ||
+|A| Punch | Sinkable, Directable |
+|B| Gard | Decrese damage |
+|B ( when flying ) | Floating ||
+|← or → + A | Dash ||
+|← or → + B | Teleport ||
+|↓ + B ( when flying ) | Ignite down speed ||
+|↓ + B ( on ground ) | Transparent ground ||
+|← or → + C| Meteorite ||
+|↑ + C| Fire uppercut ||
+|↓ + C | Thunderbolt ||
+|C | Volcano ||
