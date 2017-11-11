@@ -1,6 +1,6 @@
 export default function attendeeFn({ stack, image }) {
   const attendee = document.getElementById('attendee');
-  if (stack && stack.length) {
+  if (stack && stack.length === 1) {
     attendee.innerHTML = '';
   }
   const div = document.createElement('div');

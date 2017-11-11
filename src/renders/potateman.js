@@ -47,6 +47,7 @@ export default function ({
   engine,
   size,
   image,
+  name,
   index,
   player,
 }) {
@@ -277,6 +278,7 @@ export default function ({
   return {
     body: potateman,
     sprite,
+    name,
     image,
   };
 }

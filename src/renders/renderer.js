@@ -100,6 +100,7 @@ export default function (act) {
           size,
           index,
           player: data.player,
+          name: data.name,
           image: data.image,
         });
         act.jp({
@@ -128,6 +129,7 @@ export default function (act) {
       act,
       engine,
       size,
+      name: player.name,
       image: player.image,
       player: data.player,
     });
@@ -138,6 +140,7 @@ export default function (act) {
       const windata = {
         act: 'win',
         player: winner,
+        name: players[winner].name,
         image: players[winner].image,
       };
       act.send(windata);
