@@ -135,13 +135,13 @@ export default function (act) {
     });
     // eslint-disable-next-line no-param-reassign
     delete players[data.player];
-    if (Object.keys(players).length === 1) {
-      const winner = Object.keys(players)[0];
+    if (Object.keys(players).length <= 1) {
+      const winner = Object.keys(players)[0] || {};
       const windata = {
         act: 'win',
         player: winner,
-        name: players[winner].name,
-        image: players[winner].image,
+        name: (players[winner] || {}).name,
+        image: (players[winner] || {}).image,
       };
       act.send(windata);
       act.win(windata);
@@ -152,9 +152,11 @@ export default function (act) {
   act.win = (data) => {
     const player = players[data.player];
     win(data);
-    destroy({ engine, body: player.body });
-    // eslint-disable-next-line no-param-reassign
-    delete players[player.player];
+    if (player) {
+      destroy({ engine, body: player.body });
+      // eslint-disable-next-line no-param-reassign
+      delete players[player.player];
+    }
     Object.keys(ghosts).forEach((ghostId) => {
       destroyGhost({ engine, body: ghosts[ghostId].body });
       delete ghosts[ghostId];
