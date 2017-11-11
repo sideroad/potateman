@@ -9,6 +9,7 @@ import gard from './commands/gard';
 import gardCancel from './commands/gardCancel';
 import meteorite from './commands/meteorite';
 import thunder from './commands/thunder';
+import uppercut from './commands/uppercut';
 import volcano from './commands/volcano';
 import { check as collisionCheck } from './collision';
 import MAGIC from './magic';
@@ -154,8 +155,10 @@ export default function ({
       // meteorite
       if (
         direction.c &&
-        !direction.down &&
-        !direction.up
+        (
+          direction.left ||
+          direction.right
+        )
       ) {
         meteorite({
           engine,
@@ -193,10 +196,31 @@ export default function ({
         body.attr.flycount = 0;
       }
 
+      // uppercut
+      if (
+        direction.c &&
+        direction.up &&
+        body.attr.magic > MAGIC.uppercut.min
+      ) {
+        uppercut({
+          engine,
+          sprite,
+          body,
+          size,
+        });
+        x = 0;
+        y = -12;
+        body.attr.flycount = 0;
+      }
+
       // volcano
       if (
         direction.c &&
-        direction.up
+        !direction.up &&
+        !direction.down &&
+        !direction.left &&
+        !direction.right &&
+        body.attr.magic > MAGIC.volcano.min
       ) {
         volcano({
           engine,

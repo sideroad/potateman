@@ -1,6 +1,6 @@
 # How to play
 
-1. Access http://potateman.herokuapp.com
+1. Access https://potateman.herokuapp.com
 2. Read QR code by players
 3. Click Crash button to start game
 
@@ -18,6 +18,7 @@
 |B ( when flying ) | Floating |
 |← or → + A | Dash |
 |↓ + B | Ignite down speed |
-|C| Meteorite |
+|← or → + C| Meteorite |
+|↑ + C| Fire uppercut |
 |↓ + C | Thunderbolt |
-|↑ + C | Volcano |
+|C | Volcano |
