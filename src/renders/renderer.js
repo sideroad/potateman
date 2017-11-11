@@ -52,8 +52,8 @@ export default function (act) {
   // eslint-disable-next-line no-param-reassign
   act.attend = (data) => {
     act.send(data);
-    attendee({ stack, image: data.image });
     stack.push(data);
+    attendee({ stack, image: data.image });
     if (stack.length >= 1) {
       document.getElementById('find').style.display = 'none';
       document.getElementById('start').style.display = 'block';
