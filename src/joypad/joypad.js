@@ -86,7 +86,7 @@ auth((user) => {
           });
           loading.end();
           const ua = window.navigator.userAgent;
-          if (!/iPhone/.test(ua) && !/Safari/.test(ua)) {
+          if (!/iPhone/.test(ua)) {
             expander.start();
           }
         });
