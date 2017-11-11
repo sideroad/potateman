@@ -7,7 +7,7 @@ import expander from '../dom/expander';
 
 document.getElementById('expander-icon').addEventListener('touchend', () => {
   expander.end();
-  document.body.webkitRequestFullscreen();
+  document.documentElement.webkitRequestFullscreen();
 });
 
 auth((user) => {
@@ -61,14 +61,6 @@ auth((user) => {
           window.addEventListener('orientationchange', () => {
             $('#joypad').joypad('destroy');
             bind();
-            $('#test').text(`
-              ${document.body.clientWidth}
-              ${document.body.clientHeight}
-              ${window.innerWidth}
-              ${window.innerHeight}
-              ${window.outerWidth}
-              ${window.outerHeight}
-            `);
           });
           window.addEventListener('resize', () => {
             $('#joypad').joypad('destroy');
@@ -96,15 +88,6 @@ auth((user) => {
           const ua = window.navigator.userAgent;
           if (!/iPhone/.test(ua) && !/Safari/.test(ua)) {
             expander.start();
-          } else {
-            $('#test').text(`
-              ${document.body.clientWidth}
-              ${document.body.clientHeight}
-              ${window.innerWidth}
-              ${window.innerHeight}
-              ${window.outerWidth}
-              ${window.outerHeight}
-            `);
           }
         });
         conn.on('data', (data) => {
