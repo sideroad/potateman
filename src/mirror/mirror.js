@@ -5,7 +5,7 @@ import start from '../dom/start';
 import win from '../dom/win';
 
 const act = {
-  attend: ({ stack, image }) => {
+  attend: (stack, { image }) => {
     attendee({ stack, image });
   },
   mirror: ({ data: { stack } }) => {
