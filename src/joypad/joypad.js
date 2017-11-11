@@ -4,20 +4,6 @@ import auth from './auth';
 import loading from '../dom/loading';
 import expander from '../dom/expander';
 
-const hideSafariAddressBar = () => {
-  setTimeout(() => {
-    window.scrollTo(0, 0);
-  }, 0);
-};
-
-const expandScreen = () => {
-  const ua = window.navigator.userAgent;
-  if (!/iPhone/.test(ua) && !/Safari/.test(ua)) {
-    expander.start();
-  } else {
-    hideSafariAddressBar();
-  }
-};
 
 document.getElementById('expander-icon').addEventListener('touchend', () => {
   expander.end();
@@ -75,7 +61,14 @@ auth((user) => {
           window.addEventListener('orientationchange', () => {
             $('#joypad').joypad('destroy');
             bind();
-            hideSafariAddressBar();
+            $('#test').text(`
+              ${document.body.clientWidth}
+              ${document.body.clientHeight}
+              ${window.innerWidth}
+              ${window.innerHeight}
+              ${window.outerWidth}
+              ${window.outerHeight}
+            `);
           });
           window.addEventListener('resize', () => {
             $('#joypad').joypad('destroy');
@@ -100,7 +93,19 @@ auth((user) => {
             image: user.image,
           });
           loading.end();
-          expandScreen();
+          const ua = window.navigator.userAgent;
+          if (!/iPhone/.test(ua) && !/Safari/.test(ua)) {
+            expander.start();
+          } else {
+            $('#test').text(`
+              ${document.body.clientWidth}
+              ${document.body.clientHeight}
+              ${window.innerWidth}
+              ${window.innerHeight}
+              ${window.outerWidth}
+              ${window.outerHeight}
+            `);
+          }
         });
         conn.on('data', (data) => {
           if (act[data.act]) {
