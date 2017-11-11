@@ -38,6 +38,9 @@ export default function punch({
     type: 'shockWave',
     velocity,
     render: shockWaveRender,
+    category: body.attr.category,
+    player: body.attr.player,
+    position: body.position,
   });
   // eslint-disable-next-line no-param-reassign
   body.attr.punchGage = 0;

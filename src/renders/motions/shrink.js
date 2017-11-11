@@ -8,14 +8,15 @@ import COLLISION from '../collision';
 
 export default function shrink({
   engine,
-  body,
   type,
   strength,
   velocity,
   render,
+  category,
+  position,
+  player,
 }) {
-  const { x = 0, y = 0 } = body.position;
-  const { category } = body.attr;
+  const { x = 0, y = 0 } = position;
 
   const motion = Bodies.circle(x, y, strength, {
     render,
@@ -33,7 +34,7 @@ export default function shrink({
   motion.attr = {
     strength,
     type,
-    player: body.attr.player,
+    player,
   };
 
   Events.on(engine, 'beforeUpdate', () => {

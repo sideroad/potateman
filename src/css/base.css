@@ -176,7 +176,7 @@ body {
     opacity: 0;
     transform: translate(-50%, -50%) scale(1);
   }
-  60% {
+  80% {
     transform: translate(-50%, -50%) scale(0.8);
   }
   95% {

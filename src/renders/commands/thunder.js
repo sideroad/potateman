@@ -73,30 +73,31 @@ export default function thunder({
   };
   // eslint-disable-next-line no-nested-ternary
   const speed = strength < 15 ? 15 : strength > 20 ? 20 : strength;
-
-  shrink({
-    engine,
-    body,
-    strength: 20,
-    type: 'shockWave',
-    velocity: {
-      x: 1 * speed,
-      y: -1 * speed,
-    },
-    render: shrinkRender,
-  });
-  shrink({
+  const shrinkOptions = {
     engine,
     body,
     strength: 10,
     type: 'shockWave',
+    render: shrinkRender,
+    category: body.attr.category,
+    player: body.attr.player,
+    position: body.position,
+  };
+
+  shrink({
+    ...shrinkOptions,
+    velocity: {
+      x: 1 * speed,
+      y: -1 * speed,
+    },
+  });
+  shrink({
+    ...shrinkOptions,
     velocity: {
       x: -1 * speed,
       y: -1 * speed,
     },
-    render: shrinkRender,
   });
-
   // eslint-disable-next-line no-param-reassign
   body.attr.magic = 1;
 
