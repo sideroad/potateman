@@ -12,6 +12,7 @@ import grounds from './grounds';
 import potateman, { destroy } from './potateman';
 import createGhost, { destroy as destroyGhost } from './ghost';
 import boundary from './boundary';
+import items from './items';
 import interaction from './interaction';
 import prefetch from './prefetch';
 
@@ -120,6 +121,7 @@ export default function (act) {
         act,
         players,
       });
+      items({ engine, size });
     });
   };
   // eslint-disable-next-line no-param-reassign

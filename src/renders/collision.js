@@ -1,13 +1,18 @@
+/* eslint-disable no-param-reassign */
+
 import {
   Events,
   Body,
+  World,
 } from 'matter-js';
+
+import shrink from './motions/shrink';
 
 const COLLISION = {
   DEFAULT: 0x0001,
   GROUND: 0x0002,
   ATTACK: 0x0004,
-  BOUNDARY: 0x0008,
+  ITEM: 0x0008,
   GHOST: 0x0010,
   POTATEMAN0: 0x0020,
   POTATEMAN1: 0x0040,
@@ -80,12 +85,9 @@ export function check({ players, engine }) {
           if (bodyA.attr.garding) {
             damage -= ((bodyA.attr.gardGage / 100) * damage);
           }
-          // eslint-disable-next-line no-param-reassign
           bodyA.attr.damage += damage > 0 ? damage : 0;
-          // eslint-disable-next-line no-param-reassign
           bodyA.attr.magic += bodyB.attr.strength / 6;
           if (players[bodyB.attr.player]) {
-            // eslint-disable-next-line no-param-reassign
             players[bodyB.attr.player].body.attr.magic += bodyB.attr.strength / 2;
           }
           let velocity = (bodyB.attr.strength * bodyA.attr.damage * adjuster[type]) / 300;
@@ -101,7 +103,43 @@ export function check({ players, engine }) {
             ) + bodyA.velocity.x,
             y: (velocity / -1) + bodyA.velocity.y,
           });
+          // eslint-disable-next-line no-console
           console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} type: ${type}`);
+        }
+
+        // items collision
+        if (
+          type === 'rescueBox' ||
+          type === 'magicBox'
+        ) {
+          switch (type) {
+          case 'rescueBox':
+            bodyA.attr.damage /= 2;
+            break;
+          case 'magicBox':
+            bodyA.attr.magic += 100;
+            break;
+          default:
+          }
+          World.remove(engine.world, bodyB);
+          shrink({
+            engine,
+            type: 'particle',
+            strength: 15,
+            velocity: {
+              x: 0,
+              y: -5,
+            },
+            render: {
+              strokeStyle: '#999999',
+              fillStyle: '#dddddd',
+              opacity: 0.75,
+              lineWidth: 1,
+            },
+            category: bodyA.attr.category,
+            position: bodyA.position,
+            player: bodyA.attr.player,
+          });
         }
       }
     };

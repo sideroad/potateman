@@ -64,7 +64,7 @@ export default function ({
             COLLISION.VOLCANO |
             COLLISION.POTATEMANS |
             COLLISION.ATTACK |
-            COLLISION.BOUNDARY,
+            COLLISION.ITEM,
     },
     render: {
       sprite: {
@@ -241,13 +241,13 @@ export default function ({
           COLLISION.VOLCANO |
           COLLISION.POTATEMANS |
           COLLISION.ATTACK |
-          COLLISION.BOUNDARY
+          COLLISION.ITEM
           :
           // eslint-disable-next-line no-bitwise
           COLLISION.VOLCANO |
           COLLISION.POTATEMANS |
           COLLISION.ATTACK |
-          COLLISION.BOUNDARY,
+          COLLISION.ITEM,
       },
     });
   });

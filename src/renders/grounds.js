@@ -14,6 +14,9 @@ export default function ({ engine, size }) {
       fillStyle: '#F1F4FE',
     },
     isStatic: true,
+    collisionFilter: {
+      category: COLLISION.DEFAULT,
+    },
   }));
 
   const cellSize = 20;
@@ -32,7 +35,8 @@ export default function ({ engine, size }) {
     isStatic: true,
     collisionFilter: {
       category: COLLISION.GROUND,
-      mask: COLLISION.POTATEMANS,
+      // eslint-disable-next-line no-bitwise
+      mask: COLLISION.POTATEMANS | COLLISION.ITEM,
     },
     render: {
       // fillStyle: 'transparent',
