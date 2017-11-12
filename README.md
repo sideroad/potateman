@@ -26,3 +26,10 @@
 |↑ + C| Fire uppercut ||
 |↓ + C | Thunderbolt ||
 |C | Volcano ||
+
+# Items
+|Icon|Remark|
+|----|------|
+|![RescueBox](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/rescue-box.png)|Decrease total damage|
+|![MagicBox](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/magic-box.png)|Increase magic point|
+|![Firethrower](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/flamethrower-equip-right-1.png)|Use Fire thrower|
