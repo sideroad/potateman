@@ -22,10 +22,10 @@
 |← or → + B | Teleport ||
 |↓ + B ( when flying ) | Ignite down speed ||
 |↓ + B ( on ground ) | Transparent ground ||
-|← or → + C| Meteorite ||
+|← or → + C| Meteorite |![Meteorite](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/meteorite.png)|
 |↑ + C| Fire uppercut ||
-|↓ + C | Thunderbolt ||
-|C | Volcano ||
+|↓ + C | Thunderbolt |![Thunderbolt](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/thunder-attack-left-5.png)|
+|C | Volcano |![Volcano](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/volcano.png)|
 
 # Items
 |Icon|Remark|
