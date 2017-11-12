@@ -4,7 +4,9 @@
 2. Read QR code by players
 3. Click Crash button to start game
 
-* You can share mirroring URL of your stage by clicking share icon.
+* You can invite other people to click share icon. mirroring URL will be copied on clipboard. Share the URL to others.
+
+* You can join other room when click "Find other room".
 
 # Controller
 
