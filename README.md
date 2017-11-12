@@ -20,8 +20,8 @@
 |B ( when flying ) | Floating ||
 |← or → + A | Dash ||
 |← or → + B | Teleport ||
-|↓ + B ( when flying ) | Ignite down speed ||
-|↓ + B ( on ground ) | Transparent ground ||
+|↓ + B ( when flying ) | Increase fall down speed ||
+|↓ + B ( on ground ) | Group dropping ||
 |← or → + C| Meteorite |![Meteorite](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/meteorite.png)|
 |↑ + C| Fire uppercut ||
 |↓ + C | Thunderbolt |![Thunderbolt](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/thunder-attack-left-5.png)|
