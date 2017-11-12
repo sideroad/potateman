@@ -14,15 +14,6 @@ export const shockWaveRender = {
   lineWidth: 1,
 };
 
-export function getPunchStrength({ punchGage, power }) {
-  const punchStrength = (punchGage * power) / 100;
-  // eslint-disable-next-line no-nested-ternary
-  const strength = punchStrength < 5 ? 5 :
-  // eslint-disable-next-line indent
-                   punchStrength > 20 ? 20 : punchStrength;
-  return strength;
-}
-
 export default function ghost({
   engine,
   size,
@@ -83,19 +74,6 @@ export default function ghost({
       y: y - 40,
     });
 
-    const { sinkMotion } = body.attr;
-
-    // sink
-    if (sinkMotion) {
-      const strength = getPunchStrength(body.attr);
-      const scale = strength / sinkMotion.circleRadius;
-      Body.setPosition(sinkMotion, {
-        x,
-        y,
-      });
-      Body.scale(sinkMotion, scale, scale);
-    }
-
     // ghost
     Body.set(body, {
       angle: 0,
@@ -107,7 +85,7 @@ export default function ghost({
   body.attr = {
     punchGage: 1,
     power: 50,
-    category,
+    category: 0x0000,
     magic: 0,
     type: 'ghost',
     player,
