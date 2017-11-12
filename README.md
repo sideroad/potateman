@@ -11,10 +11,10 @@
 | Command | Action|Remark|
 |---------|-------|------|
 |← or → | Move ||
-|↑| Jump |3 consecutive|
+|↑| Jump |3 consecutive jump are allowed|
 |↓| Squat ||
 |A| Punch | Sinkable, Directable |
-|B| Gard | Decrese damage |
+|B| Gard | Decrease damage |
 |B ( when flying ) | Floating ||
 |← or → + A | Dash ||
 |← or → + B | Teleport ||

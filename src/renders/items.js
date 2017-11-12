@@ -19,7 +19,7 @@ export default function itemsFn({
     };
     count += 1;
 
-    if (count % 2000 === 0) {
+    if (count % 1000 === 0) {
       const rescueBox = Bodies.rectangle(random(0, size.width), 0, 20, 20, {
         collisionFilter,
         render: {
@@ -35,7 +35,7 @@ export default function itemsFn({
       };
       World.add(engine.world, [rescueBox]);
     }
-    if (count % 3000 === 0) {
+    if (count % 1500 === 0) {
       const magicBox = Bodies.rectangle(random(0, size.width), 0, 20, 20, {
         collisionFilter,
         render: {
