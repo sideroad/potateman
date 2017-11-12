@@ -6,7 +6,7 @@ import {
   World,
 } from 'matter-js';
 
-import shrink from './motions/shrink';
+import cure from './motions/cure';
 
 const COLLISION = {
   DEFAULT: 0x0001,
@@ -110,7 +110,8 @@ export function check({ players, engine }) {
         // items collision
         if (
           type === 'rescueBox' ||
-          type === 'magicBox'
+          type === 'magicBox' ||
+          type === 'flamethrower'
         ) {
           switch (type) {
           case 'rescueBox':
@@ -119,27 +120,13 @@ export function check({ players, engine }) {
           case 'magicBox':
             bodyA.attr.magic += 100;
             break;
+          case 'flamethrower':
+            bodyA.attr.flamethrowers += 500;
+            break;
           default:
           }
           World.remove(engine.world, bodyB);
-          shrink({
-            engine,
-            type: 'particle',
-            strength: 15,
-            velocity: {
-              x: 0,
-              y: -5,
-            },
-            render: {
-              strokeStyle: '#999999',
-              fillStyle: '#dddddd',
-              opacity: 0.75,
-              lineWidth: 1,
-            },
-            category: bodyA.attr.category,
-            position: bodyA.position,
-            player: bodyA.attr.player,
-          });
+          cure({ engine, body: bodyA });
         }
       }
     };

@@ -67,7 +67,8 @@ export default function ({
           direction.b &&
           !direction.up &&
           !direction.down &&
-          body.attr.gardGage > 1
+          body.attr.gardGage > 1 &&
+          !body.attr.flamethrowers
         ) {
           x = -50;
           y = -0.5;
@@ -98,7 +99,8 @@ export default function ({
           direction.b &&
           !direction.up &&
           !direction.down &&
-          body.attr.gardGage > 1
+          body.attr.gardGage > 1 &&
+          !body.attr.flamethrowers
         ) {
           x = 50;
           y = -0.5;
@@ -146,14 +148,18 @@ export default function ({
       // attack
       if (
         direction.a &&
-        !direction.b
+        !direction.b &&
+        !body.attr.flamethrowers
       ) {
         sink({
           engine,
           sprite,
           body,
         });
-      } else if (body.attr.punchGage) {
+      } else if (
+        body.attr.punchGage &&
+        !body.attr.flamethrowers
+      ) {
         punch({
           engine,
           sprite,
@@ -163,7 +169,10 @@ export default function ({
       }
 
       // guard
-      if (direction.b) {
+      if (
+        direction.b &&
+        !body.attr.flamethrowers
+      ) {
         gard({
           engine,
           sprite,
@@ -203,7 +212,8 @@ export default function ({
         (
           direction.left ||
           direction.right
-        )
+        ) &&
+        !body.attr.flamethrowers
       ) {
         meteorite({
           engine,
@@ -217,7 +227,8 @@ export default function ({
       if (
         direction.b &&
         body.attr.flying &&
-        body.attr.gardGage > 1
+        body.attr.gardGage > 1 &&
+        !body.attr.flamethrowers
       ) {
         y = -3;
       }
@@ -226,7 +237,8 @@ export default function ({
       if (
         direction.c &&
         direction.down &&
-        body.attr.magic > MAGIC.thunder.min
+        body.attr.magic > MAGIC.thunder.min &&
+        !body.attr.flamethrowers
       ) {
         thunder({
           engine,
@@ -245,7 +257,8 @@ export default function ({
       if (
         direction.c &&
         direction.up &&
-        body.attr.magic > MAGIC.uppercut.min
+        body.attr.magic > MAGIC.uppercut.min &&
+        !body.attr.flamethrowers
       ) {
         uppercut({
           engine,
@@ -265,7 +278,8 @@ export default function ({
         !direction.down &&
         !direction.left &&
         !direction.right &&
-        body.attr.magic > MAGIC.volcano.min
+        body.attr.magic > MAGIC.volcano.min &&
+        !body.attr.flamethrowers
       ) {
         volcano({
           engine,

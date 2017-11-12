@@ -29,11 +29,11 @@ export default function uppercut({
       shrink({
         engine,
         body,
-        strength: 17,
+        strength: 20,
         type: 'shockWave',
         render: {
           strokeStyle: '#ffffff',
-          fillStyle: count % 4 ? '#e9546b' : '#EB6238',
+          fillStyle: count % 4 === 0 ? '#e9546b' : '#EB6238',
           opacity: 0.5,
           lineWidth: 1,
         },
@@ -41,7 +41,7 @@ export default function uppercut({
         player: body.attr.player,
         position: {
           x: body.position.x,
-          y: body.position.y - 30,
+          y: body.position.y - 50,
         },
         velocity: {
           x: 0,

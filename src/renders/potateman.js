@@ -8,6 +8,7 @@ import queryString from 'query-string';
 import Sprite from './Sprite';
 import COLLISION from './collision';
 import MAGIC from './magic';
+import flamethrower from './commands/flamethrower';
 
 export const shockWaveRender = {
   strokeStyle: '#ffffff',
@@ -140,6 +141,25 @@ export default function ({
   sprite.render();
   World.add(engine.world, [potateman]);
 
+  const flamethrowerBody = Bodies.rectangle(0, 0, 20, 10, {
+    render: {
+      sprite: {
+        texture: '/images/flamethrower-equip-left-1.png',
+        xScale: 0.5,
+        yScale: 0.5,
+      },
+      opacity: 0,
+    },
+    isSensor: true,
+    isStatic: true,
+  });
+  const flamethrowerSprite = new Sprite(flamethrowerBody, 'flamethrower', [
+    { state: 'equip' },
+  ]);
+  flamethrowerSprite.setState('equip');
+  flamethrowerSprite.render();
+  World.add(engine.world, [flamethrowerBody]);
+
   let count = 0;
   const damageParticles = [];
   Events.on(engine, 'beforeUpdate', () => {
@@ -178,7 +198,7 @@ export default function ({
       x: size.width - 15,
       y,
     });
-    const { sinkMotion, gardMotion } = potateman.attr;
+    const { sinkMotion, gardMotion, flamethrowers } = potateman.attr;
 
     // sink
     if (sinkMotion) {
@@ -200,6 +220,24 @@ export default function ({
         y,
       });
       Body.scale(gardMotion, scale, scale);
+    }
+
+    // flamethrower
+    if (flamethrowers > 0) {
+      Body.setPosition(flamethrowerBody, {
+        x,
+        y: y + 7,
+      });
+      flamethrowerSprite.setDirection(sprite.direction);
+      flamethrowerSprite.render();
+      flamethrowerBody.render.opacity = 1;
+      flamethrower({
+        body: potateman,
+        engine,
+        sprite,
+      });
+    } else {
+      flamethrowerBody.render.opacity = 0;
     }
 
     // damage
@@ -275,6 +313,7 @@ export default function ({
     outsiderRight,
     profileScore: 1,
     transparent: false,
+    flamethrowers: 0,
   };
   return {
     body: potateman,

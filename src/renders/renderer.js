@@ -82,14 +82,9 @@ export default function (act) {
     act.send({
       act: 'start',
     });
-    engine.world.bodies.forEach((body) => {
-      World.remove(engine.world, body);
-    });
-    World.clear(engine.world, false);
     grounds({ engine, size });
     start(() => {
       act.stream(document.getElementsByTagName('canvas')[0]);
-      Events.off(engine);
       interaction({
         act,
         engine,
@@ -166,6 +161,11 @@ export default function (act) {
       destroyGhost({ engine, body: ghosts[ghostId].body });
       delete ghosts[ghostId];
     });
+    engine.world.bodies.forEach((body) => {
+      World.remove(engine.world, body);
+    });
+    World.clear(engine.world, false);
+    Events.off(engine);
   };
 
   // fit the render viewport to the scene

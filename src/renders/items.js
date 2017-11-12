@@ -11,16 +11,17 @@ export default function itemsFn({
   size,
 }) {
   let count = 0;
+  const collisionFilter = {
+    category: COLLISION.ITEM,
+    // eslint-disable-next-line no-bitwise
+    mask: COLLISION.POTATEMANS | COLLISION.GROUND | COLLISION.ATTACK,
+  };
   Events.on(engine, 'beforeUpdate', () => {
-    const collisionFilter = {
-      category: COLLISION.ITEM,
-      // eslint-disable-next-line no-bitwise
-      mask: COLLISION.POTATEMANS | COLLISION.GROUND,
-    };
     count += 1;
 
-    if (count % 1000 === 0) {
-      const rescueBox = Bodies.rectangle(random(0, size.width), 0, 20, 20, {
+    if (count % 500 === 0) {
+      const x = random(size.width / 4, (size.width / 4) * 3);
+      const rescueBox = Bodies.rectangle(x, 0, 20, 20, {
         collisionFilter,
         render: {
           sprite: {
@@ -35,8 +36,9 @@ export default function itemsFn({
       };
       World.add(engine.world, [rescueBox]);
     }
-    if (count % 1500 === 0) {
-      const magicBox = Bodies.rectangle(random(0, size.width), 0, 20, 20, {
+    if (count % 750 === 0) {
+      const x = random(size.width / 4, (size.width / 4) * 3);
+      const magicBox = Bodies.rectangle(x, 0, 20, 20, {
         collisionFilter,
         render: {
           sprite: {
@@ -50,6 +52,23 @@ export default function itemsFn({
         type: 'magicBox',
       };
       World.add(engine.world, [magicBox]);
+    }
+    if (count % 1000 === 0) {
+      const x = random(size.width / 4, (size.width / 4) * 3);
+      const flamethrower = Bodies.rectangle(x, 0, 20, 10, {
+        collisionFilter,
+        render: {
+          sprite: {
+            texture: '/images/flamethrower-equip-left-1.png',
+            xScale: 0.5,
+            yScale: 0.5,
+          },
+        },
+      });
+      flamethrower.attr = {
+        type: 'flamethrower',
+      };
+      World.add(engine.world, [flamethrower]);
     }
   });
 }
