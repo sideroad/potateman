@@ -19,7 +19,7 @@ export const shockWaveRender = {
 export function getPunchStrength({ punchGage, power }) {
   const punchStrength = (punchGage * power) / 100;
   // eslint-disable-next-line no-nested-ternary
-  const strength = punchStrength < 5 ? 5 :
+  const strength = punchStrength < 7 ? 7 :
   // eslint-disable-next-line indent
                    punchStrength > 20 ? 20 : punchStrength;
   return strength;
