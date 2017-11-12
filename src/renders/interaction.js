@@ -213,6 +213,7 @@ export default function ({
           direction.left ||
           direction.right
         ) &&
+        !direction.up &&
         !body.attr.flamethrowers
       ) {
         meteorite({
