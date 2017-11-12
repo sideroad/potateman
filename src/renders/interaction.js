@@ -130,14 +130,15 @@ export default function ({
         if (body.attr.flycount < 3 && !body.attr.keepTouchingJump) {
           if (!body.attr.flying) {
             y = -10;
+            body.attr.flycount += 1;
+            body.attr.flying = true;
+            body.attr.keepTouchingJump = true;
           } else if (body.velocity.y > 0) {
-            y = -5;
-          } else {
-            y -= 5;
+            y -= 10;
+            body.attr.flycount += 1;
+            body.attr.flying = true;
+            body.attr.keepTouchingJump = true;
           }
-          body.attr.flycount += 1;
-          body.attr.flying = true;
-          body.attr.keepTouchingJump = true;
         }
         sprite.setState('walk');
       } else {
