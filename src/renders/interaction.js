@@ -67,8 +67,7 @@ export default function ({
           direction.b &&
           !direction.up &&
           !direction.down &&
-          body.attr.gardGage > 1 &&
-          !body.attr.flying
+          body.attr.gardGage > 1
         ) {
           x = -50;
           y = -0.5;
@@ -99,8 +98,7 @@ export default function ({
           direction.b &&
           !direction.up &&
           !direction.down &&
-          body.attr.gardGage > 1 &&
-          !body.attr.flying
+          body.attr.gardGage > 1
         ) {
           x = 50;
           y = -0.5;
@@ -126,7 +124,7 @@ export default function ({
       }
 
       // jump
-      if (direction.up) {
+      if (direction.up && !direction.b) {
         if (body.attr.flycount < 3 && !body.attr.keepTouchingJump) {
           if (!body.attr.flying) {
             y = -10;
