@@ -94,6 +94,6 @@ export default function easyFn({
     player.direction.right = 0;
     player.direction.a = 0;
     player.direction.b = 0;
-    player.direction.c = 0;
+    player.direction.c = 1;
   }
 }
