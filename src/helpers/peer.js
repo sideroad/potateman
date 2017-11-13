@@ -36,7 +36,7 @@ export default function () {
     conns.push(conn);
     conn.on('data', (data) => {
       if (act[data.act]) {
-        act[data.act](data);
+        act[data.act](data, conn.peer);
       }
     });
   });

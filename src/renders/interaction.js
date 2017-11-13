@@ -4,7 +4,7 @@ import {
   Body,
   Events,
 } from 'matter-js';
-import input from '../helpers/input';
+import { parse } from '../helpers/input';
 import sink from './commands/sink';
 import punch from './commands/punch';
 import gard from './commands/gard';
@@ -25,15 +25,13 @@ export default function ({
   size,
   grounds,
 }) {
-  act.jp = (data) => {
-    const direction = input(data);
-    if (players[data.player]) {
-      // eslint-disable-next-line no-console
-      console.log('duration', new Date().valueOf() - data.t);
-      players[data.player].direction = direction;
+  act.jp = (data, player) => {
+    const direction = parse(data.i);
+    if (players[player]) {
+      players[player].direction = direction;
     }
-    if (ghosts[data.player]) {
-      ghosts[data.player].direction = direction;
+    if (ghosts[player]) {
+      ghosts[player].direction = direction;
     }
   };
 

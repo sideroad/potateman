@@ -3,7 +3,7 @@ import './jquery.joypad';
 import auth from './auth';
 import loading from '../dom/loading';
 import expander from '../dom/expander';
-
+import { stringify } from '../helpers/input';
 
 document.getElementById('expander-icon').addEventListener('touchend', () => {
   expander.end();
@@ -41,19 +41,18 @@ auth((user) => {
             $('#joypad').joypad().bind('joypad', (e, param) => {
               const { ran } = param.ck;
               if (ran && ran < 50) return;
-
-              const data = {
-                act: 'jp',
+              const i = stringify({
                 ang: param.ck.ang,
                 a: param.a,
                 b: param.b,
                 c: param.c,
-                // eslint-disable-next-line
-                player: player,
-                t: new Date().valueOf(),
+              });
+              const data = {
+                act: 'jp',
+                i,
               };
-              if (JSON.stringify(data) === prev) return;
-              prev = JSON.stringify(data);
+              if (i === prev) return;
+              prev = i;
               conn.send(data);
             });
           };
