@@ -65,7 +65,7 @@ export default function easyFn({
   if (
     target.distance.xabs < 5 &&
     target.distance.y < 0 &&
-    target.body.attr.magic > MAGIC.uppercut.min
+    player.body.attr.magic > MAGIC.uppercut.min
   ) {
     player.direction.down = 1;
     player.direction.c = 1;
@@ -74,19 +74,19 @@ export default function easyFn({
   if (
     target.distance.xabs < 5 &&
     target.distance.y > 0 &&
-    target.body.attr.magic > MAGIC.uppercut.min
+    player.body.attr.magic > MAGIC.uppercut.min
   ) {
     player.direction.up = 1;
     player.direction.c = 1;
   }
   if (
     target.distance.yabs < 5 &&
-    target.body.attr.magic > MAGIC.uppercut.min
+    player.body.attr.magic > MAGIC.uppercut.min
   ) {
     player.direction.c = 1;
   }
   if (
-    target.body.attr.magic > MAGIC.volcano.min
+    player.body.attr.magic > MAGIC.volcano.min
   ) {
     player.direction.up = 0;
     player.direction.down = 0;
