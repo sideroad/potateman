@@ -54,9 +54,9 @@ export default function easyFn({
 
   player.direction.b =
     target.distance.y < 0 &&
-    !target.body.attr.flying ? 1 : 0;
+    !player.body.attr.flying ? 1 : 0;
 
-  if (target.body.attr.punchGage < 20) {
+  if (player.body.attr.punchGage < 20) {
     player.direction.a = 1;
   } else {
     player.direction.a = 0;
