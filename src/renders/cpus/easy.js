@@ -85,4 +85,15 @@ export default function easyFn({
   ) {
     player.direction.c = 1;
   }
+  if (
+    target.body.attr.magic > MAGIC.volcano.min
+  ) {
+    player.direction.up = 0;
+    player.direction.down = 0;
+    player.direction.left = 0;
+    player.direction.right = 0;
+    player.direction.a = 0;
+    player.direction.b = 0;
+    player.direction.c = 0;
+  }
 }
