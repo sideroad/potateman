@@ -51,6 +51,7 @@ export default function ({
   name,
   index,
   player,
+  cpu,
 }) {
   const category = COLLISION[`POTATEMAN${index}`];
   const startX = (size.width / 2) + (index % 2 ? (index * 20) + 20 : index * -20);
@@ -320,6 +321,8 @@ export default function ({
     sprite,
     name,
     image,
+    cpu,
+    direction: {},
   };
 }
 

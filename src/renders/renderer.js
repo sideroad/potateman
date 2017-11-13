@@ -14,6 +14,7 @@ import createGhost, { destroy as destroyGhost } from './ghost';
 import boundary from './boundary';
 import items from './items';
 import interaction from './interaction';
+import cpu, { destroy as destroyCpu } from './cpus/init';
 import prefetch from './prefetch';
 
 export default function (act) {
@@ -74,6 +75,20 @@ export default function (act) {
     });
   };
 
+  let cpuSequence = 1;
+  // eslint-disable-next-line no-param-reassign
+  act.cpu = () => {
+    const id = `CPU${cpuSequence}`;
+    act.attend({
+      act: 'attend',
+      image: `/images/cpu-${cpuSequence}.png`,
+      player: id,
+      name: id,
+      cpu: true,
+    });
+    cpuSequence += 1;
+  };
+
   // eslint-disable-next-line no-param-reassign
   act.start = ({ stage }) => {
     fetch(`/api/stages/${stage}`, {
@@ -82,16 +97,16 @@ export default function (act) {
     act.send({
       act: 'start',
     });
-    grounds({ engine, size });
+    interaction({
+      act,
+      engine,
+      players,
+      ghosts,
+      size,
+      grounds: grounds({ engine, size }),
+    });
     start(() => {
       act.stream(document.getElementsByTagName('canvas')[0]);
-      interaction({
-        act,
-        engine,
-        players,
-        ghosts,
-        size,
-      });
       stack.forEach((data, index) => {
         players[data.player] = potateman({
           act,
@@ -101,15 +116,10 @@ export default function (act) {
           player: data.player,
           name: data.name,
           image: data.image,
-        });
-        act.jp({
-          act: 'jp',
-          a: 0,
-          b: 0,
-          c: 0,
-          player: data.player,
+          cpu: data.cpu,
         });
       });
+      cpu({ players, size });
       boundary({
         engine,
         size,
@@ -135,6 +145,8 @@ export default function (act) {
     });
     // eslint-disable-next-line no-param-reassign
     delete players[data.player];
+    destroyCpu();
+    cpu({ players, size });
     if (Object.keys(players).length <= 1) {
       const winner = Object.keys(players)[0] || {};
       const windata = {
@@ -161,6 +173,7 @@ export default function (act) {
       destroyGhost({ engine, body: ghosts[ghostId].body });
       delete ghosts[ghostId];
     });
+    destroyCpu();
     engine.world.bodies.forEach((body) => {
       World.remove(engine.world, body);
     });

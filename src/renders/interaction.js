@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import {
   Body,
   Events,
@@ -21,23 +23,21 @@ export default function ({
   players,
   ghosts,
   size,
+  grounds,
 }) {
-  // eslint-disable-next-line no-param-reassign
   act.jp = (data) => {
     const direction = input(data);
     if (players[data.player]) {
       // eslint-disable-next-line no-console
       console.log('duration', new Date().valueOf() - data.t);
-      // eslint-disable-next-line no-param-reassign
       players[data.player].direction = direction;
     }
     if (ghosts[data.player]) {
-      // eslint-disable-next-line no-param-reassign
       ghosts[data.player].direction = direction;
     }
   };
 
-  collisionCheck({ players, engine });
+  collisionCheck({ players, engine, grounds });
 
   Events.on(engine, 'beforeUpdate', () => {
     Object.keys(players).forEach((id) => {

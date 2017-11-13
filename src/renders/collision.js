@@ -61,18 +61,19 @@ const adjuster = {
   volcano: 0.2,
 };
 
-export function check({ players, engine }) {
+export function check({ players, engine, grounds }) {
   Events.on(engine, 'collisionStart', (event) => {
     const { pairs } = event;
     const bodies = Object.keys(players).map(id => players[id].body);
     const collisionConfirm = (bodyA, bodyB) => {
       if (bodies.includes(bodyA)) {
         // when potateman collision with some others, reset fly count
-        const collisioned = bodies.find(body => body === bodyA);
-        collisioned.attr.flycount = 0;
-        collisioned.attr.flying = false;
-        if (!collisioned.attr.garding) {
-          collisioned.attr.gardGage = 100;
+        if (grounds.find(ground => ground === bodyB)) {
+          bodyA.attr.flycount = 0;
+          bodyA.attr.flying = false;
+          if (!bodyA.attr.garding) {
+            bodyA.attr.gardGage = 100;
+          }
         }
         const { type } = bodyB.attr ? bodyB.attr : {};
         if (

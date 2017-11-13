@@ -2,7 +2,8 @@ body {
   font-family: 'Raleway', sans-serif;
 }
 
-.first {
+.first,
+.second{
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -31,8 +32,7 @@ body {
   border-radius: 3px;
 }
 
-#share,
-#joypad {
+.icon {
   color: #38a1db;
   font-size: 2em;
   margin-left: 1em;
@@ -92,7 +92,8 @@ body {
 }
 
 .qr {
-  width: 500px;
+  width: 400px;
+  height: 400px;
 }
 
 .start {

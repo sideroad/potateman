@@ -23,6 +23,10 @@ act.init = (data) => {
     });
   });
 
+  document.getElementById('add-cpu').addEventListener('click', () => {
+    act.cpu();
+  });
+
   document.querySelectorAll('.find').forEach((elem) => {
     elem.addEventListener('click', () => {
       fetch(`/api/stages/${data.stage}/other`)
