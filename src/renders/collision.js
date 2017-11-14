@@ -58,7 +58,7 @@ const adjuster = {
   shockWave: 0.5,
   meteorite: 0.75,
   thunder: 2,
-  volcano: 0.2,
+  volcano: 0.1,
 };
 
 export function check({ players, engine, grounds }) {
@@ -75,7 +75,7 @@ export function check({ players, engine, grounds }) {
             bodyA.attr.gardGage = 100;
           }
         }
-        const { type } = bodyB.attr ? bodyB.attr : {};
+        const { type, item } = bodyB.attr ? bodyB.attr : {};
         if (
           type === 'shockWave' ||
           type === 'meteorite' ||
@@ -87,9 +87,10 @@ export function check({ players, engine, grounds }) {
             damage -= ((bodyA.attr.gardGage / 100) * damage);
           }
           bodyA.attr.damage += damage > 0 ? damage : 0;
-          bodyA.attr.magic += bodyB.attr.strength / 6;
-          if (players[bodyB.attr.player]) {
-            players[bodyB.attr.player].body.attr.magic += bodyB.attr.strength / 2;
+          bodyA.attr.magic += (bodyB.attr.strength / 6) * adjuster[type];
+          const player = players[bodyB.attr.player];
+          if (player) {
+            player.body.attr.magic += (bodyB.attr.strength / 2) * adjuster[type];
           }
           let velocity = (bodyB.attr.strength * bodyA.attr.damage * adjuster[type]) / 300;
           if (bodyA.attr.garding) {
@@ -109,11 +110,7 @@ export function check({ players, engine, grounds }) {
         }
 
         // items collision
-        if (
-          type === 'rescueBox' ||
-          type === 'magicBox' ||
-          type === 'flamethrower'
-        ) {
+        if (item) {
           switch (type) {
           case 'rescueBox':
             bodyA.attr.damage /= 2;

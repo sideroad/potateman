@@ -119,7 +119,7 @@ export default function (act) {
           cpu: data.cpu,
         });
       });
-      cpu({ players, size });
+      cpu({ players, size, world });
       boundary({
         engine,
         size,
@@ -146,7 +146,7 @@ export default function (act) {
     // eslint-disable-next-line no-param-reassign
     delete players[data.player];
     destroyCpu();
-    cpu({ players, size });
+    cpu({ players, size, world });
     if (Object.keys(players).length <= 1) {
       const winner = Object.keys(players)[0] || {};
       const windata = {

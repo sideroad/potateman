@@ -33,6 +33,7 @@ export default function itemsFn({
       });
       rescueBox.attr = {
         type: 'rescueBox',
+        item: true,
       };
       World.add(engine.world, [rescueBox]);
     }
@@ -50,6 +51,7 @@ export default function itemsFn({
       });
       magicBox.attr = {
         type: 'magicBox',
+        item: true,
       };
       World.add(engine.world, [magicBox]);
     }
@@ -67,6 +69,7 @@ export default function itemsFn({
       });
       flamethrower.attr = {
         type: 'flamethrower',
+        item: true,
       };
       World.add(engine.world, [flamethrower]);
     }

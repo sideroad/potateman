@@ -5,12 +5,16 @@ export default function easyFn({
   player,
   others,
   size,
+  world,
 }) {
   const target = others
+    .map(other => other.body)
+    .concat(world.bodies.filter(body =>
+      body.attr && body.attr.item))
     .map((other) => {
       const distance = {
-        x: player.body.position.x - other.body.position.x,
-        y: player.body.position.y - other.body.position.y,
+        x: player.body.position.x - other.position.x,
+        y: player.body.position.y - other.position.y,
       };
       return {
         ...other,
@@ -58,7 +62,8 @@ export default function easyFn({
 
   if (
     player.body.attr.punchGage < 20 ||
-    target.distance.t > 100
+    target.distance.t > 100 ||
+    target.item
   ) {
     player.direction.a = 1;
   } else {
@@ -67,9 +72,10 @@ export default function easyFn({
 
   if (
     target.distance.xabs < 5 &&
-    target.distance.y < 0 &&
+    target.distance.y > 0 &&
     player.body.attr.magic > MAGIC.uppercut.min &&
-    player.body.attr.flamethrowers <= 0
+    player.body.attr.flamethrowers <= 0 &&
+    !target.item
   ) {
     player.direction.down = 1;
     player.direction.c = 1;
@@ -77,9 +83,11 @@ export default function easyFn({
 
   if (
     target.distance.xabs < 5 &&
-    target.distance.y > 0 &&
+    target.distance.y > -100 &&
+    target.distance.y < 0 &&
     player.body.attr.magic > MAGIC.uppercut.min &&
-    player.body.attr.flamethrowers <= 0
+    player.body.attr.flamethrowers <= 0 &&
+    !target.item
   ) {
     player.direction.up = 1;
     player.direction.c = 1;
@@ -87,13 +95,15 @@ export default function easyFn({
   if (
     target.distance.yabs < 5 &&
     player.body.attr.magic > MAGIC.uppercut.min &&
-    player.body.attr.flamethrowers <= 0
+    player.body.attr.flamethrowers <= 0 &&
+    !target.item
   ) {
     player.direction.c = 1;
   }
   if (
     player.body.attr.magic > MAGIC.volcano.min &&
-    player.body.attr.flamethrowers <= 0
+    player.body.attr.flamethrowers <= 0 &&
+    !target.item
   ) {
     player.direction.up = 0;
     player.direction.down = 0;
