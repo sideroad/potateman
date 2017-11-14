@@ -15,7 +15,7 @@ export default function flamethrowerFn({
     swell({
       engine,
       body,
-      strength: 20,
+      strength: 25,
       type: 'shockWave',
       render: {
         strokeStyle: '#ffffff',
