@@ -39,6 +39,10 @@ body {
   cursor: pointer;
 }
 
+.icon.disabled {
+  color: grey;
+}
+
 #attendee {
   font-size: 2em;
   display: flex;

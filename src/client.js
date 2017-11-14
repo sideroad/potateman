@@ -23,8 +23,17 @@ act.init = (data) => {
     });
   });
 
-  document.getElementById('add-cpu').addEventListener('click', () => {
+  let cpuIndex = 1;
+  const addCpuElem = document.getElementById('add-cpu');
+  addCpuElem.addEventListener('click', () => {
+    if (cpuIndex > 10) {
+      return;
+    }
+    if (cpuIndex === 10) {
+      addCpuElem.className = 'icon disabled';
+    }
     act.cpu();
+    cpuIndex += 1;
   });
 
   document.querySelectorAll('.find').forEach((elem) => {
