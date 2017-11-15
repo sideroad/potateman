@@ -26,6 +26,27 @@ auth((user) => {
           type: 'KEEPALIVE',
         });
       }, 5000);
+
+      let prev;
+      const bind = () => {
+        $('#joypad').joypad().bind('joypad', (e, param) => {
+          const { ran } = param.ck;
+          if (ran && ran < 50) return;
+          const i = stringify({
+            ang: param.ck.ang,
+            a: param.a,
+            b: param.b,
+            c: param.c,
+          });
+          const data = {
+            act: 'jp',
+            i,
+          };
+          if (i === prev) return;
+          prev = i;
+          conn.send(data);
+        });
+      };
       const act = {
         attend: (msg) => {
           if (player) {
@@ -36,26 +57,6 @@ auth((user) => {
           $('#image').css({
             backgroundImage: `url(${msg.image})`,
           });
-          let prev;
-          const bind = () => {
-            $('#joypad').joypad().bind('joypad', (e, param) => {
-              const { ran } = param.ck;
-              if (ran && ran < 50) return;
-              const i = stringify({
-                ang: param.ck.ang,
-                a: param.a,
-                b: param.b,
-                c: param.c,
-              });
-              const data = {
-                act: 'jp',
-                i,
-              };
-              if (i === prev) return;
-              prev = i;
-              conn.send(data);
-            });
-          };
           window.addEventListener('orientationchange', () => {
             $('#joypad').joypad('destroy');
             bind();
@@ -107,6 +108,22 @@ auth((user) => {
           // eslint-disable-next-line
           window.alert('Please read QR code to join');
         }
+
+        document.getElementById('portable').addEventListener('click', () => {
+          document.getElementById('joypad').className = 'joypad portable-mode';
+          $('#joypad').joypad('destroy');
+          bind();
+          const call = peer.call(stage, document.getElementById('dummy').captureStream());
+          call.on('stream', (stream) => {
+            const streamElem = document.getElementById('stream');
+            streamElem.srcObject = stream;
+            streamElem.play();
+          });
+          call.on('error', (msg) => {
+            // eslint-disable-next-line no-console
+            console.log(msg);
+          });
+        });
       });
       peer.on('error', (err) => {
         // eslint-disable-next-line no-console

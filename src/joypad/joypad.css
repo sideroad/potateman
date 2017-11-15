@@ -20,7 +20,11 @@ body {
   left: 0;
 }
 
-.joypad {
+.joypad,
+#stream {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,12 +32,27 @@ body {
   height: 100vh;
 }
 
-.help {
+#dummy {
+  display: none;
+}
+
+.help,
+.portable {
   position: absolute;
-  top: 5px;
-  left: 5px;
   color: #38a1db;
-  font-size: 2em;
+  font-size: 25px;
+  left: 5px;
+  outline: none;
+  border: none;
+  background: none;
+}
+
+.help {
+  top: 5px;
+}
+
+.portable {
+  bottom: 5px;
 }
 
 .left-pad,
@@ -64,6 +83,26 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.portable-mode .left-pad,
+.portable-mode .right-pad {
+  width: 20%;
+  justify-content: space-around;
+}
+
+.portable-mode #ck {
+  width: 110px;
+  height: 110px;
+}
+
+.portable-mode.joypad {
+  justify-content: space-between;
+}
+
+.portable-mode .button {
+  height: 20%;
+  opacity: 0.5;
 }
 
 #a {
