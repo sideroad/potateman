@@ -109,13 +109,13 @@ auth((user) => {
           window.alert('Please read QR code to join');
         }
 
+        const streamElem = document.getElementById('stream');
         document.getElementById('portable').addEventListener('click', () => {
           document.getElementById('joypad').className = 'joypad portable-mode';
           $('#joypad').joypad('destroy');
           bind();
           const call = peer.call(stage, document.getElementById('dummy').captureStream());
           call.on('stream', (stream) => {
-            const streamElem = document.getElementById('stream');
             streamElem.srcObject = stream;
             streamElem.play();
           });
@@ -123,6 +123,7 @@ auth((user) => {
             // eslint-disable-next-line no-console
             console.log(msg);
           });
+          streamElem.play();
         });
       });
       peer.on('error', (err) => {
