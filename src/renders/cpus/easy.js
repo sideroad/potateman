@@ -28,6 +28,13 @@ export default function easyFn({
     })
     .sort((a, b) => a.distance.t > b.distance.t)[0];
   if (!target) {
+    player.direction.up = 0;
+    player.direction.down = 0;
+    player.direction.left = 0;
+    player.direction.right = 0;
+    player.direction.a = 0;
+    player.direction.b = 0;
+    player.direction.c = 0;
     return;
   }
 
