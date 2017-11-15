@@ -19,7 +19,7 @@ const app = new Express();
 const joypadHtml = fs.readFileSync(path.join(__dirname, '../dist/static/joypad/index.html'), 'utf8');
 const mirrorHtml = fs.readFileSync(path.join(__dirname, '../dist/static/mirror/index.html'), 'utf8');
 
-const appHost = process.env.GLOBAL_HOST || 'localhost';
+const appHost = process.env.POTATE_HOST || 'localhost';
 const appPort = Number(process.env.GLOBAL_PORT || 3000);
 const base = normalize(`${appHost}:${appPort}`);
 const stages = [];
