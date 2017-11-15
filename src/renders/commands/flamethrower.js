@@ -11,7 +11,7 @@ export default function flamethrowerFn({
   // eslint-disable-next-line no-param-reassign
   body.attr.flamethrowers -= 1;
 
-  if (body.attr.flamethrowers % 2 === 0) {
+  if (body.attr.flamethrowers % 1 === 0) {
     swell({
       engine,
       body,
@@ -19,7 +19,7 @@ export default function flamethrowerFn({
       type: 'shockWave',
       render: {
         strokeStyle: '#ffffff',
-        fillStyle: body.attr.flamethrowers % 4 === 0 ? '#FB3C02' : '#EE7800',
+        fillStyle: body.attr.flamethrowers % 2 === 0 ? '#FB3C02' : '#EE7800',
         opacity: 0.5,
         lineWidth: 1,
       },
