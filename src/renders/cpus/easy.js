@@ -27,6 +27,9 @@ export default function easyFn({
       };
     })
     .sort((a, b) => a.distance.t > b.distance.t)[0];
+  if (!target) {
+    return;
+  }
 
   player.direction.right =
     (
