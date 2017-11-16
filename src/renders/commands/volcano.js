@@ -1,6 +1,5 @@
 import {
   World,
-  Events,
   Bodies,
   Body,
 } from 'matter-js';
@@ -62,12 +61,4 @@ export default function ({
   body.attr.magic = 1;
 
   World.add(engine.world, volcanos);
-
-  Events.on(engine, 'beforeUpdate', () => {
-    volcanos.forEach((volcanoMotion) => {
-      if (volcanoMotion.position.y > size.height * 2) {
-        World.remove(engine.world, volcanoMotion);
-      }
-    });
-  });
 }

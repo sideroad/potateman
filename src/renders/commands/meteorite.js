@@ -1,6 +1,5 @@
 import {
   World,
-  Events,
   Body,
   Bodies,
 } from 'matter-js';
@@ -12,7 +11,6 @@ export default function meteorite({
   engine,
   body,
   sprite,
-  size,
 }) {
   if (body.attr.magic < MAGIC.meteorite.min) {
     return;
@@ -54,10 +52,4 @@ export default function meteorite({
   };
   // eslint-disable-next-line no-param-reassign
   body.attr.magic = 1;
-
-  Events.on(engine, 'beforeUpdate', () => {
-    if (meteoriteMotion.position.y > size.height * 2) {
-      World.remove(engine.world, meteoriteMotion);
-    }
-  });
 }

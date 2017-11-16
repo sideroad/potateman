@@ -1,6 +1,7 @@
 import {
   Events,
   Body,
+  World,
 } from 'matter-js';
 
 export default function ({
@@ -10,6 +11,8 @@ export default function ({
   players,
 }) {
   Events.on(engine, 'beforeUpdate', () => {
+    const bottomBoundary = size.height * 2;
+    const topBoundary = size.height * -2;
     Object.keys(players).forEach((player) => {
       const { position, attr } = players[player].body;
       Body.set(attr.outsiderRight, {
@@ -37,13 +40,18 @@ export default function ({
         },
       });
       if (
-        position.y > size.height * 3 ||
-        position.y < size.height * -2
+        position.y > bottomBoundary ||
+        position.y < topBoundary
       ) {
         act.dead({
           act: 'dead',
           player,
         });
+      }
+    });
+    engine.world.bodies.forEach((body) => {
+      if (body.position.y > bottomBoundary) {
+        World.remove(engine.world, body);
       }
     });
   });
