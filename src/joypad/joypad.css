@@ -53,6 +53,7 @@ body {
 
 .portable {
   bottom: 5px;
+  display: none; /** Hide portable mode until zoom function implementation */
 }
 
 .left-pad,
@@ -89,6 +90,7 @@ body {
 .portable-mode .right-pad {
   width: 20%;
   justify-content: space-around;
+  margin: 20px;
 }
 
 .portable-mode #ck {
