@@ -53,6 +53,7 @@ export default function ({
   player,
   cpu,
   fbid,
+  render,
 }) {
   const category = COLLISION[`POTATEMAN${index}`];
   const startX = (size.width / 2) + (index % 2 ? (index * 20) + 20 : index * -20);
@@ -184,20 +185,24 @@ export default function ({
     indicator.render.strokeStyle = (MAGIC[assignedMagic] || { color: '#FFFFFF' }).color;
 
     // outsider
+    const maxX = render.bounds.max.x;
+    const maxY = render.bounds.max.y;
+    const minX = render.bounds.min.x;
+    const minY = render.bounds.min.y;
     Body.setPosition(outsiderBottom, {
-      x,
-      y: size.height - 15,
+      x: maxX - 15 < x ? maxX - 15 : x < minX + 15 ? minX + 15 : x,
+      y: maxY - 15,
     });
     Body.setPosition(outsiderTop, {
-      x,
-      y: 15,
+      x: maxX - 15 < x ? maxX - 15 : x < minX + 15 ? minX + 15 : x,
+      y: minY + 15,
     });
     Body.setPosition(outsiderLeft, {
-      x: 15,
+      x: minX + 15,
       y,
     });
     Body.setPosition(outsiderRight, {
-      x: size.width - 15,
+      x: maxX - 15,
       y,
     });
     const { sinkMotion, gardMotion, flamethrowers } = potateman.attr;

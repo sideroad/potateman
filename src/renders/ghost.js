@@ -34,7 +34,7 @@ export default function ghost({
         xScale: -0.5,
         yScale: 0.5,
       },
-      opacity: 0.5,
+      opacity: 0.75,
     },
     isStatic: true,
     isSensor: true,

@@ -4,6 +4,7 @@ import {
   Render,
   Runner,
   World,
+  Bounds,
 } from 'matter-js';
 import _ from 'lodash';
 import attendee from '../dom/attendee';
@@ -17,6 +18,7 @@ import items from './items';
 import interaction from './interaction';
 import cpu, { destroy as destroyCpu } from './cpus/init';
 import prefetch from './prefetch';
+import postScore from '../helpers/postScore';
 
 export default function (act) {
   // create engine
@@ -112,6 +114,20 @@ export default function (act) {
       size,
       grounds: grounds({ engine, size }),
     });
+    Bounds.shift(render.bounds, {
+      x: 0,
+      y: 0,
+    });
+    render.bounds = {
+      min: {
+        x: 0,
+        y: 0,
+      },
+      max: {
+        x: size.width,
+        y: size.height,
+      },
+    };
     start(() => {
       act.stream(document.getElementsByTagName('canvas')[0]);
       stack.forEach((data, index) => {
@@ -125,6 +141,7 @@ export default function (act) {
           name: data.name,
           image: data.image,
           cpu: data.cpu,
+          render,
         });
       });
       cpu({ players, size, world });
@@ -133,6 +150,7 @@ export default function (act) {
         size,
         act,
         players,
+        render,
       });
       items({ engine, size });
     });
@@ -142,6 +160,11 @@ export default function (act) {
     // eslint-disable-next-line no-console
     console.log(`dead:${data.player}`);
     const player = players[data.player];
+    postScore({
+      fbid: player.fbid,
+      score: data.score,
+      image: data.image,
+    });
     destroy({ engine, body: player.body });
     ghosts[data.player] = createGhost({
       act,
@@ -195,44 +218,7 @@ export default function (act) {
     });
     World.clear(engine.world, false);
     Events.off(engine);
-    if (data.fbid) {
-      const scoreUrl = `https://chaus.herokuapp.com/apis/potateman/scores/${data.fbid}`;
-      const scoresUrl = 'https://chaus.herokuapp.com/apis/potateman/scores';
-      fetch(scoreUrl, {
-        mode: 'cors',
-      })
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          }
-          return fetch(scoresUrl, {
-            method: 'POST',
-            mode: 'cors',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              fbid: data.fbid,
-              score: 0,
-            }),
-          // eslint-disable-next-line function-paren-newline
-          });
-        })
-        .then(res => (res.score || 0) + data.score)
-        .then(score => fetch(scoreUrl, {
-          method: 'PATCH',
-          mode: 'cors',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            score,
-            image: data.image,
-          }),
-        }));
-    }
+    postScore(data);
   };
 
   // eslint-disable-next-line
