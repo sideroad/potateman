@@ -329,3 +329,16 @@ body {
   color: #fffffe;
   margin: 20px;
 }
+
+@media (max-width: 768px) {
+  .left-container{
+    display: none;
+  }
+  .reception{
+    justify-content: center;
+    align-items: center;
+  }
+  .qr-container {
+    display: none;
+  }
+}

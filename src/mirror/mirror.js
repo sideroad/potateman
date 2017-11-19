@@ -3,6 +3,7 @@ import QRious from 'qrious';
 import attendee from '../dom/attendee';
 import start from '../dom/start';
 import win from '../dom/win';
+import ranking from '../dom/ranking';
 
 const act = {
   attend: (stack, { image }) => {
@@ -64,3 +65,7 @@ peer.on('error', (err) => {
   // eslint-disable-next-line no-console
   console.log(err);
 });
+
+fetch('https://chaus.herokuapp.com/apis/potateman/scores?orderBy=-score')
+  .then(res => res.json())
+  .then(res => ranking(res));
