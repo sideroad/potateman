@@ -59,6 +59,7 @@ export default {
         return res.status(401).json({});
       }, (req, res) => {
         res.status(200).json({
+          id: req.user.id,
           name: req.user.displayName,
           image: `/ic?url=${encodeURIComponent(req.user.photos[0].value)}&size=100`,
         });

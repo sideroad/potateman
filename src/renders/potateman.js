@@ -52,6 +52,7 @@ export default function ({
   index,
   player,
   cpu,
+  fbid,
 }) {
   const category = COLLISION[`POTATEMAN${index}`];
   const startX = (size.width / 2) + (index % 2 ? (index * 20) + 20 : index * -20);
@@ -306,6 +307,7 @@ export default function ({
     type: 'potateman',
     player,
     profile,
+    score: 0,
     teleported: false,
     indicator,
     outsiderBottom,
@@ -315,9 +317,11 @@ export default function ({
     profileScore: 1,
     transparent: false,
     flamethrowers: 0,
+    lastAttacked: undefined,
   };
   return {
     body: potateman,
+    fbid,
     sprite,
     name,
     image,

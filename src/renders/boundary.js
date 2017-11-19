@@ -43,9 +43,17 @@ export default function ({
         position.y > bottomBoundary ||
         position.y < topBoundary
       ) {
+        const lastAttacker = players[attr.lastAttacked];
+        if (lastAttacker) {
+          lastAttacker.body.attr.damage = lastAttacker.body.attr.damage > attr.damage ?
+            lastAttacker.body.attr.damage - attr.damage : 0;
+          lastAttacker.body.attr.magic += attr.magic;
+          lastAttacker.body.attr.score += attr.damage + attr.magic + attr.score;
+        }
         act.dead({
           act: 'dead',
           player,
+          score: Math.ceil(attr.score),
         });
       }
     });

@@ -117,6 +117,17 @@ body {
   background: linear-gradient(135deg, #f1e767 0%,#feb645 100%);
 }
 
+#a:before {
+  content: 'A';
+}
+#b:before {
+  content: 'B';
+}
+#c:before {
+  content: 'C';
+}
+
+
 #loading,
 #expander {
   display: none;

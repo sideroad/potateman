@@ -91,6 +91,8 @@ export function check({ players, engine, grounds }) {
           const player = players[bodyB.attr.player];
           if (player) {
             player.body.attr.magic += (bodyB.attr.strength / 2) * adjuster[type];
+            player.body.attr.score += (bodyB.attr.strength / 2) * adjuster[type];
+            bodyA.attr.lastAttacked = bodyB.attr.player;
           }
           let velocity = (bodyB.attr.strength * bodyA.attr.damage * adjuster[type]) / 300;
           if (bodyA.attr.garding) {

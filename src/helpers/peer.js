@@ -39,6 +39,14 @@ export default function () {
         act[data.act](data, conn.peer);
       }
     });
+    conn.on('close', () => {
+      const leavedata = {
+        act: 'leave',
+        player: conn.peer,
+      };
+      act.send(leavedata);
+      act.leave(leavedata);
+    });
   });
   return act;
 }

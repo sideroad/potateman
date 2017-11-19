@@ -3,6 +3,7 @@ import QRious from 'qrious';
 import Clipboard from 'clipboard';
 import renderer from './renders/renderer';
 import peer from './helpers/peer';
+import ranking from './dom/ranking';
 
 const act = peer();
 act.init = (data) => {
@@ -69,5 +70,9 @@ act.init = (data) => {
     }, 2000);
   });
 };
+
+fetch('https://chaus.herokuapp.com/apis/potateman/scores?orderBy=-score')
+  .then(res => res.json())
+  .then(res => ranking(res));
 
 renderer(act);

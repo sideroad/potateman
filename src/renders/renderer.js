@@ -5,6 +5,7 @@ import {
   Runner,
   World,
 } from 'matter-js';
+import _ from 'lodash';
 import attendee from '../dom/attendee';
 import start from '../dom/start';
 import win from '../dom/win';
@@ -89,8 +90,10 @@ export default function (act) {
     cpuSequence += 1;
   };
 
+  let started = false;
   // eslint-disable-next-line no-param-reassign
   act.start = ({ stage }) => {
+    started = true;
     fetch(`/api/stages/${stage}`, {
       method: 'DELETE',
     });
@@ -113,6 +116,7 @@ export default function (act) {
           engine,
           size,
           index,
+          fbid: data.fbid,
           player: data.player,
           name: data.name,
           image: data.image,
@@ -152,8 +156,16 @@ export default function (act) {
       const windata = {
         act: 'win',
         player: winner,
+        fbid: (players[winner] || {}).fbid,
         name: (players[winner] || {}).name,
         image: (players[winner] || {}).image,
+        score: Math.ceil((players[winner] || {
+          body: {
+            attr: {
+              score: 0,
+            },
+          },
+        }).body.attr.score),
       };
       act.send(windata);
       act.win(windata);
@@ -179,6 +191,59 @@ export default function (act) {
     });
     World.clear(engine.world, false);
     Events.off(engine);
+    if (data.fbid) {
+      const scoreUrl = `https://chaus.herokuapp.com/apis/potateman/scores/${data.fbid}`;
+      const scoresUrl = 'https://chaus.herokuapp.com/apis/potateman/scores';
+      fetch(scoreUrl, {
+        mode: 'cors',
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+          return fetch(scoresUrl, {
+            method: 'POST',
+            mode: 'cors',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              fbid: data.fbid,
+              score: 0,
+            }),
+          // eslint-disable-next-line function-paren-newline
+          });
+        })
+        .then(res => (res.score || 0) + data.score)
+        .then(score => fetch(scoreUrl, {
+          method: 'PATCH',
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            score,
+            image: data.image,
+          }),
+        }));
+    }
+  };
+
+  // eslint-disable-next-line
+  act.leave = (data) => {
+    if (started) {
+      const deaddata = {
+        act: 'dead',
+        player: data.player,
+        score: 0,
+      };
+      act.send(deaddata);
+      act.dead(deaddata);
+    } else {
+      _.remove(stack, player => player.player === data.player);
+    }
   };
 
   // fit the render viewport to the scene

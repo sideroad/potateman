@@ -1,7 +1,7 @@
 export default function startFn(callback) {
   document.getElementById('winner').style.display = 'none';
-  if (document.getElementById('qr-container')) {
-    document.getElementById('qr-container').remove();
+  if (document.getElementById('reception')) {
+    document.getElementById('reception').remove();
   }
   document.getElementById('countdown').setAttribute('class', 'activate');
   setTimeout(() => {

@@ -80,6 +80,7 @@ auth((user) => {
             stage: stage,
             // eslint-disable-next-line
             player: _player,
+            fbid: user.id,
             name: user.name,
             image: user.image,
           });
