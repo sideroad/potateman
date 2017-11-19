@@ -157,12 +157,12 @@ export default function ({
     };
     const rounded = {
       min: {
-        x: calc.min.x > 5 ? prev.min.x + 5 : calc.min.x < -5 ? prev.min.x - 5 : bounds.min.x,
-        y: calc.min.y > 5 ? prev.min.y + 5 : calc.min.y < -5 ? prev.min.y - 5 : bounds.min.y,
+        x: calc.min.x > 1 ? prev.min.x + 1 : calc.min.x < -1 ? prev.min.x - 1 : bounds.min.x,
+        y: calc.min.y > 1 ? prev.min.y + 1 : calc.min.y < -1 ? prev.min.y - 1 : bounds.min.y,
       },
       max: {
-        x: calc.max.x > 5 ? prev.max.x + 5 : calc.max.x < -5 ? prev.max.x - 5 : bounds.max.x,
-        y: calc.max.y > 5 ? prev.max.y + 5 : calc.max.y < -5 ? prev.max.y - 5 : bounds.max.y,
+        x: calc.max.x > 1 ? prev.max.x + 1 : calc.max.x < -1 ? prev.max.x - 1 : bounds.max.x,
+        y: calc.max.y > 1 ? prev.max.y + 1 : calc.max.y < -1 ? prev.max.y - 1 : bounds.max.y,
       },
     };
     rounded.ratio = (rounded.max.x - rounded.min.x) / (rounded.max.y - rounded.min.y);
