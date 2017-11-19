@@ -7,7 +7,7 @@ body {
   overflow: hidden;
 }
 
-.ranking{
+.left-container{
   background-color: #3B4647;
   color: #fffffc;
   font-size: 2em;
@@ -52,12 +52,26 @@ body {
   display: none;
 }
 
+#add-cpu {
+  background-image: url(/images/add-cpu.png);
+  background-size: contain;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #38a1db;
+}
+#add-cpu.disabled{
+  background-image: url(/images/add-cpu-disabled.png);
+  border: 1px solid gray;
+  cursor: default;
+}
+
 .tooltip {
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 150px;
+  width: 200px;
   height: 2em;
   color: white;
   background-color: black;
@@ -67,7 +81,6 @@ body {
 .icon {
   color: #38a1db;
   font-size: 2em;
-  margin-left: 1em;
   cursor: pointer;
 }
 
@@ -118,7 +131,7 @@ body {
 .reception {
   width: 100vw;
   height: 100vh;
-  background-color: white;
+  background-color: #fffffc;
   position: absolute;
   top: 0;
   left: 0;
@@ -128,16 +141,32 @@ body {
   flex-direction: row;
 }
 
-.qr-container {
+.right-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+#share,
+.overwrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.overwrap {
+  background-color: white;
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.qr-container {
+  position: relative;
+}
 .qr {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
 }
 
 .start {
@@ -167,6 +196,9 @@ body {
   color: #ffffff;
   box-shadow: none;
   cursor: initial;
+}
+#joypad {
+  display: none;
 }
 #countdown {
   display: none;

@@ -12,7 +12,7 @@
     <script src="/joypad/peer.min.js"></script>
     <link rel="stylesheet" href="/css/base.css" />
     <div id="reception" class="reception">
-      <div class="ranking">
+      <div class="left-container">
         <div class="ranking-icon">
           <i class="fa fa-university"></i>
         </div>
@@ -21,22 +21,23 @@
           </tbody>
         </table>
       </div>
-      <div class="qr-container">
+      <div class="right-container">
         <div class="first">
           <div id="attendee">Read QR or Find other room to join</div>
         </div>
         <div class="second">
-          <div id="share" class="clipboard icon" >
-            <i class="fa fa-share-alt-square" aria-hidden="true"></i>
-          </div>
           <div id="joypad" class="clipboard icon" >
             <i class="fa fa-gamepad" aria-hidden="true"></i>
           </div>
-          <div id="add-cpu" class="icon">
-            <i class="fa fa-plus-circle" aria-hidden="true"></i>
-          </div>
+          <div id="add-cpu" class="icon"></div>
         </div>
-        <canvas id="qr" class="qr"></canvas>
+        <div class="qr-container">
+          <div class="overwrap"></div>
+          <div id="share" class="clipboard icon" >
+            <i class="fa fa-share-alt-square" aria-hidden="true"></i>
+          </div>
+          <canvas id="qr" class="qr"></canvas>
+        </div>
         <button id="find" class="find">
           <i class="fa fa-search" aria-hidden="true"></i>
           Find other room

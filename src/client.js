@@ -61,10 +61,10 @@ act.init = (data) => {
     const rect = event.trigger.getBoundingClientRect();
     const div = document.createElement('div');
     div.setAttribute('class', 'tooltip');
-    div.innerHTML = 'Copied URL!';
+    div.innerHTML = 'Copied Mirroring URL!';
     document.body.appendChild(div);
     div.style.top = rect.top;
-    div.style.left = rect.left - 60;
+    div.style.left = rect.left - 85;
     setTimeout(() => {
       document.body.removeChild(div);
     }, 2000);
