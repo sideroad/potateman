@@ -57,8 +57,12 @@ export default function (act) {
     if (stack.length > 16) {
       return;
     }
-    act.send(data);
     stack.push(data);
+    act.send({
+      act: 'attend',
+      stack,
+      data,
+    });
     attendee({ stack, image: data.image });
     if (stack.length >= 1) {
       document.getElementById('find').style.display = 'none';

@@ -6,7 +6,7 @@ import win from '../dom/win';
 import ranking from '../dom/ranking';
 
 const act = {
-  attend: (stack, { image }) => {
+  attend: ({ stack, data: { image } }) => {
     attendee({ stack, image });
   },
   mirror: ({ data: { stack } }) => {

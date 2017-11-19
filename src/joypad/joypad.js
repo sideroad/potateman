@@ -48,14 +48,14 @@ auth((user) => {
         });
       };
       const act = {
-        attend: (msg) => {
+        attend: ({ data }) => {
           if (player) {
             return;
           }
           // eslint-disable-next-line
-          player = msg.player;
+          player = data.player;
           $('#image').css({
-            backgroundImage: `url(${msg.image})`,
+            backgroundImage: `url(${data.image})`,
           });
           window.addEventListener('orientationchange', () => {
             $('#joypad').joypad('destroy');
