@@ -32,6 +32,8 @@ body {
   border-radius: 2px;
   color: #3B4647;
   padding-left: 1em;
+  display: flex;
+  align-items: center;
 }
 
 .first,
