@@ -42,8 +42,8 @@ export default function thunder({
     isSensor: true,
   };
   const thunderbolts = [];
-  _.times(Math.ceil(size.height / 40), (index) => {
-    const motion = Bodies.rectangle(x, (index * 40), 40, 40, thunderOptions);
+  _.times(Math.ceil((size.height * 3) / 40), (index) => {
+    const motion = Bodies.rectangle(x, (index * 40) - size.height, 40, 40, thunderOptions);
     World.add(engine.world, motion);
     motion.attr = {
       strength,
