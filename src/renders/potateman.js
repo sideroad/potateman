@@ -57,7 +57,7 @@ export default function ({
 }) {
   const category = COLLISION[`POTATEMAN${index}`];
   const startX = (size.width / 2) + (index % 2 ? (index * 20) + 20 : index * -20);
-  const potateman = Bodies.rectangle(startX, size.height / 3, 23, 29, {
+  const potateman = Bodies.rectangle(startX, size.height / 3, 34.5, 43.5, {
     frictionAir: 0,
     frictionStatic: 20,
     density: 0.75,
@@ -73,8 +73,8 @@ export default function ({
     render: {
       sprite: {
         texture: '/images/potateman-stand-left-1.png',
-        xScale: -0.5,
-        yScale: 0.5,
+        xScale: 0.75,
+        yScale: 0.75,
       },
     },
   });
@@ -82,29 +82,29 @@ export default function ({
     render: {
       sprite: {
         texture: image,
-        xScale: 0.25,
-        yScale: 0.25,
+        xScale: 0.375,
+        yScale: 0.375,
       },
       opacity: 0,
     },
     isSensor: true,
     isStatic: true,
   };
-  const outsiderBottom = Bodies.circle(0, 50, 25, outsiderOption);
+  const outsiderBottom = Bodies.circle(0, 50, 37.5, outsiderOption);
   World.add(engine.world, [outsiderBottom]);
-  const outsiderTop = Bodies.circle(0, 50, 25, outsiderOption);
+  const outsiderTop = Bodies.circle(0, 50, 37.5, outsiderOption);
   World.add(engine.world, [outsiderTop]);
-  const outsiderLeft = Bodies.circle(0, 50, 25, outsiderOption);
+  const outsiderLeft = Bodies.circle(0, 50, 37.5, outsiderOption);
   World.add(engine.world, [outsiderLeft]);
-  const outsiderRight = Bodies.circle(0, 50, 25, outsiderOption);
+  const outsiderRight = Bodies.circle(0, 50, 37.5, outsiderOption);
   World.add(engine.world, [outsiderRight]);
 
-  const profile = Bodies.circle(0, 50, 25, {
+  const profile = Bodies.circle(0, 50, 37.5, {
     render: {
       sprite: {
         texture: image,
-        xScale: 0.25,
-        yScale: 0.25,
+        xScale: 0.375,
+        yScale: 0.375,
       },
     },
     isSensor: true,
@@ -112,11 +112,11 @@ export default function ({
   });
   World.add(engine.world, [profile]);
 
-  const indicator = Bodies.circle(0, 50, 15, {
+  const indicator = Bodies.circle(0, 50, 22.5, {
     render: {
       strokeStyle: '#ffffff',
       fillStyle: 'transparent',
-      lineWidth: 5,
+      lineWidth: 7.5,
     },
     isSensor: true,
     isStatic: true,
@@ -172,13 +172,13 @@ export default function ({
     // profile
     Body.setPosition(profile, {
       x,
-      y: y - 40,
+      y: y - 55,
     });
 
     // indicator
     Body.setPosition(indicator, {
       x,
-      y: y - 40,
+      y: y - 55,
     });
     const assignedMagic = Object.keys(MAGIC).filter(magic =>
       potateman.attr.magic >= MAGIC[magic].min).reverse()[0];
@@ -190,19 +190,19 @@ export default function ({
     const minX = render.bounds.min.x;
     const minY = render.bounds.min.y;
     Body.setPosition(outsiderBottom, {
-      x: maxX - 15 < x ? maxX - 15 : x < minX + 15 ? minX + 15 : x,
-      y: maxY - 15,
+      x: maxX - 22.5 < x ? maxX - 22.5 : x < minX + 22.5 ? minX + 22.5 : x,
+      y: maxY - 22.5,
     });
     Body.setPosition(outsiderTop, {
-      x: maxX - 15 < x ? maxX - 15 : x < minX + 15 ? minX + 15 : x,
-      y: minY + 15,
+      x: maxX - 22.5 < x ? maxX - 22.5 : x < minX + 22.5 ? minX + 22.5 : x,
+      y: minY + 22.5,
     });
     Body.setPosition(outsiderLeft, {
-      x: minX + 15,
+      x: minX + 22.5,
       y,
     });
     Body.setPosition(outsiderRight, {
-      x: maxX - 15,
+      x: maxX - 22.5,
       y,
     });
     const { sinkMotion, gardMotion, flamethrowers } = potateman.attr;
