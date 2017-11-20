@@ -38,6 +38,10 @@ body {
   align-items: center;
 }
 
+#ad {
+  margin: 20px;
+}
+
 .first,
 .second{
   display: flex;
