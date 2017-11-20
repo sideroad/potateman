@@ -6,6 +6,10 @@ import {
   World,
   // Bounds,
 } from 'matter-js';
+import queryString from 'query-string';
+
+const params = queryString.parse(window.location.search);
+const boundaryLimit = Number(params.boundaryLimit || 1);
 
 export default function ({
   engine,
@@ -116,60 +120,47 @@ export default function ({
       x: ((rightBottom.x - leftTop.x) / 2) + leftTop.x,
       y: ((rightBottom.y - leftTop.y) / 2) + leftTop.y,
     };
-
     const bounds = {
       width: rightBottom.x - leftTop.x,
       height: rightBottom.y - leftTop.y,
     };
-
-    if (ratio <= bounds.width / bounds.height) {
-      bounds.min = {
-        x: leftTop.x - bounds.width,
-        y: center.y - (((bounds.width * 3) / ratio) / 2),
-      };
-      bounds.max = {
-        x: rightBottom.x + bounds.width,
-        y: center.y + (((bounds.width * 3) / ratio) / 2),
-      };
-    } else {
-      bounds.min = {
-        x: center.x - (((bounds.height * 3) * ratio) / 2),
-        y: leftTop.y - bounds.height,
-      };
-      bounds.max = {
-        x: center.x + (((bounds.height * 3) * ratio) / 2),
-        y: rightBottom.y + bounds.height,
-      };
-    }
     const calc = {
-      min: {
-        x: (bounds.min.x - prev.min.x) / 2,
-        y: (bounds.min.y - prev.min.y) / 2,
-      },
-      max: {
-        x: (bounds.max.x - prev.max.x) / 2,
-        y: (bounds.max.y - prev.max.y) / 2,
-      },
-    };
-    calc.move = {
-      x: calc.max.x - calc.min.x,
-      y: calc.max.y - calc.min.y,
+      x: (center.x - prev.x) / 2,
+      y: (center.y - prev.y) / 2,
+      width: (bounds.width - prev.width) / 2,
+      height: (bounds.height - prev.height) / 2,
     };
     const rounded = {
-      min: {
-        x: calc.min.x > 1 ? prev.min.x + 1 : calc.min.x < -1 ? prev.min.x - 1 : bounds.min.x,
-        y: calc.min.y > 1 ? prev.min.y + 1 : calc.min.y < -1 ? prev.min.y - 1 : bounds.min.y,
-      },
-      max: {
-        x: calc.max.x > 1 ? prev.max.x + 1 : calc.max.x < -1 ? prev.max.x - 1 : bounds.max.x,
-        y: calc.max.y > 1 ? prev.max.y + 1 : calc.max.y < -1 ? prev.max.y - 1 : bounds.max.y,
-      },
+      x: calc.x > boundaryLimit ? prev.x + boundaryLimit :
+      calc.x < -boundaryLimit ? prev.x - boundaryLimit : center.x,
+      y: calc.y > boundaryLimit ? prev.y + boundaryLimit :
+      calc.y < -boundaryLimit ? prev.y - boundaryLimit : center.y,
+      width: calc.width > boundaryLimit ? prev.width + boundaryLimit :
+      calc.width < -boundaryLimit ? prev.width - boundaryLimit : bounds.width,
+      height: calc.height > boundaryLimit ? prev.height + boundaryLimit :
+      calc.height < -boundaryLimit ? prev.height - boundaryLimit : bounds.height,
     };
-    rounded.ratio = (rounded.max.x - rounded.min.x) / (rounded.max.y - rounded.min.y);
-    // rounded.min.x -= ((ratio / calc.move.x) - (rounded.ratio / calc.move.x)) / 4;
-    // rounded.max.x += ((ratio / calc.move.x) - (rounded.ratio / calc.move.x)) / 4;
+
+    if (ratio <= rounded.width / rounded.height) {
+      rounded.min = {
+        x: (rounded.x - (rounded.width / 2)) - rounded.width,
+        y: rounded.y - (((rounded.width * 3) / ratio) / 2),
+      };
+      rounded.max = {
+        x: (rounded.x + (rounded.width / 2)) + rounded.width,
+        y: rounded.y + (((rounded.width * 3) / ratio) / 2),
+      };
+    } else {
+      rounded.min = {
+        x: rounded.x - (((rounded.height * 3) * ratio) / 2),
+        y: (rounded.y - (rounded.height / 2)) - rounded.height,
+      };
+      rounded.max = {
+        x: rounded.x + (((rounded.height * 3) * ratio) / 2),
+        y: (rounded.y + (rounded.height / 2)) + rounded.height,
+      };
+    }
     render.bounds = rounded;
-    // render.bounds = bounds;
     prev = rounded;
   });
 }
