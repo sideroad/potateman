@@ -13,6 +13,7 @@ body {
   font-size: 2em;
   padding: 1em;
   width: 230px;
+  overflow: scroll;
 }
 .rankers {
   color: #fffffc;

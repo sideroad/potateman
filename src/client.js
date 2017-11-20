@@ -71,7 +71,7 @@ act.init = (data) => {
   });
 };
 
-fetch('https://chaus.herokuapp.com/apis/potateman/scores?orderBy=-score')
+fetch('https://chaus.herokuapp.com/apis/potateman/scores?orderBy=-score&limit=10')
   .then(res => res.json())
   .then(res => ranking(res));
 
