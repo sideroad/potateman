@@ -4,7 +4,7 @@ export default function rankingFn({ items }) {
   rankers.innerHTML = `${
     items.map(item =>
       `<tr class="ranker">
-        <td><img class="ranker-image" src="${item.image}" /></td>
+        <td><img class="ranker-image" src="${item.image || '/images/cpu-1.png'}" /></td>
         <td><div class="ranker-score" style="width: ${(item.score / maxScore) * 150}px;">${item.score.toLocaleString()}</div></td>
       </tr>`)
       .join('')

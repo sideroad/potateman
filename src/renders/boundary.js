@@ -10,6 +10,8 @@ import queryString from 'query-string';
 
 const params = queryString.parse(window.location.search);
 const boundaryLimit = Number(params.boundaryLimit || 1);
+const maxMagnify = Number(params.maxMagnify || 2);
+const minMagnify = Number(params.minMagnify || 0.25);
 
 export default function ({
   engine,
@@ -81,6 +83,14 @@ export default function ({
     width: size.width / 2,
     height: size.height / 2,
   };
+  const min = {
+    width: size.width * minMagnify,
+    height: size.height * minMagnify,
+  };
+  const max = {
+    width: size.width * maxMagnify,
+    height: size.height * maxMagnify,
+  };
   let prev = {
     min: {
       x: render.bounds.min.x,
@@ -120,9 +130,11 @@ export default function ({
       x: ((rightBottom.x - leftTop.x) / 2) + leftTop.x,
       y: ((rightBottom.y - leftTop.y) / 2) + leftTop.y,
     };
+    const width = rightBottom.x - leftTop.x;
+    const height = rightBottom.y - leftTop.y;
     const bounds = {
-      width: rightBottom.x - leftTop.x,
-      height: rightBottom.y - leftTop.y,
+      width: width < min.width ? min.width : width > max.width ? max.width : width,
+      height: height < min.height ? min.height : height > max.height ? max.height : height,
     };
     const calc = {
       x: (center.x - prev.x) / 2,
