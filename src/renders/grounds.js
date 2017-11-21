@@ -3,8 +3,11 @@ import {
   Bodies,
   Composites,
 } from 'matter-js';
+import queryString from 'query-string';
 import COLLISION from './collision';
 import random from '../helpers/random';
+
+const params = queryString.parse(window.location.search);
 
 export default function ({ engine, size }) {
   const { width, height } = size;
@@ -55,14 +58,14 @@ export default function ({ engine, size }) {
     ];
   };
   const maps = {
-    pentagon: () =>
+    ice: () =>
       [
         ...make(width / 2, (height / 5) * 4, Math.ceil(width / 1.5 / cellSize)),
         ...make(width / 4, height / 2, 10),
         ...make((width / 4) * 3, height / 2, 10),
         ...make(width / 2, (height / 5) * 1.5, 10),
       ],
-    hexagon: () =>
+    space: () =>
       [
         ...make(width / 2, height / 2, Math.ceil(width / 2 / cellSize)),
         ...make(width / 6, height / 4, 6),
@@ -72,7 +75,15 @@ export default function ({ engine, size }) {
         ...make(width / 2, height / 6, 10),
         ...make(width / 2, (height / 6) * 5, 10),
       ],
-    triangle: () =>
+    earth: () =>
+      [
+        ...make(width / 2, (height / 4) * 3, Math.ceil(width / 2 / cellSize)),
+        ...make(width / 4, height / 2, Math.ceil(width / 5 / cellSize)),
+        ...make((width / 4) * 3, height / 2, Math.ceil(width / 5 / cellSize)),
+        ...make(width / 8, height / 4, Math.ceil(width / 5 / cellSize)),
+        ...make((width / 8) * 7, height / 4, Math.ceil(width / 5 / cellSize)),
+      ],
+    volcano: () =>
       [
         ...make(width / 2, (height / 6) * 5, Math.ceil(width / 1.5 / cellSize)),
         ...make(width / 2, (height / 6) * 3, Math.ceil(width / 3 / cellSize)),
@@ -81,7 +92,7 @@ export default function ({ engine, size }) {
   };
   const stages = Object.keys(maps);
   const stageIndex = random(0, stages.length - 1);
-  const grounds = maps[stages[stageIndex]]();
+  const grounds = maps[params.stage || stages[stageIndex]]();
 
   World.add(engine.world, grounds);
   return grounds;
