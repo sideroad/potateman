@@ -163,7 +163,7 @@ export default function (act) {
     postScore({
       fbid: player.fbid,
       score: data.score,
-      image: data.image,
+      image: player.image,
     });
     destroy({ engine, body: player.body });
     ghosts[data.player] = createGhost({

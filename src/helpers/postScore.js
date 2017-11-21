@@ -19,6 +19,7 @@ export default function postScoreFn(data) {
           body: JSON.stringify({
             fbid: data.fbid,
             score: 0,
+            image: data.image,
           }),
         // eslint-disable-next-line function-paren-newline
         });
