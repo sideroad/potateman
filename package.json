@@ -28,6 +28,7 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.13.3",
     "express-session": "^1.12.1",
+    "fpsmeter": "^0.3.1",
     "gm": "^1.23.0",
     "klaw-sync": "^3.0.0",
     "lodash": "^4.17.2",
@@ -39,6 +40,7 @@
     "qrious": "^4.0.2",
     "query-string": "^5.0.1",
     "socket.io": "^2.0.3",
+    "stats.js": "^0.17.0",
     "superagent": "^3.8.0",
     "ws": "^3.2.0"
   },

@@ -7,6 +7,7 @@ import {
   Bounds,
 } from 'matter-js';
 import _ from 'lodash';
+import Stats from 'stats.js';
 import attendee from '../dom/attendee';
 import start from '../dom/start';
 import win from '../dom/win';
@@ -243,4 +244,14 @@ export default function (act) {
   });
 
   prefetch({ size, engine });
+
+  const stats = new Stats();
+  stats.dom.style.top = 'initial';
+  stats.dom.style.left = 'initial';
+  stats.dom.style.right = 0;
+  stats.dom.style.bottom = 0;
+  document.body.appendChild(stats.dom);
+  Events.on(engine, 'beforeUpdate', () => {
+    stats.update();
+  });
 }

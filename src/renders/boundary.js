@@ -9,7 +9,7 @@ import {
 import queryString from 'query-string';
 
 const params = queryString.parse(window.location.search);
-const boundaryLimit = Number(params.boundaryLimit || 1);
+const boundaryLimit = Number(params.boundaryLimit || 0.5);
 const maxMagnify = Number(params.maxMagnify || 2);
 const minMagnify = Number(params.minMagnify || 0.25);
 

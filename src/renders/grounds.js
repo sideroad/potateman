@@ -12,7 +12,7 @@ const params = queryString.parse(window.location.search);
 export default function ({ engine, size }) {
   const { width, height } = size;
   // background
-  World.add(engine.world, Bodies.rectangle(width / 2, height / 2, width, height, {
+  World.add(engine.world, Bodies.rectangle(width / 2, height / 2, width * 3, height * 3, {
     render: {
       fillStyle: '#F1F4FE',
     },
