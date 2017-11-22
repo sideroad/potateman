@@ -5,12 +5,12 @@ export default function easyFn({
   player,
   others,
   size,
-  world,
+  items,
+  // grounds,
 }) {
   const target = others
     .map(other => other.body)
-    .concat(world.bodies.filter(body =>
-      body.attr && body.attr.item))
+    .concat(items)
     .map((other) => {
       const distance = {
         x: player.body.position.x - other.position.x,
@@ -82,11 +82,14 @@ export default function easyFn({
 
   if (
     target.distance.xabs < 5 &&
-    target.distance.y > 0 &&
+    player.body.position.y < size.height / 2 &&
     player.body.attr.magic > MAGIC.uppercut.min &&
     player.body.attr.flamethrowers <= 0 &&
     !target.item
   ) {
+    player.direction.left = 0;
+    player.direction.right = 0;
+    player.direction.up = 0;
     player.direction.down = 1;
     player.direction.c = 1;
   }
@@ -99,7 +102,10 @@ export default function easyFn({
     player.body.attr.flamethrowers <= 0 &&
     !target.item
   ) {
+    player.direction.left = 0;
+    player.direction.right = 0;
     player.direction.up = 1;
+    player.direction.down = 0;
     player.direction.c = 1;
   }
   if (

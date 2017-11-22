@@ -16,6 +16,8 @@ export default function ({ players, size, world }) {
           others,
           size,
           world,
+          items: world.bodies.filter(body => body.attr && body.attr.item),
+          grounds: world.bodies.filter(body => body.attr && body.attr.ground),
         });
       }, 200));
     });

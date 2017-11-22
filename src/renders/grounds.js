@@ -93,6 +93,12 @@ export default function ({ engine, size }) {
   const stages = Object.keys(maps);
   const stageIndex = random(0, stages.length - 1);
   const grounds = maps[params.stage || stages[stageIndex]]();
+  grounds.forEach((ground) => {
+    // eslint-disable-next-line no-param-reassign
+    ground.attr = {
+      ground: true,
+    };
+  });
 
   World.add(engine.world, grounds);
   return grounds;

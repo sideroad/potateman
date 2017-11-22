@@ -38,6 +38,12 @@ body {
   padding-right: 1em;
   display: flex;
   align-items: center;
+  min-width: 0.5em;
+}
+.ranker-score-inline{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #ad {
