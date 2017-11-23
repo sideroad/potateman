@@ -109,7 +109,7 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  height: 70px;
+  min-height: 70px;
 }
 .attendee-container {
   display: flex;
