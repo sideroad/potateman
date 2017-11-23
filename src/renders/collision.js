@@ -122,7 +122,7 @@ export function check({ players, engine, grounds }) {
             bodyA.attr.magic += 100;
             break;
           case 'flamethrower':
-            bodyA.attr.flamethrowers += 500;
+            bodyA.attr.flamethrowers += 400;
             break;
           default:
           }
