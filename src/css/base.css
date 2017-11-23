@@ -12,7 +12,7 @@ body {
   color: #fffffc;
   font-size: 2em;
   padding: 1em;
-  width: 230px;
+  width: 280px;
   overflow: scroll;
 }
 .rankers {
@@ -22,6 +22,26 @@ body {
   font-size: 1.5em;
   text-align: center;
   margin: 20px;
+}
+.ranker-ranking{
+  width: 35px;
+  height: 35px;
+  background-size: contain;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ranker-ranking-1{
+  font-size: 0;
+  background-image: url(/images/ranking-1.png);
+}
+.ranker-ranking-2{
+  font-size: 0;
+  background-image: url(/images/ranking-2.png);
+}
+.ranker-ranking-3{
+  font-size: 0;
+  background-image: url(/images/ranking-3.png);
 }
 .ranker-image{
   width: 35px;
