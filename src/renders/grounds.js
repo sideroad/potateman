@@ -149,7 +149,7 @@ export default function ({ engine, size }) {
       beforeUpdate: () => {
         if (count % 1000 < 200) {
           // eslint-disable-next-line no-param-reassign
-          engine.world.gravity.y = 4;
+          engine.world.gravity.y = 3.5;
           World.add(engine.world, [
             Bodies.rectangle(random(0, width), 0, 1, 75, {
               render: {
