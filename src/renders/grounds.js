@@ -57,6 +57,10 @@ export default function ({ engine, size }) {
     ];
   };
   let count = 0;
+  // eslint-disable-next-line no-param-reassign
+  engine.world.gravity.x = 0;
+  // eslint-disable-next-line no-param-reassign
+  engine.world.gravity.y = 1;
   const maps = {
     ice: {
       background: '#ffffff',
