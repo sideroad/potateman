@@ -266,7 +266,7 @@ export default function ({
           size,
         });
         x = 0;
-        y = -12;
+        y = -15;
         body.attr.flycount = 0;
       }
 
