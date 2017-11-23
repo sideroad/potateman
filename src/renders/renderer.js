@@ -142,7 +142,7 @@ export default function (act) {
       Events.on(engine, 'beforeUpdate', () => {
         stats.update();
       });
-      act.stream(document.getElementsByTagName('canvas')[1]);
+      act.stream(document.getElementsByTagName('canvas')[document.getElementsByTagName('canvas').length - 1]);
       stack.forEach((data, index) => {
         players[data.player] = potateman({
           act,
