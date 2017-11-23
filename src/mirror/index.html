@@ -23,7 +23,9 @@
       </div>
       <div class="right-container">
         <div class="first">
-          <div id="attendee">Read QR</div>
+          <div id="attendee">
+            <span id="attendee-message">Read QR</span>
+          </div>
         </div>
         <div class="qr-container">
           <canvas id="qr" class="qr"></canvas>
@@ -38,6 +40,14 @@
         <div class="count-2 count">2</div>
         <div class="count-1 count">1</div>
         <div class="count-go count">Go!</div>
+      </div>
+    </div>
+    <div id="winner">
+      <div id="overlay" ></div>
+      <div id="winner-container" >
+        <div id="winner-character" ></div>
+        <div id="winner-message" >You Win!</div>
+        <div id="winner-score" >Score: 0</div>
       </div>
     </div>
     <video id="stream" ></video>

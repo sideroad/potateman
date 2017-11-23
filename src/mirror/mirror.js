@@ -10,7 +10,7 @@ const act = {
     attendee({ stack, image });
   },
   mirror: ({ data: { stack } }) => {
-    stack.forEach(data => act.attend(stack, data));
+    stack.forEach(data => act.attend({ stack, data }));
   },
   start: () => {
     start();

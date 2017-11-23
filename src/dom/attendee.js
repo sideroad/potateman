@@ -1,7 +1,8 @@
-export default function attendeeFn({ stack, image }) {
+export default function attendeeFn({ image }) {
   const attendee = document.getElementById('attendee');
-  if (stack && stack.length === 1) {
-    attendee.innerHTML = '';
+  const message = document.getElementById('attendee-message');
+  if (message) {
+    message.remove();
   }
   const div = document.createElement('div');
   div.setAttribute('class', 'attendee-container');

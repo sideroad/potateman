@@ -204,7 +204,7 @@ export default function ({ engine, size }) {
             },
             body: {
               attr: {
-                magic: 100,
+                magic: 50,
                 player: '',
                 category: COLLISION.NONE,
               },
@@ -217,7 +217,7 @@ export default function ({ engine, size }) {
             },
             body: {
               attr: {
-                magic: 100,
+                magic: 50,
                 player: '',
                 category: COLLISION.NONE,
               },
