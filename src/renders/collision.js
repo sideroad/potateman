@@ -9,6 +9,7 @@ import {
 import cure from './motions/cure';
 
 const COLLISION = {
+  NONE: 0x0000,
   DEFAULT: 0x0001,
   GROUND: 0x0002,
   ATTACK: 0x0004,

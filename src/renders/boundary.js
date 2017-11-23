@@ -12,6 +12,7 @@ const params = queryString.parse(window.location.search);
 const boundaryLimit = Number(params.boundaryLimit || 0.5);
 const maxMagnify = Number(params.maxMagnify || 2);
 const minMagnify = Number(params.minMagnify || 0.25);
+const magnify = params.magnify !== 'false';
 
 export default function ({
   engine,
@@ -79,100 +80,102 @@ export default function ({
     });
   });
 
-  const half = {
-    width: size.width / 2,
-    height: size.height / 2,
-  };
-  const min = {
-    width: size.width * minMagnify,
-    height: size.height * minMagnify,
-  };
-  const max = {
-    width: size.width * maxMagnify,
-    height: size.height * maxMagnify,
-  };
-  let prev = {
-    min: {
-      x: render.bounds.min.x,
-      y: render.bounds.min.y,
-    },
-    max: {
-      x: render.bounds.max.x,
-      y: render.bounds.max.y,
-    },
-  };
+  if (magnify) {
+    const half = {
+      width: size.width / 2,
+      height: size.height / 2,
+    };
+    const min = {
+      width: size.width * minMagnify,
+      height: size.height * minMagnify,
+    };
+    const max = {
+      width: size.width * maxMagnify,
+      height: size.height * maxMagnify,
+    };
+    let prev = {
+      min: {
+        x: render.bounds.min.x,
+        y: render.bounds.min.y,
+      },
+      max: {
+        x: render.bounds.max.x,
+        y: render.bounds.max.y,
+      },
+    };
 
-  Events.on(engine, 'beforeTick', () => {
-    const leftTop = {
-      x: half.width,
-      y: half.height,
-    };
-    const rightBottom = {
-      x: half.width,
-      y: half.height,
-    };
-    Object.values(players).forEach((player) => {
-      const { x, y } = player.body.position;
-      if (x < leftTop.x && x > 0) {
-        leftTop.x = x;
+    Events.on(engine, 'beforeTick', () => {
+      const leftTop = {
+        x: half.width,
+        y: half.height,
+      };
+      const rightBottom = {
+        x: half.width,
+        y: half.height,
+      };
+      Object.values(players).forEach((player) => {
+        const { x, y } = player.body.position;
+        if (x < leftTop.x && x > 0) {
+          leftTop.x = x;
+        }
+        if (y < leftTop.y && y > 0) {
+          leftTop.y = y;
+        }
+        if (x > rightBottom.x && x < size.width) {
+          rightBottom.x = x;
+        }
+        if (y > rightBottom.y && y < size.height) {
+          rightBottom.y = y;
+        }
+      });
+      const center = {
+        x: ((rightBottom.x - leftTop.x) / 2) + leftTop.x,
+        y: ((rightBottom.y - leftTop.y) / 2) + leftTop.y,
+      };
+      const width = rightBottom.x - leftTop.x;
+      const height = rightBottom.y - leftTop.y;
+      const bounds = {
+        width: width < min.width ? min.width : width > max.width ? max.width : width,
+        height: height < min.height ? min.height : height > max.height ? max.height : height,
+      };
+      const calc = {
+        x: (center.x - prev.x) / 2,
+        y: (center.y - prev.y) / 2,
+        width: (bounds.width - prev.width) / 2,
+        height: (bounds.height - prev.height) / 2,
+      };
+      const rounded = {
+        x: calc.x > boundaryLimit ? prev.x + boundaryLimit :
+        calc.x < -boundaryLimit ? prev.x - boundaryLimit : center.x,
+        y: calc.y > boundaryLimit ? prev.y + boundaryLimit :
+        calc.y < -boundaryLimit ? prev.y - boundaryLimit : center.y,
+        width: calc.width > boundaryLimit ? prev.width + boundaryLimit :
+        calc.width < -boundaryLimit ? prev.width - boundaryLimit : bounds.width,
+        height: calc.height > boundaryLimit ? prev.height + boundaryLimit :
+        calc.height < -boundaryLimit ? prev.height - boundaryLimit : bounds.height,
+      };
+
+      if (ratio <= rounded.width / rounded.height) {
+        rounded.min = {
+          x: (rounded.x - (rounded.width / 2)) - rounded.width,
+          y: rounded.y - (((rounded.width * 3) / ratio) / 2),
+        };
+        rounded.max = {
+          x: (rounded.x + (rounded.width / 2)) + rounded.width,
+          y: rounded.y + (((rounded.width * 3) / ratio) / 2),
+        };
+      } else {
+        rounded.min = {
+          x: rounded.x - (((rounded.height * 3) * ratio) / 2),
+          y: (rounded.y - (rounded.height / 2)) - rounded.height,
+        };
+        rounded.max = {
+          x: rounded.x + (((rounded.height * 3) * ratio) / 2),
+          y: (rounded.y + (rounded.height / 2)) + rounded.height,
+        };
       }
-      if (y < leftTop.y && y > 0) {
-        leftTop.y = y;
-      }
-      if (x > rightBottom.x && x < size.width) {
-        rightBottom.x = x;
-      }
-      if (y > rightBottom.y && y < size.height) {
-        rightBottom.y = y;
-      }
+      render.bounds = rounded;
+      prev = rounded;
     });
-    const center = {
-      x: ((rightBottom.x - leftTop.x) / 2) + leftTop.x,
-      y: ((rightBottom.y - leftTop.y) / 2) + leftTop.y,
-    };
-    const width = rightBottom.x - leftTop.x;
-    const height = rightBottom.y - leftTop.y;
-    const bounds = {
-      width: width < min.width ? min.width : width > max.width ? max.width : width,
-      height: height < min.height ? min.height : height > max.height ? max.height : height,
-    };
-    const calc = {
-      x: (center.x - prev.x) / 2,
-      y: (center.y - prev.y) / 2,
-      width: (bounds.width - prev.width) / 2,
-      height: (bounds.height - prev.height) / 2,
-    };
-    const rounded = {
-      x: calc.x > boundaryLimit ? prev.x + boundaryLimit :
-      calc.x < -boundaryLimit ? prev.x - boundaryLimit : center.x,
-      y: calc.y > boundaryLimit ? prev.y + boundaryLimit :
-      calc.y < -boundaryLimit ? prev.y - boundaryLimit : center.y,
-      width: calc.width > boundaryLimit ? prev.width + boundaryLimit :
-      calc.width < -boundaryLimit ? prev.width - boundaryLimit : bounds.width,
-      height: calc.height > boundaryLimit ? prev.height + boundaryLimit :
-      calc.height < -boundaryLimit ? prev.height - boundaryLimit : bounds.height,
-    };
-
-    if (ratio <= rounded.width / rounded.height) {
-      rounded.min = {
-        x: (rounded.x - (rounded.width / 2)) - rounded.width,
-        y: rounded.y - (((rounded.width * 3) / ratio) / 2),
-      };
-      rounded.max = {
-        x: (rounded.x + (rounded.width / 2)) + rounded.width,
-        y: rounded.y + (((rounded.width * 3) / ratio) / 2),
-      };
-    } else {
-      rounded.min = {
-        x: rounded.x - (((rounded.height * 3) * ratio) / 2),
-        y: (rounded.y - (rounded.height / 2)) - rounded.height,
-      };
-      rounded.max = {
-        x: rounded.x + (((rounded.height * 3) * ratio) / 2),
-        y: (rounded.y + (rounded.height / 2)) + rounded.height,
-      };
-    }
-    render.bounds = rounded;
-    prev = rounded;
-  });
+  }
 }

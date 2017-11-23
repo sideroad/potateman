@@ -22,6 +22,14 @@ import prefetch from './prefetch';
 import postScore from '../helpers/postScore';
 
 export default function (act) {
+  // show stats
+  const stats = new Stats();
+  stats.dom.style.top = 'initial';
+  stats.dom.style.left = 'initial';
+  stats.dom.style.right = 0;
+  stats.dom.style.bottom = 0;
+  document.body.appendChild(stats.dom);
+
   // create engine
   const engine = Engine.create();
   const { world } = engine;
@@ -37,7 +45,7 @@ export default function (act) {
     engine,
     options: {
       ...size,
-      background: '#F1F4FE',
+      background: '#ffffff',
       showAngleIndicator: false,
       wireframes: false,
     },
@@ -107,13 +115,14 @@ export default function (act) {
     act.send({
       act: 'start',
     });
+    const { grounds: groundsBody, friction } = grounds({ engine, size });
     interaction({
       act,
       engine,
       players,
       ghosts,
       size,
-      grounds: grounds({ engine, size }),
+      grounds: groundsBody,
     });
     Bounds.shift(render.bounds, {
       x: 0,
@@ -130,6 +139,9 @@ export default function (act) {
       },
     };
     start(() => {
+      Events.on(engine, 'beforeUpdate', () => {
+        stats.update();
+      });
       act.stream(document.getElementsByTagName('canvas')[0]);
       stack.forEach((data, index) => {
         players[data.player] = potateman({
@@ -143,6 +155,7 @@ export default function (act) {
           image: data.image,
           cpu: data.cpu,
           render,
+          friction,
         });
       });
       cpu({ players, size, world });
@@ -244,14 +257,4 @@ export default function (act) {
   });
 
   prefetch({ size, engine });
-
-  const stats = new Stats();
-  stats.dom.style.top = 'initial';
-  stats.dom.style.left = 'initial';
-  stats.dom.style.right = 0;
-  stats.dom.style.bottom = 0;
-  document.body.appendChild(stats.dom);
-  Events.on(engine, 'beforeUpdate', () => {
-    stats.update();
-  });
 }

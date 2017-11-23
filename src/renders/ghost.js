@@ -85,7 +85,7 @@ export default function ghost({
   body.attr = {
     punchGage: 1,
     power: 50,
-    category: 0x0000,
+    category: COLLISION.NONE,
     magic: 0,
     type: 'ghost',
     player,

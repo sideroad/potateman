@@ -55,7 +55,7 @@ export default function itemsFn({
       };
       World.add(engine.world, [magicBox]);
     }
-    if (count % 1000 === 0) {
+    if (count % 1500 === 0) {
       const x = random(size.width / 4, (size.width / 4) * 3);
       const flamethrower = Bodies.rectangle(x, 0, 20, 10, {
         collisionFilter,
