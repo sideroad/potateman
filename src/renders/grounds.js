@@ -17,12 +17,6 @@ export default function ({ engine, size }) {
   const { width, height } = size;
   const cellSize = 20;
   const adjust = cellSize / 2;
-  const frictions = {
-    ice: 0,
-    space: 15,
-    earth: 15,
-    volcano: 15,
-  };
   const options = {
     density: 1,
     isStatic: true,
@@ -65,6 +59,7 @@ export default function ({ engine, size }) {
     ice: {
       background: '#ffffff',
       texture: '/images/ice-ground.png',
+      friction: 0,
       shape: texture =>
         [
           // eslint-disable-next-line max-len
@@ -121,6 +116,7 @@ export default function ({ engine, size }) {
     space: {
       background: '#0D0015',
       texture: '/images/space-ground.png',
+      friction: 15,
       shape: texture =>
         [
           ...make(width / 2, height / 2, Math.ceil(width / 2 / cellSize), texture),
@@ -171,6 +167,7 @@ export default function ({ engine, size }) {
     earth: {
       background: '#F1F4FE',
       texture: '/images/ground.png',
+      friction: 15,
       shape: texture =>
         [
           ...make(width / 2, (height / 4) * 3, Math.ceil(width / 2 / cellSize), texture),
@@ -185,6 +182,7 @@ export default function ({ engine, size }) {
     volcano: {
       background: '#ffead8',
       texture: '/images/volcano.png',
+      friction: 15,
       shape: texture =>
         [
           // eslint-disable-next-line max-len
@@ -261,7 +259,7 @@ export default function ({ engine, size }) {
     count += 1;
   });
   return {
-    friction: frictions[stage],
+    friction: maps[stage].friction,
     grounds,
   };
 }
