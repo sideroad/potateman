@@ -13,6 +13,17 @@
     <script src="/joypad/ua.js"></script>
     <script src="/joypad/peer.min.js"></script>
     <link rel="stylesheet" href="/css/base.css" />
+    <div id="joypad" class="joypad portable-mode" >
+      <div class="left-pad" >
+        <div id="ck" class="ck" >
+        </div>
+      </div>
+      <div class="right-pad" >
+        <div id="a" class="button" ></div>
+        <div id="b" class="button" ></div>
+        <div id="c" class="button" ></div>
+      </div>
+    </div>
     <div id="reception" class="reception">
       <div class="left-container">
         <div class="ranking-icon">
@@ -43,9 +54,6 @@
           </div>
         </div>
         <div class="second">
-          <div id="joypad" class="clipboard icon" >
-            <i class="fa fa-gamepad" aria-hidden="true"></i>
-          </div>
           <div id="add-cpu" class="icon"></div>
         </div>
         <div class="qr-container">
@@ -82,6 +90,16 @@
         <div id="winner-score" >Score: 0</div>
         <button id="restart" class="start" >Crash Again!</button>
       </div>
+    </div>
+    <div id="facebook-login">
+      <div id="overlay" ></div>
+      <div id="facebook-login-icon" >
+        <i class="fa fa-facebook-official" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div id="loading" >
+      <div class="overlay" ></div>
+      <i id="loading-animation" class="fa fa-spinner" aria-hidden="true"></i>
     </div>
     <script src="/bundle.js" ></script>
   </body>

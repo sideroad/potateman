@@ -1,9 +1,9 @@
 import 'babel-polyfill';
 import './jquery.joypad';
-import auth from './auth';
+import auth from '../helpers/auth';
 import loading from '../dom/loading';
 import expander from '../dom/expander';
-import { stringify } from '../helpers/input';
+import bind from '../dom/bindJoypad';
 
 document.getElementById('expander-icon').addEventListener('touchend', () => {
   expander.end();
@@ -27,26 +27,6 @@ auth((user) => {
         });
       }, 5000);
 
-      let prev;
-      const bind = () => {
-        $('#joypad').joypad().bind('joypad', (e, param) => {
-          const { ran } = param.ck;
-          if (ran && ran < 50) return;
-          const i = stringify({
-            ang: param.ck.ang,
-            a: param.a,
-            b: param.b,
-            c: param.c,
-          });
-          const data = {
-            act: 'jp',
-            i,
-          };
-          if (i === prev) return;
-          prev = i;
-          conn.send(data);
-        });
-      };
       const act = {
         attend: ({ data }) => {
           if (player) {
@@ -59,13 +39,13 @@ auth((user) => {
           });
           window.addEventListener('orientationchange', () => {
             $('#joypad').joypad('destroy');
-            bind();
+            bind(commands => conn.send(commands));
           });
           window.addEventListener('resize', () => {
             $('#joypad').joypad('destroy');
-            bind();
+            bind(commands => conn.send(commands));
           });
-          bind();
+          bind(commands => conn.send(commands));
         },
       };
 

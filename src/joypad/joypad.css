@@ -69,7 +69,7 @@ body {
 #ck {
 	width : 220px;
 	height : 220px;
-  background-image: url(./cross-key.png);
+  background-image: url(/images/cross-key.png);
   background-size: cover;
   user-select: none;
 }

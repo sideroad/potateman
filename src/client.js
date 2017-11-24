@@ -3,76 +3,117 @@ import QRious from 'qrious';
 import Clipboard from 'clipboard';
 import renderer from './renders/renderer';
 import peer from './helpers/peer';
+import auth from './helpers/auth';
 import ranking from './dom/ranking';
+import loading from './dom/loading';
+import facebookLogin from './dom/facebookLogin';
+import bind from './dom/bindJoypad';
+import './joypad/jquery.joypad';
 
-const act = peer();
-act.init = (data) => {
-  fetch(`/api/stages/${data.stage}`, {
-    method: 'PUT',
-  });
-  const url = `${window.location.protocol}//${window.location.host}/joypad/${data.stage}/`;
-  const mirrorUrl = `${window.location.protocol}//${window.location.host}/mirror/${data.stage}/`;
-  // eslint-disable-next-line no-new
-  new QRious({
-    element: document.getElementById('qr'),
-    value: url,
-  });
 
-  document.querySelectorAll('.start').forEach((elem) => {
-    elem.addEventListener('click', () => {
-      act.start(data);
-    });
-  });
+facebookLogin();
+const initialize = () =>
+  new Promise((resolve) => {
+    const act = peer();
+    act.init = (data) => {
+      fetch(`/api/stages/${data.stage}`, {
+        method: 'PUT',
+      });
+      const url = `${window.location.protocol}//${window.location.host}/joypad/${data.stage}/`;
+      const mirrorUrl = `${window.location.protocol}//${window.location.host}/mirror/${data.stage}/`;
+      // eslint-disable-next-line no-new
+      new QRious({
+        element: document.getElementById('qr'),
+        value: url,
+      });
 
-  let cpuIndex = 1;
-  const addCpuElem = document.getElementById('add-cpu');
-  addCpuElem.addEventListener('click', () => {
-    if (cpuIndex > 10) {
-      return;
-    }
-    if (cpuIndex === 10) {
-      addCpuElem.className = 'icon disabled';
-    }
-    act.cpu();
-    cpuIndex += 1;
-  });
-
-  document.querySelectorAll('.find').forEach((elem) => {
-    elem.addEventListener('click', () => {
-      fetch(`/api/stages/${data.stage}/other`)
-        .then(res => res.json())
-        .then((json) => {
-          if (json.stage) {
-            window.location.href = `/mirror/${json.stage}/`;
-          } else {
-            // eslint-disable-next-line no-alert
-            window.alert('Other room does not found');
-          }
+      document.querySelectorAll('.start').forEach((elem) => {
+        elem.addEventListener('click', () => {
+          act.start(data);
         });
+      });
+
+      let cpuIndex = 1;
+      const addCpuElem = document.getElementById('add-cpu');
+      addCpuElem.addEventListener('click', () => {
+        if (cpuIndex > 10) {
+          return;
+        }
+        if (cpuIndex === 10) {
+          addCpuElem.className = 'icon disabled';
+        }
+        act.cpu();
+        cpuIndex += 1;
+      });
+
+      document.querySelectorAll('.find').forEach((elem) => {
+        elem.addEventListener('click', () => {
+          fetch(`/api/stages/${data.stage}/other`)
+            .then(res => res.json())
+            .then((json) => {
+              if (json.stage) {
+                window.location.href = `/mirror/${json.stage}/`;
+              } else {
+                // eslint-disable-next-line no-alert
+                window.alert('Other room does not found');
+              }
+            });
+        });
+      });
+      const shareElem = document.getElementById('share');
+      shareElem.setAttribute('data-clipboard-text', mirrorUrl);
+      // eslint-disable-next-line no-new
+      const clipboard = new Clipboard('.clipboard');
+      clipboard.on('success', (event) => {
+        const rect = event.trigger.getBoundingClientRect();
+        const div = document.createElement('div');
+        div.setAttribute('class', 'tooltip');
+        div.innerHTML = 'Copied Mirroring URL!';
+        document.body.appendChild(div);
+        div.style.top = rect.top;
+        div.style.left = rect.left - 85;
+        setTimeout(() => {
+          document.body.removeChild(div);
+        }, 2000);
+      });
+      resolve({
+        act,
+        data,
+      });
+    };
+
+    fetch('https://chaus.herokuapp.com/apis/potateman/scores?orderBy=-score&limit=10')
+      .then(res => res.json())
+      .then(res => ranking(res));
+
+    renderer(act);
+  });
+
+auth((user) => {
+  loading.end();
+  const facebookLoginElem = document.getElementById('facebook-login');
+  if (facebookLoginElem) {
+    facebookLoginElem.remove();
+  }
+  initialize()
+    .then(({ act, data }) => {
+      act.attend({
+        stage: data.stage,
+        player: data.stage,
+        fbid: user.id,
+        name: user.name,
+        image: user.image,
+      });
+      window.addEventListener('orientationchange', () => {
+        window.jQuery('#joypad').joypad('destroy');
+        bind(commands => act.jp(commands, data.stage));
+      });
+      window.addEventListener('resize', () => {
+        window.jQuery('#joypad').joypad('destroy');
+        bind(commands => act.jp(commands, data.stage));
+      });
+      bind(commands => act.jp(commands, data.stage));
     });
-  });
-  const shareElem = document.getElementById('share');
-  shareElem.setAttribute('data-clipboard-text', mirrorUrl);
-  const joypadElem = document.getElementById('joypad');
-  joypadElem.setAttribute('data-clipboard-text', url);
-  // eslint-disable-next-line no-new
-  const clipboard = new Clipboard('.clipboard');
-  clipboard.on('success', (event) => {
-    const rect = event.trigger.getBoundingClientRect();
-    const div = document.createElement('div');
-    div.setAttribute('class', 'tooltip');
-    div.innerHTML = 'Copied Mirroring URL!';
-    document.body.appendChild(div);
-    div.style.top = rect.top;
-    div.style.left = rect.left - 85;
-    setTimeout(() => {
-      document.body.removeChild(div);
-    }, 2000);
-  });
-};
-
-fetch('https://chaus.herokuapp.com/apis/potateman/scores?orderBy=-score&limit=10')
-  .then(res => res.json())
-  .then(res => ranking(res));
-
-renderer(act);
+}, () => {
+  initialize();
+});
