@@ -88,14 +88,14 @@ body {
 
 .portable-mode .left-pad,
 .portable-mode .right-pad {
-  width: 20%;
+  width: 30%;
   justify-content: space-around;
   margin: 20px;
 }
 
 .portable-mode #ck {
-  width: 110px;
-  height: 110px;
+  width: 165px;
+  height: 165px;
 }
 
 .portable-mode.joypad {

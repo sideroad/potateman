@@ -1,7 +1,11 @@
 import auth from '../helpers/auth';
 
 export default function facebookLoginFn() {
-  document.getElementById('facebook-login').addEventListener('touchstart', () => {
+  const facebookLoginElem = document.getElementById('facebook-login');
+  facebookLoginElem.addEventListener('touchstart', () => {
+    if (facebookLoginElem) {
+      facebookLoginElem.remove();
+    }
     auth(() => {});
   });
 }

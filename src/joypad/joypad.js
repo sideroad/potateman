@@ -1,9 +1,8 @@
 import 'babel-polyfill';
-import './jquery.joypad';
 import auth from '../helpers/auth';
 import loading from '../dom/loading';
 import expander from '../dom/expander';
-import bind from '../dom/bindJoypad';
+import joypad from '../dom/joypad';
 
 document.getElementById('expander-icon').addEventListener('touchend', () => {
   expander.end();
@@ -38,14 +37,14 @@ auth((user) => {
             backgroundImage: `url(${data.image})`,
           });
           window.addEventListener('orientationchange', () => {
-            $('#joypad').joypad('destroy');
-            bind(commands => conn.send(commands));
+            joypad.destroy();
+            joypad.binder(commands => conn.send(commands));
           });
           window.addEventListener('resize', () => {
-            $('#joypad').joypad('destroy');
-            bind(commands => conn.send(commands));
+            joypad.destroy();
+            joypad.binder(commands => conn.send(commands));
           });
-          bind(commands => conn.send(commands));
+          joypad.binder(commands => conn.send(commands));
         },
       };
 
@@ -94,7 +93,7 @@ auth((user) => {
         document.getElementById('portable').addEventListener('click', () => {
           document.getElementById('joypad').className = 'joypad portable-mode';
           $('#joypad').joypad('destroy');
-          bind();
+          joypad.bind();
           const call = peer.call(stage, document.getElementById('dummy').captureStream());
           call.on('stream', (stream) => {
             streamElem.srcObject = stream;

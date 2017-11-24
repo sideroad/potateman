@@ -35,9 +35,10 @@ export default function (act) {
   const { world } = engine;
 
   // create renderer
+  const { clientWidth, clientHeight } = document.body;
   const size = {
-    width: document.body.clientWidth,
-    height: document.body.clientHeight,
+    width: clientWidth < 768 ? clientWidth * 2 : clientWidth,
+    height: clientWidth < 768 ? clientHeight * 2 : clientHeight,
   };
 
   const render = Render.create({
@@ -108,6 +109,9 @@ export default function (act) {
   let started = false;
   // eslint-disable-next-line no-param-reassign
   act.start = ({ stage }) => {
+    const canvas = document.getElementsByTagName('canvas')[document.getElementsByTagName('canvas').length - 1];
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
     started = true;
     fetch(`/api/stages/${stage}`, {
       method: 'DELETE',
@@ -142,7 +146,7 @@ export default function (act) {
       Events.on(engine, 'beforeUpdate', () => {
         stats.update();
       });
-      act.stream(document.getElementsByTagName('canvas')[document.getElementsByTagName('canvas').length - 1]);
+      act.stream(canvas);
       stack.forEach((data, index) => {
         players[data.player] = potateman({
           act,

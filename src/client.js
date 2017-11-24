@@ -7,9 +7,7 @@ import auth from './helpers/auth';
 import ranking from './dom/ranking';
 import loading from './dom/loading';
 import facebookLogin from './dom/facebookLogin';
-import bind from './dom/bindJoypad';
-import './joypad/jquery.joypad';
-
+import joypad from './dom/joypad';
 
 facebookLogin();
 const initialize = () =>
@@ -27,15 +25,17 @@ const initialize = () =>
         value: url,
       });
 
+      const start = () => {
+        act.start(data);
+      };
       document.querySelectorAll('.start').forEach((elem) => {
-        elem.addEventListener('click', () => {
-          act.start(data);
-        });
+        elem.addEventListener('click', start);
+        elem.addEventListener('touchstart', start);
       });
 
       let cpuIndex = 1;
       const addCpuElem = document.getElementById('add-cpu');
-      addCpuElem.addEventListener('click', () => {
+      const addCpu = () => {
         if (cpuIndex > 10) {
           return;
         }
@@ -44,7 +44,9 @@ const initialize = () =>
         }
         act.cpu();
         cpuIndex += 1;
-      });
+      };
+      addCpuElem.addEventListener('click', addCpu);
+      addCpuElem.addEventListener('touchstart', addCpu);
 
       document.querySelectorAll('.find').forEach((elem) => {
         elem.addEventListener('click', () => {
@@ -105,14 +107,14 @@ auth((user) => {
         image: user.image,
       });
       window.addEventListener('orientationchange', () => {
-        window.jQuery('#joypad').joypad('destroy');
-        bind(commands => act.jp(commands, data.stage));
+        joypad.destroy();
+        joypad.binder(commands => act.jp(commands, data.stage));
       });
       window.addEventListener('resize', () => {
-        window.jQuery('#joypad').joypad('destroy');
-        bind(commands => act.jp(commands, data.stage));
+        joypad.destroy();
+        joypad.binder(commands => act.jp(commands, data.stage));
       });
-      bind(commands => act.jp(commands, data.stage));
+      joypad.binder(commands => act.jp(commands, data.stage));
     });
 }, () => {
   initialize();

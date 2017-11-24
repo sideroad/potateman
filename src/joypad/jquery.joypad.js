@@ -83,7 +83,7 @@
         });
       });
 
-      $('#joypad').bind('touchstart touchmove touchend', (e) => {
+      $(document.body).bind('touchstart touchmove touchend', (e) => {
         e.preventDefault();
       });
 
