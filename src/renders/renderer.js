@@ -35,11 +35,27 @@ export default function (act) {
   const { world } = engine;
 
   // create renderer
-  const { clientWidth, clientHeight } = document.body;
-  const size = {
-    width: clientWidth < 768 ? clientWidth * 2 : clientWidth,
-    height: clientWidth < 768 ? clientHeight * 2 : clientHeight,
+  const size = {};
+  const applySize = (render) => {
+    const { clientWidth, clientHeight } = document.body;
+    size.width = clientWidth < 768 ? clientWidth * 2 : clientWidth;
+    size.height = clientWidth < 768 ? clientHeight * 2 : clientHeight;
+    if (render) {
+      // eslint-disable-next-line no-param-reassign
+      render.options.width = size.width;
+      // eslint-disable-next-line no-param-reassign
+      render.options.height = size.height;
+      // eslint-disable-next-line no-param-reassign
+      render.canvas.width = size.width;
+      // eslint-disable-next-line no-param-reassign
+      render.canvas.height = size.height;
+      Render.lookAt(render, {
+        min: { x: 0, y: 0 },
+        max: { x: size.width, y: size.height },
+      });
+    }
   };
+  applySize();
 
   const render = Render.create({
     element: document.body,
@@ -261,4 +277,10 @@ export default function (act) {
   });
 
   prefetch({ size, engine });
+  window.addEventListener('orientationchange', () => {
+    applySize(render);
+  });
+  window.addEventListener('resize', () => {
+    applySize(render);
+  });
 }

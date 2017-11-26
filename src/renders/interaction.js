@@ -224,6 +224,7 @@ export default function ({
 
       // floating
       if (
+        !direction.down &&
         direction.b &&
         body.attr.flying &&
         body.attr.gardGage > 1 &&

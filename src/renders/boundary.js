@@ -9,7 +9,7 @@ import {
 import queryString from 'query-string';
 
 const params = queryString.parse(window.location.search);
-const boundaryLimit = Number(params.boundaryLimit || 0.5);
+const boundaryLimit = Number(params.boundaryLimit || 1);
 const maxMagnify = Number(params.maxMagnify || 2);
 const minMagnify = Number(params.minMagnify || 0.25);
 const magnify = params.magnify !== 'false';
@@ -21,7 +21,6 @@ export default function ({
   players,
   render,
 }) {
-  const ratio = size.width / size.height;
   Events.on(engine, 'beforeUpdate', () => {
     const bottomBoundary = size.height * 2;
     const topBoundary = size.height * -1;
@@ -154,6 +153,7 @@ export default function ({
         height: calc.height > boundaryLimit ? prev.height + boundaryLimit :
         calc.height < -boundaryLimit ? prev.height - boundaryLimit : bounds.height,
       };
+      const ratio = size.width / size.height;
 
       if (ratio <= rounded.width / rounded.height) {
         rounded.min = {

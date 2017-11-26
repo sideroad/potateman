@@ -12,8 +12,11 @@ body {
   color: #fffffc;
   font-size: 2em;
   padding: 1em;
-  width: 280px;
+  width: 30%;
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .rankers {
   color: #fffffc;
@@ -167,7 +170,6 @@ body {
   top: 0;
   left: 0;
   display: flex;
-  justify-content: space-between;
   align-items: stretch;
   flex-direction: row;
 }
@@ -177,6 +179,20 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 70%;
+  position: relative;
+}
+
+
+.help {
+  position: absolute;
+  color: #38a1db;
+  font-size: 25px;
+  right: 10px;
+  outline: none;
+  border: none;
+  background: none;
+  top: 10px;
 }
 
 #share,
