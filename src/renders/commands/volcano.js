@@ -49,7 +49,7 @@ export default function ({
       },
     });
 
-    Body.setAngularVelocity(volcanoMotion, sprite.direction === 'left' ? -0.5 : 0.5);
+    Body.setAngularVelocity(volcanoMotion, sprite.direction === 'left' ? -1 : 1);
     volcanoMotion.attr = {
       strength,
       type: 'volcano',

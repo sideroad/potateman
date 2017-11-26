@@ -128,9 +128,9 @@ export default function ({ engine, size }) {
           ...make(width / 2, (height / 6) * 5, 10, texture),
         ],
       setup: () => {
-        _.times((width / 20) * (height / 20), () => {
+        _.times((width / 60) * (height / 60), () => {
           World.add(engine.world, [
-            Bodies.circle(random(-width, width * 2), random(-height, height * 2), 0.5, {
+            Bodies.circle(random(0, width), random(0, height), 0.5, {
               render: {
                 strokeStyle: '#eeffff',
                 fillStyle: '#eeffff',
@@ -179,9 +179,42 @@ export default function ({ engine, size }) {
       setup: () => {},
       beforeUpdate: () => {},
     },
+    forest: {
+      background: '#f7ffea',
+      texture: '/images/forest-ground.png',
+      friction: 15,
+      shape: texture =>
+        [
+          ...make(width / 2, (height / 5) * 4, Math.ceil(width / 2 / cellSize), texture),
+          ...make(width / 4, (height / 5) * 3, Math.ceil(width / 5 / cellSize), texture),
+          ...make((width / 4) * 3, (height / 5) * 3, Math.ceil(width / 5 / cellSize), texture),
+          ...make(width / 3, (height / 5) * 2, Math.ceil(width / 6 / cellSize), texture),
+          ...make((width / 3) * 2, (height / 5) * 2, Math.ceil(width / 6 / cellSize), texture),
+          ...make(width / 4, (height / 5), Math.ceil(width / 5 / cellSize), texture),
+          ...make((width / 4) * 3, (height / 5), Math.ceil(width / 5 / cellSize), texture),
+        ],
+      setup: () => {},
+      beforeUpdate: (grounds) => {
+        grounds.forEach((ground, index) => {
+          // does not apply base ground
+          if (index < 2) {
+            return;
+          }
+          const direction = index % 4 < 2 ? 0.5 : -0.5;
+          const px = Math.cos(count / 50) * direction * Math.ceil((index + 1) / 2);
+          if (ground.bodies) {
+            ground.bodies.forEach((body) => {
+              Body.setPosition(body, { x: px + body.position.x, y: body.position.y });
+            });
+          } else {
+            Body.setPosition(ground, { x: px + ground.position.x, y: ground.position.y });
+          }
+        });
+      },
+    },
     volcano: {
       background: '#ffead8',
-      texture: '/images/volcano.png',
+      texture: '/images/volcano-ground.png',
       friction: 15,
       shape: texture =>
         [
@@ -255,7 +288,7 @@ export default function ({ engine, size }) {
   const { setup, beforeUpdate } = maps[stage];
   setup();
   Events.on(engine, 'beforeUpdate', () => {
-    beforeUpdate();
+    beforeUpdate(grounds);
     count += 1;
   });
   return {
