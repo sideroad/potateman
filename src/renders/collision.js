@@ -106,7 +106,7 @@ export function check({ players, engine, grounds }) {
               bodyA.position.x > bodyB.position.x ? velocity :
               velocity * -1
             ) + bodyA.velocity.x,
-            y: (velocity / -1) + bodyA.velocity.y,
+            y: (velocity * (type === 'shockWave' && bodyB.velocity.y ? 0.25 : -1)) + bodyA.velocity.y,
           });
           // eslint-disable-next-line no-console
           console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} type: ${type}`);
