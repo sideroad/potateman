@@ -323,19 +323,26 @@ export default function ({
         sprite.setDirection('right');
       }
       // attack
-      if (direction.a && !body.attr.punched) {
+      if (
+        direction.a
+      ) {
+        sink({
+          engine,
+          sprite,
+          body,
+        });
+      } else if (
+        body.attr.punchGage
+      ) {
         punch({
           engine,
           sprite,
           body,
           direction,
         });
-        body.attr.punched = true;
-      } else if (!direction.a) {
-        body.attr.punched = false;
       }
-      x = direction.left ? x - 3 : direction.right ? x + 3 : x;
-      y = direction.up ? y - 3 : direction.down ? y + 3 : y;
+      x = direction.left ? x - 5 : direction.right ? x + 5 : x;
+      y = direction.up ? y - 5 : direction.down ? y + 5 : y;
       Body.setPosition(body, {
         x,
         y,

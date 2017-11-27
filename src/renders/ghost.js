@@ -6,6 +6,8 @@ import {
 } from 'matter-js';
 import Sprite from './Sprite';
 import COLLISION from './collision';
+import { getPunchStrength } from './potateman';
+
 
 export const shockWaveRender = {
   strokeStyle: '#ffffff',
@@ -59,6 +61,12 @@ export default function ghost({
       duration: 6,
       steps: 4,
     },
+    {
+      state: 'gard',
+    },
+    {
+      state: 'punch',
+    },
   ]);
   sprite.setState('stand');
   sprite.render();
@@ -74,6 +82,19 @@ export default function ghost({
       y: y - 40,
     });
 
+    const { sinkMotion } = body.attr;
+
+    // sink
+    if (sinkMotion) {
+      const strength = getPunchStrength(body.attr);
+      const scale = strength / sinkMotion.circleRadius;
+      Body.setPosition(sinkMotion, {
+        x,
+        y,
+      });
+      Body.scale(sinkMotion, scale, scale);
+    }
+
     // ghost
     Body.set(body, {
       angle: 0,
@@ -83,15 +104,14 @@ export default function ghost({
     });
   });
   body.attr = {
-    punchGage: 1,
-    power: 50,
+    punchGage: 0,
+    power: 25,
     category: COLLISION.NONE,
     magic: 0,
     type: 'ghost',
     player,
     profile,
     profileScore: 1,
-    punched: false,
   };
   return {
     body,

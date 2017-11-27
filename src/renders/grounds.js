@@ -74,8 +74,8 @@ export default function ({ engine, size }) {
           const body = Bodies.circle(random(0, size.width), 0, 3, {
             frictionAir: 0.2,
             render: {
-              strokeStyle: '#ddeeee',
-              fillStyle: '#ddeeee',
+              strokeStyle: '#ccdddd',
+              fillStyle: '#ccdddd',
               opacity: 1,
             },
             isSensor: true,
