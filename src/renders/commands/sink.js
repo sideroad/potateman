@@ -5,7 +5,7 @@ import {
 import { getPunchStrength, shockWaveRender } from '../potateman';
 
 export default function sink({ engine, body, sprite }) {
-  sprite.setState('gard');
+  sprite.setState('guard');
   // eslint-disable-next-line no-param-reassign
   body.attr.punchGage += 1;
 

@@ -62,7 +62,7 @@ export default function ghost({
       steps: 4,
     },
     {
-      state: 'gard',
+      state: 'guard',
     },
     {
       state: 'punch',

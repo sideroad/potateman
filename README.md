@@ -16,7 +16,7 @@
 |↑| Jump |3 consecutive jump are allowed|
 |↓| Squat ||
 |A| Punch | Sinkable, Directable |
-|B| Gard | Decrease damage |
+|B| Guard | Decrease damage |
 |B ( when flying ) | Floating ||
 |← or → + A | Dash ||
 |← or → + B | Teleport ||

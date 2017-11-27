@@ -132,9 +132,9 @@ export default function ({
       steps: 1,
       next: 'stand',
     },
-    { state: 'gard' },
+    { state: 'guard' },
     { state: 'squat' },
-    { state: 'squat-gard' },
+    { state: 'squat-guard' },
     {
       state: 'walk',
       duration: 5,
@@ -206,7 +206,7 @@ export default function ({
       x: maxX - 22.5,
       y,
     });
-    const { sinkMotion, gardMotion, flamethrowers } = potateman.attr;
+    const { sinkMotion, guardMotion, flamethrowers } = potateman.attr;
 
     // sink
     if (sinkMotion) {
@@ -219,15 +219,15 @@ export default function ({
       Body.scale(sinkMotion, scale, scale);
     }
 
-    // gard
-    if (gardMotion) {
-      const strength = potateman.attr.gardGage;
-      const scale = (strength / gardMotion.circleRadius) / 5;
-      Body.setPosition(gardMotion, {
+    // guard
+    if (guardMotion) {
+      const strength = potateman.attr.guardGage;
+      const scale = (strength / guardMotion.circleRadius) / 5;
+      Body.setPosition(guardMotion, {
         x,
         y,
       });
-      Body.scale(gardMotion, scale, scale);
+      Body.scale(guardMotion, scale, scale);
     }
 
     // flamethrower
@@ -300,8 +300,8 @@ export default function ({
   const params = queryString.parse(window.location.search);
   potateman.attr = {
     punchGage: 0,
-    gardGage: 100,
-    garding: false,
+    guardGage: 100,
+    guarding: false,
     power: 100,
     damage: 0,
     magic: Number(params.magic) || 1,

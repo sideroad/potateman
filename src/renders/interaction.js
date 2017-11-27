@@ -7,8 +7,8 @@ import {
 import { parse } from '../helpers/input';
 import sink from './commands/sink';
 import punch from './commands/punch';
-import gard from './commands/gard';
-import gardCancel from './commands/gardCancel';
+import guard from './commands/guard';
+import guardCancel from './commands/guardCancel';
 import meteorite from './commands/meteorite';
 import thunder from './commands/thunder';
 import uppercut from './commands/uppercut';
@@ -65,14 +65,14 @@ export default function ({
           direction.b &&
           !direction.up &&
           !direction.down &&
-          body.attr.gardGage > 1 &&
+          body.attr.guardGage > 1 &&
           !body.attr.flamethrowers
         ) {
           x = -50;
           y = -0.5;
           body.attr.teleported = true;
-          body.attr.gardGage = 0;
-          sprite.setState('gard');
+          body.attr.guardGage = 0;
+          sprite.setState('guard');
         } else if (
           (x >= -3 && !direction.a && !body.attr.flying) ||
           (x >= -5 && direction.a && !body.attr.flying)
@@ -97,14 +97,14 @@ export default function ({
           direction.b &&
           !direction.up &&
           !direction.down &&
-          body.attr.gardGage > 1 &&
+          body.attr.guardGage > 1 &&
           !body.attr.flamethrowers
         ) {
           x = 50;
           y = -0.5;
           body.attr.teleported = true;
-          body.attr.gardGage = 0;
-          sprite.setState('gard');
+          body.attr.guardGage = 0;
+          sprite.setState('guard');
         } else if (
           (x <= 3 && !direction.a && !body.attr.flying) ||
           (x <= 5 && direction.a && !body.attr.flying)
@@ -171,13 +171,13 @@ export default function ({
         direction.b &&
         !body.attr.flamethrowers
       ) {
-        gard({
+        guard({
           engine,
           sprite,
           body,
         });
       } else {
-        gardCancel({
+        guardCancel({
           engine,
           sprite,
           body,
@@ -194,7 +194,7 @@ export default function ({
         sprite.setState('squat');
       }
 
-      // squat gard
+      // squat guard
       if (
         direction.down &&
         direction.b
@@ -227,7 +227,7 @@ export default function ({
         !direction.down &&
         direction.b &&
         body.attr.flying &&
-        body.attr.gardGage > 1 &&
+        body.attr.guardGage > 1 &&
         !body.attr.flamethrowers
       ) {
         y = -3;

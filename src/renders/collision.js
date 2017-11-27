@@ -72,8 +72,8 @@ export function check({ players, engine, grounds }) {
         if (grounds.find(ground => ground === bodyB)) {
           bodyA.attr.flycount = 0;
           bodyA.attr.flying = false;
-          if (!bodyA.attr.garding) {
-            bodyA.attr.gardGage = 100;
+          if (!bodyA.attr.guarding) {
+            bodyA.attr.guardGage = 100;
           }
         }
         const { type, item } = bodyB.attr ? bodyB.attr : {};
@@ -84,8 +84,8 @@ export function check({ players, engine, grounds }) {
           type === 'volcano'
         ) {
           let damage = bodyB.attr.strength;
-          if (bodyA.attr.garding) {
-            damage -= ((bodyA.attr.gardGage / 100) * damage);
+          if (bodyA.attr.guarding) {
+            damage -= ((bodyA.attr.guardGage / 100) * damage);
           }
           bodyA.attr.damage += damage > 0 ? damage : 0;
           bodyA.attr.magic += (bodyB.attr.strength / 6) * adjuster[type];
@@ -96,8 +96,8 @@ export function check({ players, engine, grounds }) {
             bodyA.attr.lastAttacked = bodyB.attr.player;
           }
           let velocity = (bodyB.attr.strength * bodyA.attr.damage * adjuster[type]) / 300;
-          if (bodyA.attr.garding) {
-            velocity -= ((bodyA.attr.gardGage / 100) * velocity);
+          if (bodyA.attr.guarding) {
+            velocity -= ((bodyA.attr.guardGage / 100) * velocity);
           }
           Body.setVelocity(bodyA, {
             x: (
