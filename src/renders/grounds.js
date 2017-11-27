@@ -85,8 +85,8 @@ export default function ({ engine, size }) {
           };
           World.add(engine.world, [body]);
         }
-        if (count % 500 < 20) {
-          const x = count % 1000 < 20 ? 0.75 : -0.75;
+        if (count % 500 < 50) {
+          const x = count % 1000 < 50 ? 0.25 : -0.25;
           engine.world.bodies
             .filter(body =>
               (body.attr && body.attr.type === 'potateman'))
@@ -201,7 +201,8 @@ export default function ({ engine, size }) {
             return;
           }
           const direction = index % 4 < 2 ? 0.5 : -0.5;
-          const px = Math.cos(count / 50) * direction * Math.ceil((index + 1) / 2);
+          const amplify = Math.ceil((index + 1) / 2);
+          const px = Math.cos(count / 50) * direction * amplify * (size.width / 500);
           if (ground.bodies) {
             ground.bodies.forEach((body) => {
               Body.setPosition(body, { x: px + body.position.x, y: body.position.y });
