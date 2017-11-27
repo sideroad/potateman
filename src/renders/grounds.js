@@ -128,12 +128,15 @@ export default function ({ engine, size }) {
           ...make(width / 2, (height / 6) * 5, 10, texture),
         ],
       setup: () => {
-        _.times((width / 60) * (height / 60), () => {
+        _.times((width / 60) * (height / 60), (index) => {
+          const starSize = index % 10 ? 0.5 : 0.75;
+          const x = random(width * -0.5, width * 1.5);
+          const y = random(height * -0.5, height * 1.5);
           World.add(engine.world, [
-            Bodies.circle(random(0, width), random(0, height), 0.5, {
+            Bodies.circle(x, y, starSize, {
               render: {
-                strokeStyle: '#eeffff',
-                fillStyle: '#eeffff',
+                strokeStyle: index % 2 ? '#eeffff' : '#ccffff',
+                fillStyle: index % 2 ? '#eeffff' : '#ccffff',
                 opacity: 1,
               },
               isStatic: true,
