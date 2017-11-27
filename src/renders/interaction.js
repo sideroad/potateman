@@ -59,7 +59,8 @@ export default function ({
 
       // left / right moving
       if (
-        direction.left
+        direction.left &&
+        !body.attr.cursed
       ) {
         if (
           direction.b &&
@@ -91,7 +92,8 @@ export default function ({
       }
 
       if (
-        direction.right
+        direction.right &&
+        !body.attr.cursed
       ) {
         if (
           direction.b &&
@@ -124,7 +126,11 @@ export default function ({
       }
 
       // jump
-      if (direction.up && !direction.b) {
+      if (
+        direction.up &&
+        !direction.b &&
+        !body.attr.cursed
+      ) {
         if (body.attr.flycount < 3 && !body.attr.keepTouchingJump) {
           if (!body.attr.flying) {
             y = -10;
@@ -303,10 +309,16 @@ export default function ({
         sprite.setState('stand');
       }
 
+      if (body.attr.cursed) {
+        x /= 100;
+        y /= 100;
+      }
       Body.setVelocity(body, {
         x,
         y,
       });
+
+      body.attr.cursed = false;
     });
     Object.keys(ghosts).forEach((id) => {
       const { body, sprite, direction } = ghosts[id];
@@ -340,6 +352,13 @@ export default function ({
           body,
           direction,
         });
+      }
+
+      // curse
+      if (direction.b) {
+        body.attr.curse += 1;
+      } else if (body.attr.curse) {
+        body.attr.curse = 0;
       }
       x = direction.left ? x - 5 : direction.right ? x + 5 : x;
       y = direction.up ? y - 5 : direction.down ? y + 5 : y;

@@ -112,6 +112,14 @@ export function check({ players, engine, grounds }) {
           console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} type: ${type}`);
         }
 
+        // curse collision
+        if (
+          type === 'curse'
+        ) {
+          bodyA.attr.damage += 1;
+          bodyA.attr.cursed = true;
+        }
+
         // items collision
         if (item) {
           switch (type) {

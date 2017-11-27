@@ -7,7 +7,7 @@ import {
 import Sprite from './Sprite';
 import COLLISION from './collision';
 import { getPunchStrength } from './potateman';
-
+import shrink from './motions/shrink';
 
 export const shockWaveRender = {
   strokeStyle: '#ffffff',
@@ -82,7 +82,7 @@ export default function ghost({
       y: y - 40,
     });
 
-    const { sinkMotion } = body.attr;
+    const { sinkMotion, curse } = body.attr;
 
     // sink
     if (sinkMotion) {
@@ -93,6 +93,30 @@ export default function ghost({
         y,
       });
       Body.scale(sinkMotion, scale, scale);
+    }
+
+    if (curse && curse % 5 === 0) {
+      shrink({
+        engine,
+        type: 'curse',
+        strength: 12,
+        velocity: {
+          x: 0,
+          y: -7,
+        },
+        render: {
+          strokeStyle: '#ffffff',
+          fillStyle: '#444444',
+          opacity: 0.5,
+          lineWidth: 1,
+        },
+        category: body.attr.category,
+        position: {
+          x: body.position.x,
+          y: body.position.y,
+        },
+        player: body.attr.player,
+      });
     }
 
     // ghost
@@ -112,6 +136,7 @@ export default function ghost({
     player,
     profile,
     profileScore: 1,
+    curse: 0,
   };
   return {
     body,
