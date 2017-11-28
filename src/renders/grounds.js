@@ -220,7 +220,7 @@ export default function ({ engine, size }) {
           }
         });
         if (count % 1500 === 0) {
-          _.times((width / 100) * (height / 100), () => {
+          _.times((width / 200) * (height / 200), () => {
             const x = random(0, width);
             const y = random(0, height);
             cure({
@@ -236,7 +236,7 @@ export default function ({ engine, size }) {
           engine.world.bodies
             .forEach((body) => {
               if (body.attr && body.attr.type === 'potateman') {
-                const increase = (count / 1500) * 50;
+                const increase = (count / 1500) * 25;
                 // eslint-disable-next-line no-param-reassign
                 body.attr.magic += increase;
                 // eslint-disable-next-line no-param-reassign

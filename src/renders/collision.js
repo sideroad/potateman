@@ -57,7 +57,7 @@ export default COLLISION;
 
 const adjuster = {
   shockWave: 0.5,
-  meteorite: 0.75,
+  meteorite: 0.9,
   thunder: 2,
   volcano: 0.1,
 };
@@ -89,13 +89,14 @@ export function check({ players, engine, grounds }) {
           }
           bodyA.attr.damage += damage > 0 ? damage : 0;
           bodyA.attr.magic += (bodyB.attr.strength / 6) * adjuster[type];
+          let velocity = (bodyB.attr.strength * bodyA.attr.damage * adjuster[type]) / 300;
           const player = players[bodyB.attr.player];
           if (player) {
             player.body.attr.magic += (bodyB.attr.strength / 2) * adjuster[type];
             player.body.attr.score += (bodyB.attr.strength / 2) * adjuster[type];
             bodyA.attr.lastAttacked = bodyB.attr.player;
+            velocity *= player.body.attr.power / 100;
           }
-          let velocity = (bodyB.attr.strength * bodyA.attr.damage * adjuster[type]) / 300;
           if (bodyA.attr.guarding) {
             velocity -= ((bodyA.attr.guardGage / 100) * velocity);
           }
