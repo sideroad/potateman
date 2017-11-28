@@ -77,7 +77,7 @@ export default function ({ engine, size }) {
             frictionAir: 0.2,
             render: {
               strokeStyle: '#ccdddd',
-              fillStyle: '#ccdddd',
+              fillStyle: '#bbdddd',
               opacity: 1,
             },
             isSensor: true,
