@@ -33,3 +33,12 @@
 |![RescueBox](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/rescue-box.png)|Decrease total damage|
 |![MagicBox](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/magic-box.png)|Increase magic point|
 |![Firethrower](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/flamethrower-equip-right-1.png)|Use Fire thrower|
+
+# Stages
+|Stage|Remark|
+|-----|------|
+|Earth![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stages/earth.png)|No item. Basic stage.|
+|Ice![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stages/ice.png)|No friction ground. Raging wind in certain period of time.|
+|Space![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stages/space.png)|Increase gravity in certain period of time.|
+|Moss![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stages/moss.png)|Moving ground. Increase power and magic point in certain period of time.|
+|Volcano![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stages/volcano.png)|Volcanic eruption happen in certain period of time.|

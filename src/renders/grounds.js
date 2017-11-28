@@ -186,9 +186,9 @@ export default function ({ engine, size }) {
       setup: () => {},
       beforeUpdate: () => {},
     },
-    forest: {
+    moss: {
       background: '#f7ffea',
-      texture: '/images/forest-ground.png',
+      texture: '/images/moss-ground.png',
       friction: 15,
       hasItem: true,
       shape: texture =>
