@@ -11,7 +11,7 @@ export default function cureFn({ engine, body }) {
     },
     render: {
       strokeStyle: '#aaaaaa',
-      fillStyle: '#dddddd',
+      fillStyle: '#ddccff',
       opacity: 0.75,
       lineWidth: 1,
     },

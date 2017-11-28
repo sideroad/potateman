@@ -135,7 +135,7 @@ export default function (act) {
     act.send({
       act: 'start',
     });
-    const { grounds: groundsBody, friction } = grounds({ engine, size });
+    const { grounds: groundsBody, friction, hasItem } = grounds({ engine, size });
     interaction({
       act,
       engine,
@@ -186,7 +186,9 @@ export default function (act) {
         players,
         render,
       });
-      items({ engine, size });
+      if (hasItem) {
+        items({ engine, size });
+      }
     });
   };
   // eslint-disable-next-line no-param-reassign

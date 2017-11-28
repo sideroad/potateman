@@ -10,6 +10,7 @@ import _ from 'lodash';
 import COLLISION from './collision';
 import random from '../helpers/random';
 import volcano from './commands/volcano';
+import cure from './motions/cure';
 
 const params = queryString.parse(window.location.search);
 
@@ -60,6 +61,7 @@ export default function ({ engine, size }) {
       background: '#ffffff',
       texture: '/images/ice-ground.png',
       friction: 0,
+      hasItem: true,
       shape: texture =>
         [
           // eslint-disable-next-line max-len
@@ -117,6 +119,7 @@ export default function ({ engine, size }) {
       background: '#0D0015',
       texture: '/images/space-ground.png',
       friction: 15,
+      hasItem: true,
       shape: texture =>
         [
           ...make(width / 2, height / 2, Math.ceil(width / 2 / cellSize), texture),
@@ -171,6 +174,7 @@ export default function ({ engine, size }) {
       background: '#F1F4FE',
       texture: '/images/ground.png',
       friction: 15,
+      hasItem: false,
       shape: texture =>
         [
           ...make(width / 2, (height / 4) * 3, Math.ceil(width / 2 / cellSize), texture),
@@ -186,6 +190,7 @@ export default function ({ engine, size }) {
       background: '#f7ffea',
       texture: '/images/forest-ground.png',
       friction: 15,
+      hasItem: true,
       shape: texture =>
         [
           ...make(width / 2, (height / 5) * 4, Math.ceil(width / 2 / cellSize), texture),
@@ -214,12 +219,38 @@ export default function ({ engine, size }) {
             Body.setPosition(ground, { x: px + ground.position.x, y: ground.position.y });
           }
         });
+        if (count % 1500 === 0) {
+          _.times((width / 100) * (height / 100), () => {
+            const x = random(0, width);
+            const y = random(0, height);
+            cure({
+              engine,
+              body: {
+                attr: {
+                  category: COLLISION.POTATEMANS,
+                },
+                position: { x, y },
+              },
+            });
+          });
+          engine.world.bodies
+            .forEach((body) => {
+              if (body.attr && body.attr.type === 'potateman') {
+                const increase = (count / 1500) * 50;
+                // eslint-disable-next-line no-param-reassign
+                body.attr.magic += increase;
+                // eslint-disable-next-line no-param-reassign
+                body.attr.power += increase;
+              }
+            });
+        }
       },
     },
     volcano: {
       background: '#ffead8',
       texture: '/images/volcano-ground.png',
       friction: 15,
+      hasItem: true,
       shape: texture =>
         [
           // eslint-disable-next-line max-len
