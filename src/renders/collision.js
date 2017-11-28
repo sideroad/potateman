@@ -56,7 +56,7 @@ COLLISION.POTATEMANS =
 export default COLLISION;
 
 const adjuster = {
-  shockWave: 0.75,
+  shockWave: 0.5,
   meteorite: 1,
   thunder: 2,
   volcano: 0.15,
