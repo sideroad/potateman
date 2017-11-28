@@ -92,7 +92,7 @@ export default function (act) {
       data,
     });
     attendee({ stack, image: data.image });
-    if (stack.length >= 1) {
+    if (stack.length >= 2) {
       document.getElementById('find').style.display = 'none';
       document.getElementById('start').style.display = 'block';
     }

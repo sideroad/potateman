@@ -49,7 +49,7 @@ const initialize = () =>
       addCpuElem.addEventListener('touchstart', addCpu);
 
       document.querySelectorAll('.find').forEach((elem) => {
-        elem.addEventListener('click', () => {
+        const find = () => {
           fetch(`/api/stages/${data.stage}/other`)
             .then(res => res.json())
             .then((json) => {
@@ -60,7 +60,9 @@ const initialize = () =>
                 window.alert('Other room does not found');
               }
             });
-        });
+        };
+        elem.addEventListener('click', find);
+        elem.addEventListener('touchstart', find);
       });
       const shareElem = document.getElementById('share');
       shareElem.setAttribute('data-clipboard-text', mirrorUrl);

@@ -1,71 +1,115 @@
 import 'babel-polyfill';
 import QRious from 'qrious';
+import auth from '../helpers/auth';
 import attendee from '../dom/attendee';
 import start from '../dom/start';
 import win from '../dom/win';
 import ranking from '../dom/ranking';
+import loading from '../dom/loading';
+import facebookLogin from '../dom/facebookLogin';
+import joypad from '../dom/joypad';
 
-const act = {
-  attend: ({ stack, data: { image } }) => {
-    attendee({ stack, image });
-  },
-  mirror: ({ data: { stack } }) => {
-    stack.forEach(data => act.attend({ stack, data }));
-  },
-  start: () => {
-    start();
-  },
-  win: (data) => {
-    win(data);
-  },
-};
-const stage = window.location.pathname.match(/\/mirror\/([^/]+)\//)[1];
-const url = `${window.location.protocol}//${window.location.host}/joypad/${stage}/`;
-// eslint-disable-next-line no-new
-new QRious({
-  element: document.getElementById('qr'),
-  value: url,
-});
-const peer = new window.Peer({
-  host: window.location.hostname,
-  port: window.location.port,
-  path: '/peerjs',
-});
-setInterval(() => {
-  peer.socket.send({
-    type: 'KEEPALIVE',
-  });
-}, 5000);
-peer.on('open', () => {
-  const conn = peer.connect(stage, {
-    serialization: 'json',
-  });
-  const call = peer.call(stage, document.getElementById('dummy').captureStream());
-  conn.on('data', (data) => {
-    if (act[data.act]) {
-      act[data.act](data);
-    }
-  });
-  conn.on('open', () => {
-    conn.send({
-      act: 'mirror',
+facebookLogin();
+const initialize = () =>
+  new Promise((resolve) => {
+    const act = {
+      attend: ({ stack, data: { image } }) => {
+        attendee({ stack, image });
+      },
+      mirror: ({ data: { stack } }) => {
+        stack.forEach(data => act.attend({ stack, data }));
+      },
+      start: () => {
+        start();
+      },
+      win: (data) => {
+        win(data);
+      },
+    };
+    const stage = window.location.pathname.match(/\/mirror\/([^/]+)\//)[1];
+    const url = `${window.location.protocol}//${window.location.host}/joypad/${stage}/`;
+    // eslint-disable-next-line no-new
+    new QRious({
+      element: document.getElementById('qr'),
+      value: url,
     });
-  });
-  call.on('stream', (stream) => {
-    const streamElem = document.getElementById('stream');
-    streamElem.srcObject = stream;
-    streamElem.play();
-  });
-  call.on('error', (msg) => {
-    // eslint-disable-next-line no-console
-    console.log(msg);
-  });
-});
-peer.on('error', (err) => {
-  // eslint-disable-next-line no-console
-  console.log(err);
-});
+    const peer = new window.Peer({
+      host: window.location.hostname,
+      port: window.location.port,
+      path: '/peerjs',
+    });
+    setInterval(() => {
+      peer.socket.send({
+        type: 'KEEPALIVE',
+      });
+    }, 5000);
+    peer.on('open', (player) => {
+      const conn = peer.connect(stage, {
+        serialization: 'json',
+      });
+      const call = peer.call(stage, document.getElementById('dummy').captureStream());
+      conn.on('data', (data) => {
+        if (act[data.act]) {
+          act[data.act](data);
+        }
+      });
+      conn.on('open', () => {
+        conn.send({
+          act: 'mirror',
+        });
+        resolve({ data: { stage, player }, conn });
+      });
+      const streamElem = document.getElementById('stream');
+      const joinElem = document.getElementById('join');
+      joinElem.addEventListener('touchstart', () => {
+        streamElem.play();
+        joinElem.remove();
+      });
+      call.on('stream', (stream) => {
+        streamElem.srcObject = stream;
+        streamElem.play();
+      });
+      call.on('error', (msg) => {
+        // eslint-disable-next-line no-console
+        console.log(msg);
+      });
+    });
+    peer.on('error', (err) => {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    });
 
-fetch('https://chaus.herokuapp.com/apis/potateman/scores?orderBy=-score')
-  .then(res => res.json())
-  .then(res => ranking(res));
+    fetch('https://chaus.herokuapp.com/apis/potateman/scores?orderBy=-score')
+      .then(res => res.json())
+      .then(res => ranking(res));
+  });
+
+auth((user) => {
+  loading.end();
+  const facebookLoginElem = document.getElementById('facebook-login');
+  if (facebookLoginElem) {
+    facebookLoginElem.remove();
+  }
+  initialize()
+    .then(({ conn, data }) => {
+      conn.send({
+        act: 'attend',
+        stage: data.stage,
+        player: data.player,
+        fbid: user.id,
+        name: user.name,
+        image: user.image,
+      });
+      window.addEventListener('orientationchange', () => {
+        joypad.destroy();
+        joypad.binder(commands => conn.send(commands));
+      });
+      window.addEventListener('resize', () => {
+        joypad.destroy();
+        joypad.binder(commands => conn.send(commands));
+      });
+      joypad.binder(commands => conn.send(commands));
+    });
+}, () => {
+  initialize();
+});

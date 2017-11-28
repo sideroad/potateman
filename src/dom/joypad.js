@@ -5,6 +5,7 @@ export default {
   binder: (callback) => {
     let prev;
     (($) => {
+      $('#joypad').css('display', 'flex');
       $('#joypad').joypad().bind('joypad', (e, param) => {
         const { ran } = param.ck;
         if (ran && ran < 5) return;

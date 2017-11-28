@@ -33,6 +33,19 @@
       </div>
       <div id="pr"></div>
     </div>
+    <canvas id="dummy"></canvas>
+    <video id="stream" playsinline></video>
+    <div id="joypad" class="joypad portable-mode" >
+      <div class="left-pad" >
+        <div></div>
+        <div id="ck" class="ck" ></div>
+      </div>
+      <div class="right-pad" >
+        <div id="a" class="button" ></div>
+        <div id="b" class="button" ></div>
+        <div id="c" class="button" ></div>
+      </div>
+    </div>
     <div id="countdown">
       <div id="overlay" ></div>
       <div class="counts" >
@@ -50,14 +63,21 @@
         <div id="winner-score" >Score: 0</div>
       </div>
     </div>
-    <video id="stream" ></video>
-    <canvas id="dummy"></canvas>
-    <div id="winner">
-      <div id="overlay" ></div>
-      <div id="winner-container" >
-        <div id="winner-character" ></div>
-        <div id="winner-message" >You Win!</div>
+    <div id="facebook-login">
+      <div class="overlay" ></div>
+      <div id="facebook-login-icon" >
+        <i class="fa fa-facebook-official" aria-hidden="true"></i>
       </div>
+    </div>
+    <div id="join">
+      <div class="overlay" ></div>
+      <div id="join-icon" >
+        <i class="fa fa-desktop" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div id="loading" >
+      <div class="overlay" ></div>
+      <i id="loading-animation" class="fa fa-spinner" aria-hidden="true"></i>
     </div>
     <script src="/bundle-mirror.js" ></script>
   </body>
