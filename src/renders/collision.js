@@ -56,10 +56,10 @@ COLLISION.POTATEMANS =
 export default COLLISION;
 
 const adjuster = {
-  shockWave: 0.5,
-  meteorite: 0.9,
+  shockWave: 0.75,
+  meteorite: 1,
   thunder: 2,
-  volcano: 0.1,
+  volcano: 0.15,
 };
 
 export function check({ players, engine, grounds }) {
