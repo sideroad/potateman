@@ -2,7 +2,8 @@
 
 1. Access https://potateman.herokuapp.com
 2. Read QR code by players
-3. Click Crash button to start game
+3. If u want to add CPU, Click human icon to add
+4. Click Crash button to start game
 
 * You can invite other people to click share icon. mirroring URL will be copied on clipboard. Share the URL to others.
 
