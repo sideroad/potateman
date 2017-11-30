@@ -328,6 +328,7 @@ export default function ({ engine, size }) {
   });
   return {
     friction: maps[stage].friction,
+    hasItem: maps[stage].hasItem,
     grounds,
   };
 }
