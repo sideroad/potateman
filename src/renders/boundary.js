@@ -21,6 +21,7 @@ export default function ({
   players,
   render,
 }) {
+  let count = 0;
   Events.on(engine, 'beforeUpdate', () => {
     const bottomBoundary = size.height * 2;
     const topBoundary = size.height * -1;
@@ -72,11 +73,14 @@ export default function ({
         });
       }
     });
-    engine.world.bodies.forEach((body) => {
-      if (body.position.y > bottomBoundary) {
-        World.remove(engine.world, body);
-      }
-    });
+    if (count % 5 === 0) {
+      engine.world.bodies.forEach((body) => {
+        if (body.position.y > bottomBoundary) {
+          World.remove(engine.world, body);
+        }
+      });
+    }
+    count += 1;
   });
 
   if (magnify) {
