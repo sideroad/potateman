@@ -6,10 +6,10 @@ import start from '../dom/start';
 import win from '../dom/win';
 import ranking from '../dom/ranking';
 import loading from '../dom/loading';
-import facebookLogin from '../dom/facebookLogin';
+import login from '../dom/login';
 import joypad from '../dom/joypad';
 
-facebookLogin();
+login();
 const initialize = () =>
   new Promise((resolve) => {
     const act = {
@@ -84,11 +84,11 @@ const initialize = () =>
       .then(res => ranking(res));
   });
 
-auth((user) => {
+auth('', (user) => {
   loading.end();
-  const facebookLoginElem = document.getElementById('facebook-login');
-  if (facebookLoginElem) {
-    facebookLoginElem.remove();
+  const loginsElem = document.getElementById('logins');
+  if (loginsElem) {
+    loginsElem.remove();
   }
   initialize()
     .then(({ conn, data }) => {

@@ -1,5 +1,6 @@
 import passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
+import { Strategy as GitHubStrategy } from 'passport-github2';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
@@ -9,7 +10,7 @@ const applyStrategy = (authenticator, config, Strategy, origin) => {
     clientID: config.appId,
     clientSecret: config.secret,
     callbackURL: `${origin}/auth/${authenticator}/callback`,
-    profileFields: ['id', 'displayName', 'picture', 'email'],
+    profileFields: ['id', 'displayName', 'picture'],
   }, (accessToken, refreshToken, profile, cb) =>
     cb(null, { ...profile, token: accessToken })));
 };
@@ -44,7 +45,8 @@ export default {
       cb(null, obj);
     });
 
-    applyStrategy('facebook', config, FacebookStrategy, origin);
+    applyStrategy('facebook', config.facebook, FacebookStrategy, origin);
+    applyStrategy('github', config.github, GitHubStrategy, origin);
 
     app.use(passport.initialize());
     app.use(passport.session());
@@ -67,5 +69,6 @@ export default {
     );
 
     applyEndpoint(app, 'facebook');
+    applyEndpoint(app, 'github');
   },
 };

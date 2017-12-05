@@ -3,13 +3,13 @@ import auth from '../helpers/auth';
 import loading from '../dom/loading';
 import expander from '../dom/expander';
 import joypad from '../dom/joypad';
+import login from '../dom/login';
 
-document.getElementById('expander-icon').addEventListener('touchend', () => {
-  expander.end();
-  document.documentElement.webkitRequestFullscreen();
-});
-
-auth((user) => {
+auth('', (user) => {
+  const loginsElem = document.getElementById('logins');
+  if (loginsElem) {
+    loginsElem.remove();
+  }
   (($) => {
     $(() => {
       let conn;
@@ -88,23 +88,6 @@ auth((user) => {
           // eslint-disable-next-line
           window.alert('Please read QR code to join');
         }
-
-        const streamElem = document.getElementById('stream');
-        document.getElementById('portable').addEventListener('click', () => {
-          document.getElementById('joypad').className = 'joypad portable-mode';
-          $('#joypad').joypad('destroy');
-          joypad.bind();
-          const call = peer.call(stage, document.getElementById('dummy').captureStream());
-          call.on('stream', (stream) => {
-            streamElem.srcObject = stream;
-            streamElem.play();
-          });
-          call.on('error', (msg) => {
-            // eslint-disable-next-line no-console
-            console.log(msg);
-          });
-          streamElem.play();
-        });
       });
       peer.on('error', (err) => {
         // eslint-disable-next-line no-console
@@ -112,4 +95,6 @@ auth((user) => {
       });
     });
   })(window.jQuery);
+}, () => {
+  login();
 });

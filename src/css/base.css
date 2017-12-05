@@ -376,7 +376,7 @@ body {
 
 
 #loading,
-#facebook-login,
+#logins,
 #join{
   display: none;
   position: absolute;
@@ -386,7 +386,6 @@ body {
   height: 100vh;
 }
 
-#facebook-login-icon,
 #join-icon,
 #loading-animation {
   top: 50%;
@@ -400,7 +399,18 @@ body {
   animation: loading 2s linear infinite;
   animation-fill-mode: forwards;
 }
-
+#authenticator {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 10em;
+  color: white;
+}
 @keyframes loading {
   0% {
     transform: translate(-50%, -50%) rotate(0deg);
@@ -507,7 +517,7 @@ body {
   .qr-container {
     display: none;
   }
-  #facebook-login {
+  #logins {
     display: block;
   }
   #join {

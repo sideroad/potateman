@@ -6,10 +6,10 @@ import peer from './helpers/peer';
 import auth from './helpers/auth';
 import ranking from './dom/ranking';
 import loading from './dom/loading';
-import facebookLogin from './dom/facebookLogin';
+import login from './dom/login';
 import joypad from './dom/joypad';
 
-facebookLogin();
+login();
 const initialize = () =>
   new Promise((resolve) => {
     const act = peer();
@@ -24,6 +24,7 @@ const initialize = () =>
         element: document.getElementById('qr'),
         value: url,
       });
+      console.log(url);
 
       const start = () => {
         act.start(data);
@@ -93,11 +94,11 @@ const initialize = () =>
     renderer(act);
   });
 
-auth((user) => {
+auth('', (user) => {
   loading.end();
-  const facebookLoginElem = document.getElementById('facebook-login');
-  if (facebookLoginElem) {
-    facebookLoginElem.remove();
+  const loginsElem = document.getElementById('logins');
+  if (loginsElem) {
+    loginsElem.remove();
   }
   initialize()
     .then(({ act, data }) => {

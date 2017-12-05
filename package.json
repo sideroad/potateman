@@ -36,6 +36,7 @@
     "md5": "^2.2.1",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
+    "passport-github2": "^0.1.11",
     "peer": "^0.2.8",
     "qrious": "^4.0.2",
     "query-string": "^5.0.1",

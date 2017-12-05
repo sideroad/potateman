@@ -1,6 +1,6 @@
 import loading from '../dom/loading';
 
-export default function authFn(callback, fallback) {
+export default function authFn(authenticator, callback, fallback) {
   loading.start();
   fetch('/auth', {
     credentials: 'include',
@@ -19,7 +19,7 @@ export default function authFn(callback, fallback) {
           fallback();
         } else {
           document.cookie = `redirect=${window.location.href}; path=/;`;
-          window.location.href = '/auth/facebook';
+          window.location.href = `/auth/${authenticator}`;
         }
       });
       // eslint-disable-next-line

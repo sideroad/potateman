@@ -80,8 +80,14 @@ app.get('/api/stages/:id/other', (req, res) => {
 });
 
 passporter.use({
-  appId: process.env.POTATEMAN_FACEBOOK_CLIENT_ID,
-  secret: process.env.POTATEMAN_FACEBOOK_SECRET_ID,
+  facebook: {
+    appId: process.env.POTATEMAN_FACEBOOK_CLIENT_ID,
+    secret: process.env.POTATEMAN_FACEBOOK_SECRET_ID,
+  },
+  github: {
+    appId: process.env.POTATEMAN_GITHUB_CLIENT_ID,
+    secret: process.env.POTATEMAN_GITHUB_SECRET_ID,
+  },
 }, app, base);
 
 const server = new http.Server(app);
