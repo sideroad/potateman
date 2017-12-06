@@ -16,17 +16,19 @@ export default function easyFn({
         x: player.body.position.x - other.position.x,
         y: player.body.position.y - other.position.y,
       };
+      const xabs = Math.abs(distance.x);
+      const yabs = Math.abs(distance.y);
       return {
         ...other,
         distance: {
           ...distance,
-          t: Math.abs(distance.x) + Math.abs(distance.y),
+          xabs,
+          yabs,
+          t: xabs + yabs,
         },
       };
     })
     .sort((a, b) => a.distance.t > b.distance.t)[0];
-  target.distance.xabs = Math.abs(target.distance.x);
-  target.distance.yabs = Math.abs(target.distance.y);
 
   if (!target) {
     player.direction.up = 0;
@@ -45,7 +47,7 @@ export default function easyFn({
   player.direction.right =
     (
       target.distance.x < 0 &&
-      (quarterWidth) * 3 > player.body.position.x
+      quarterWidth * 3 > player.body.position.x
     ) ||
     quarterWidth > player.body.position.x ? 1 : 0;
 
@@ -54,7 +56,7 @@ export default function easyFn({
       target.distance.x > 0 &&
       quarterWidth < player.body.position.x
     ) ||
-    (quarterWidth) * 3 < player.body.position.x ? 1 : 0;
+    quarterWidth * 3 < player.body.position.x ? 1 : 0;
 
   player.direction.up =
     (
@@ -62,13 +64,13 @@ export default function easyFn({
         target.distance.y > 0 &&
         quarterHeight < player.body.position.y
       ) ||
-      (quarterHeight) * 3 < player.body.position.y
+      quarterHeight * 3 < player.body.position.y
     ) &&
     !player.direction.up ? 1 : 0;
 
   player.direction.down =
     target.distance.y < 0 &&
-    (quarterHeight) * 3 > player.body.position.y ? 1 : 0;
+    quarterHeight * 3 > player.body.position.y ? 1 : 0;
 
   player.direction.b =
     target.distance.y < 0 &&
@@ -96,6 +98,7 @@ export default function easyFn({
     player.direction.up = 0;
     player.direction.down = 1;
     player.direction.c = 1;
+    return;
   }
 
   if (
@@ -111,6 +114,7 @@ export default function easyFn({
     player.direction.up = 1;
     player.direction.down = 0;
     player.direction.c = 1;
+    return;
   }
   if (
     target.distance.yabs < 5 &&
@@ -118,7 +122,10 @@ export default function easyFn({
     player.body.attr.flamethrowers <= 0 &&
     !target.attr.item
   ) {
+    player.direction.up = 0;
+    player.direction.down = 0;
     player.direction.c = 1;
+    return;
   }
   if (
     player.body.attr.magic > MAGIC.volcano.min &&
