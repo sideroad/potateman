@@ -20,13 +20,14 @@ export default function easyFn({
         ...other,
         distance: {
           ...distance,
-          xabs: Math.abs(distance.x),
-          yabs: Math.abs(distance.y),
           t: Math.abs(distance.x) + Math.abs(distance.y),
         },
       };
     })
     .sort((a, b) => a.distance.t > b.distance.t)[0];
+  target.distance.xabs = Math.abs(target.distance.x);
+  target.distance.yabs = Math.abs(target.distance.y);
+
   if (!target) {
     player.direction.up = 0;
     player.direction.down = 0;
@@ -37,34 +38,37 @@ export default function easyFn({
     player.direction.c = 0;
     return;
   }
+  player.direction.c = 0;
+  const quarterWidth = size.width / 4;
+  const quarterHeight = size.height / 4;
 
   player.direction.right =
     (
       target.distance.x < 0 &&
-      (size.width / 4) * 3 > player.body.position.x
+      (quarterWidth) * 3 > player.body.position.x
     ) ||
-    size.width / 4 > player.body.position.x ? 1 : 0;
+    quarterWidth > player.body.position.x ? 1 : 0;
 
   player.direction.left =
     (
       target.distance.x > 0 &&
-      size.width / 4 < player.body.position.x
+      quarterWidth < player.body.position.x
     ) ||
-    (size.width / 4) * 3 < player.body.position.x ? 1 : 0;
+    (quarterWidth) * 3 < player.body.position.x ? 1 : 0;
 
   player.direction.up =
     (
       (
         target.distance.y > 0 &&
-        size.height / 4 < player.body.position.y
+        quarterHeight < player.body.position.y
       ) ||
-      (size.height / 4) * 3 < player.body.position.y
+      (quarterHeight) * 3 < player.body.position.y
     ) &&
     !player.direction.up ? 1 : 0;
 
   player.direction.down =
     target.distance.y < 0 &&
-    (size.height / 4) * 3 > player.body.position.y ? 1 : 0;
+    (quarterHeight) * 3 > player.body.position.y ? 1 : 0;
 
   player.direction.b =
     target.distance.y < 0 &&
@@ -73,7 +77,7 @@ export default function easyFn({
   if (
     player.body.attr.punchGage < 20 ||
     target.distance.t > 100 ||
-    target.item
+    target.attr.item
   ) {
     player.direction.a = 1;
   } else {
@@ -85,7 +89,7 @@ export default function easyFn({
     player.body.position.y < size.height / 2 &&
     player.body.attr.magic > MAGIC.uppercut.min &&
     player.body.attr.flamethrowers <= 0 &&
-    !target.item
+    !target.attr.item
   ) {
     player.direction.left = 0;
     player.direction.right = 0;
@@ -100,7 +104,7 @@ export default function easyFn({
     target.distance.y < 0 &&
     player.body.attr.magic > MAGIC.uppercut.min &&
     player.body.attr.flamethrowers <= 0 &&
-    !target.item
+    !target.attr.item
   ) {
     player.direction.left = 0;
     player.direction.right = 0;
@@ -112,14 +116,14 @@ export default function easyFn({
     target.distance.yabs < 5 &&
     player.body.attr.magic > MAGIC.uppercut.min &&
     player.body.attr.flamethrowers <= 0 &&
-    !target.item
+    !target.attr.item
   ) {
     player.direction.c = 1;
   }
   if (
     player.body.attr.magic > MAGIC.volcano.min &&
     player.body.attr.flamethrowers <= 0 &&
-    !target.item
+    !target.attr.item
   ) {
     player.direction.up = 0;
     player.direction.down = 0;
