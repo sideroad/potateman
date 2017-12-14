@@ -135,7 +135,12 @@ export default function (act) {
     act.send({
       act: 'start',
     });
-    const { grounds: groundsBody, friction, hasItem } = grounds({ engine, size });
+    const {
+      grounds: groundsBody,
+      friction,
+      hasItem,
+      restitution,
+    } = grounds({ engine, size });
     interaction({
       act,
       engine,
@@ -176,6 +181,7 @@ export default function (act) {
           cpu: data.cpu,
           render,
           friction,
+          restitution,
         });
       });
       cpu({ players, size, world });

@@ -60,6 +60,7 @@ export default function ({ engine, size }) {
     ice: {
       background: '#ffffff',
       texture: '/images/ice-ground.png',
+      restitution: 0,
       friction: 0,
       hasItem: true,
       shape: texture =>
@@ -118,6 +119,7 @@ export default function ({ engine, size }) {
     space: {
       background: '#0D0015',
       texture: '/images/space-ground.png',
+      restitution: 0,
       friction: 15,
       hasItem: true,
       shape: texture =>
@@ -173,6 +175,7 @@ export default function ({ engine, size }) {
     earth: {
       background: '#F1F4FE',
       texture: '/images/ground.png',
+      restitution: 0,
       friction: 15,
       hasItem: false,
       shape: texture =>
@@ -186,9 +189,43 @@ export default function ({ engine, size }) {
       setup: () => {},
       beforeUpdate: () => {},
     },
+    candy: {
+      background: '#ffe2f2',
+      texture: '/images/candy-ground.png',
+      restitution: 1,
+      friction: 15,
+      hasItem: false,
+      shape: texture =>
+        [
+          ...make(width / 2, (height / 5) * 4, Math.ceil(width / 2 / cellSize), texture),
+          ...make(width / 4, height / 2, Math.ceil(width / 5 / cellSize), texture),
+          ...make(width / 2, height / 5, Math.ceil(width / 5 / cellSize), texture),
+          ...make((width / 4) * 3, height / 2, Math.ceil(width / 5 / cellSize), texture),
+        ],
+      setup: () => {},
+      beforeUpdate: (grounds) => {
+        grounds.forEach((ground, index) => {
+          // does not apply base grounds
+          if (index < 2) {
+            return;
+          }
+          const direction = index % 4 < 2 ? 0.5 : -0.5;
+          const amplify = 2;
+          const px = Math.cos(count / 50) * direction * amplify * (size.height / 500);
+          if (ground.bodies) {
+            ground.bodies.forEach((body) => {
+              Body.setPosition(body, { x: body.position.x, y: px + body.position.y });
+            });
+          } else {
+            Body.setPosition(ground, { x: ground.position.x, y: px + ground.position.y });
+          }
+        });
+      },
+    },
     moss: {
       background: '#f7ffea',
       texture: '/images/moss-ground.png',
+      restitution: 0,
       friction: 15,
       hasItem: true,
       shape: texture =>
@@ -249,6 +286,7 @@ export default function ({ engine, size }) {
     volcano: {
       background: '#ffead8',
       texture: '/images/volcano-ground.png',
+      restitution: 0,
       friction: 15,
       hasItem: true,
       shape: texture =>
@@ -328,6 +366,7 @@ export default function ({ engine, size }) {
   });
   return {
     friction: maps[stage].friction,
+    restitution: maps[stage].restitution,
     hasItem: maps[stage].hasItem,
     grounds,
   };
