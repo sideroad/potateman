@@ -64,6 +64,7 @@ auth('', (user) => {
             image: user.image,
           });
           loading.end();
+          window.scrollTo(0, 1);
           const ua = window.navigator.userAgent;
           if (!/iPhone/.test(ua)) {
             expander.start();

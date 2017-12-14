@@ -87,11 +87,18 @@ export default function easyFn({
   }
 
   if (
-    target.distance.xabs < 5 &&
-    player.body.position.y < size.height / 2 &&
-    player.body.attr.magic > MAGIC.uppercut.min &&
-    player.body.attr.flamethrowers <= 0 &&
-    !target.attr.item
+    (
+      target.distance.xabs < 5 &&
+      player.body.position.y < size.height / 2 &&
+      player.body.attr.magic > MAGIC.uppercut.min &&
+      !target.attr.item
+    ) ||
+    (
+      player.body.position.y < 0 &&
+      player.body.attr.magic > MAGIC.thunder.min &&
+      quarterWidth < player.body.position.x &&
+      quarterWidth * 3 > player.body.position.x
+    )
   ) {
     player.direction.left = 0;
     player.direction.right = 0;
@@ -102,12 +109,18 @@ export default function easyFn({
   }
 
   if (
-    target.distance.xabs < 5 &&
-    target.distance.y > -100 &&
-    target.distance.y < 0 &&
-    player.body.attr.magic > MAGIC.uppercut.min &&
-    player.body.attr.flamethrowers <= 0 &&
-    !target.attr.item
+    (
+      target.distance.xabs < 5 &&
+      target.distance.y > -100 &&
+      target.distance.y < 0 &&
+      player.body.attr.magic > MAGIC.uppercut.min &&
+      !target.attr.item
+    ) ||
+    (
+      player.body.attr.flycount === 3 &&
+      player.body.attr.magic > MAGIC.uppercut.min &&
+      player.body.position.y > size.height
+    )
   ) {
     player.direction.left = 0;
     player.direction.right = 0;
@@ -119,7 +132,6 @@ export default function easyFn({
   if (
     target.distance.yabs < 5 &&
     player.body.attr.magic > MAGIC.uppercut.min &&
-    player.body.attr.flamethrowers <= 0 &&
     !target.attr.item
   ) {
     player.direction.up = 0;
@@ -129,7 +141,6 @@ export default function easyFn({
   }
   if (
     player.body.attr.magic > MAGIC.volcano.min &&
-    player.body.attr.flamethrowers <= 0 &&
     !target.attr.item
   ) {
     player.direction.up = 0;
