@@ -194,7 +194,7 @@ export default function ({ engine, size }) {
       texture: '/images/candy-ground.png',
       restitution: 1,
       friction: 15,
-      hasItem: false,
+      hasItem: true,
       shape: texture =>
         [
           ...make(width / 2, (height / 5) * 4, Math.ceil(width / 2 / cellSize), texture),
