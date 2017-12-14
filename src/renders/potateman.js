@@ -206,7 +206,12 @@ export default function ({
       x: maxX - 22.5,
       y,
     });
-    const { sinkMotion, guardMotion, flamethrowers } = potateman.attr;
+    const {
+      sinkMotion,
+      guardMotion,
+      flamethrowers,
+      giant,
+    } = potateman.attr;
 
     // sink
     if (sinkMotion) {
@@ -246,6 +251,17 @@ export default function ({
       });
     } else {
       flamethrowerBody.render.opacity = 0;
+    }
+
+    // giant
+    if (giant > 0) {
+      potateman.attr.giant -= 1;
+      if (potateman.attr.giant === 0) {
+        Body.scale(potateman, 0.25, 0.25);
+        potateman.render.sprite.xScale = 0.75;
+        potateman.render.sprite.yScale = 0.75;
+        potateman.attr.power /= 4;
+      }
     }
 
     // damage
@@ -323,6 +339,7 @@ export default function ({
     profileScore: 1,
     transparent: false,
     flamethrowers: 0,
+    giant: 0,
     lastAttacked: undefined,
   };
   return {

@@ -19,59 +19,74 @@ export default function itemsFn({
   Events.on(engine, 'beforeUpdate', () => {
     count += 1;
 
-    if (count % 500 === 0) {
+    if (count % 300 === 0) {
+      const dice = random(0, 100);
       const x = random(size.width / 4, (size.width / 4) * 3);
-      const rescueBox = Bodies.rectangle(x, 0, 20, 20, {
-        collisionFilter,
-        render: {
-          sprite: {
-            texture: '/images/rescue-box.png',
-            xScale: 0.5,
-            yScale: 0.5,
+      if (dice < 40) {
+        const rescueBox = Bodies.rectangle(x, 0, 20, 20, {
+          collisionFilter,
+          render: {
+            sprite: {
+              texture: '/images/rescue-box.png',
+              xScale: 0.5,
+              yScale: 0.5,
+            },
           },
-        },
-      });
-      rescueBox.attr = {
-        type: 'rescueBox',
-        item: true,
-      };
-      World.add(engine.world, [rescueBox]);
-    }
-    if (count % 750 === 0) {
-      const x = random(size.width / 4, (size.width / 4) * 3);
-      const magicBox = Bodies.rectangle(x, 0, 20, 20, {
-        collisionFilter,
-        render: {
-          sprite: {
-            texture: '/images/magic-box.png',
-            xScale: 0.5,
-            yScale: 0.5,
+        });
+        rescueBox.attr = {
+          type: 'rescueBox',
+          item: true,
+        };
+        World.add(engine.world, [rescueBox]);
+      } else if (dice < 70) {
+        const magicBox = Bodies.rectangle(x, 0, 20, 20, {
+          collisionFilter,
+          render: {
+            sprite: {
+              texture: '/images/magic-box.png',
+              xScale: 0.5,
+              yScale: 0.5,
+            },
           },
-        },
-      });
-      magicBox.attr = {
-        type: 'magicBox',
-        item: true,
-      };
-      World.add(engine.world, [magicBox]);
-    }
-    if (count % 1500 === 0) {
-      const x = random(size.width / 4, (size.width / 4) * 3);
-      const flamethrower = Bodies.rectangle(x, 0, 20, 10, {
-        collisionFilter,
-        render: {
-          sprite: {
-            texture: '/images/flamethrower-equip-left-1.png',
-            xScale: 0.5,
-            yScale: 0.5,
+        });
+        magicBox.attr = {
+          type: 'magicBox',
+          item: true,
+        };
+        World.add(engine.world, [magicBox]);
+      } else if (dice < 90) {
+        const flamethrower = Bodies.rectangle(x, 0, 20, 10, {
+          collisionFilter,
+          render: {
+            sprite: {
+              texture: '/images/flamethrower-equip-left-1.png',
+              xScale: 0.5,
+              yScale: 0.5,
+            },
           },
-        },
-      });
-      flamethrower.attr = {
-        type: 'flamethrower',
-        item: true,
-      };
-      World.add(engine.world, [flamethrower]);
+        });
+        flamethrower.attr = {
+          type: 'flamethrower',
+          item: true,
+        };
+        World.add(engine.world, [flamethrower]);
+      } else if (dice <= 100) {
+        const giant = Bodies.rectangle(x, 0, 20, 20, {
+          collisionFilter,
+          render: {
+            sprite: {
+              texture: '/images/giant-leaf.png',
+              xScale: 0.5,
+              yScale: 0.5,
+            },
+          },
+        });
+        giant.attr = {
+          type: 'giant',
+          item: true,
+        };
+        World.add(engine.world, [giant]);
+      }
     }
   });
 }

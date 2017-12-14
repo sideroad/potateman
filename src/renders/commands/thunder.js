@@ -22,7 +22,9 @@ export default function thunder({
   const { x = 0 } = body.position;
   const { category } = body.attr;
 
-  sprite.setState('squat');
+  if (sprite) {
+    sprite.setState('squat');
+  }
   const strength = getThunderStrength(body.attr);
   const thunderOptions = {
     density: 0.1,

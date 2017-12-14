@@ -35,7 +35,12 @@ export default function ({
     }
   };
 
-  collisionCheck({ players, engine, grounds });
+  collisionCheck({
+    players,
+    engine,
+    grounds,
+    size,
+  });
 
   Events.on(engine, 'beforeUpdate', () => {
     Object.keys(players).forEach((id) => {

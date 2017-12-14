@@ -5,8 +5,9 @@ import {
   Body,
   World,
 } from 'matter-js';
-
+import thunder from './commands/thunder';
 import cure from './motions/cure';
+import MAGIC from './magic';
 
 const COLLISION = {
   NONE: 0x0000,
@@ -62,7 +63,12 @@ const adjuster = {
   volcano: 0.15,
 };
 
-export function check({ players, engine, grounds }) {
+export function check({
+  players,
+  engine,
+  grounds,
+  size,
+}) {
   Events.on(engine, 'collisionStart', (event) => {
     const { pairs } = event;
     const bodies = Object.keys(players).map(id => players[id].body);
@@ -100,6 +106,7 @@ export function check({ players, engine, grounds }) {
           if (bodyA.attr.guarding) {
             velocity -= ((bodyA.attr.guardGage / 100) * velocity);
           }
+          velocity /= bodyA.render.sprite.xScale / 0.75;
           Body.setVelocity(bodyA, {
             x: (
               bodyB.velocity.x > 0 ? velocity :
@@ -132,6 +139,21 @@ export function check({ players, engine, grounds }) {
             break;
           case 'flamethrower':
             bodyA.attr.flamethrowers += 400;
+            break;
+          case 'giant':
+            if (bodyA.render.sprite.xScale === 0.75) {
+              Body.scale(bodyA, 4, 4);
+              bodyA.render.sprite.xScale = 3;
+              bodyA.render.sprite.yScale = 3;
+              bodyA.attr.power *= 4;
+            }
+            bodyA.attr.magic += MAGIC.thunder.min;
+            thunder({
+              engine,
+              body: bodyA,
+              size,
+            });
+            bodyA.attr.giant += 300;
             break;
           default:
           }
