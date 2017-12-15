@@ -10,6 +10,7 @@ import _ from 'lodash';
 import COLLISION from './collision';
 import random from '../helpers/random';
 import volcano from './commands/volcano';
+import giant from './commands/giant';
 import cure from './motions/cure';
 
 const params = queryString.parse(window.location.search);
@@ -220,6 +221,19 @@ export default function ({ engine, size }) {
             Body.setPosition(ground, { x: ground.position.x, y: px + ground.position.y });
           }
         });
+
+        if (count % 1500 === 0) {
+          engine.world.bodies
+            .forEach((body) => {
+              if (body.attr && body.attr.type === 'potateman') {
+                giant({
+                  engine,
+                  size,
+                  body,
+                });
+              }
+            });
+        }
       },
     },
     moss: {

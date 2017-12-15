@@ -15,6 +15,7 @@ export default function thunder({
   body,
   sprite,
   size,
+  ratio,
 }) {
   if (body.attr.magic < MAGIC.thunder.min) {
     return;
@@ -25,7 +26,7 @@ export default function thunder({
   if (sprite) {
     sprite.setState('squat');
   }
-  const strength = getThunderStrength(body.attr);
+  const strength = getThunderStrength(body.attr) * ratio;
   const thunderOptions = {
     density: 0.1,
     frictionAir: 0,

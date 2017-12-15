@@ -256,6 +256,7 @@ export default function ({
           sprite,
           body,
           size,
+          ratio: 1,
         });
         x = 0;
         if (body.attr.flying) {
