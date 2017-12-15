@@ -7,7 +7,7 @@ export default function flamethrowerFn({
 }) {
   sprite.setState('punch');
   // eslint-disable-next-line no-nested-ternary
-  const speed = 10;
+  const speed = 11;
   // eslint-disable-next-line no-param-reassign
   body.attr.flamethrowers -= 1;
 
@@ -15,7 +15,7 @@ export default function flamethrowerFn({
     swell({
       engine,
       body,
-      strength: 20,
+      strength: 18,
       type: 'shockWave',
       render: {
         strokeStyle: '#ffffff',
