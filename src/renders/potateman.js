@@ -27,7 +27,7 @@ export function getPunchStrength({ punchGage, power }) {
 }
 
 export function getMeteoriteStrength({ magic }) {
-  const maticStrength = magic / 3;
+  const maticStrength = magic / 2;
   // eslint-disable-next-line no-nested-ternary
   const strength = maticStrength < 1 ? 1 :
   // eslint-disable-next-line indent

@@ -57,7 +57,7 @@ export default COLLISION;
 
 const adjuster = {
   shockWave: 0.5,
-  meteorite: 1,
+  meteorite: 0.4,
   thunder: 2,
   volcano: 0.15,
 };
