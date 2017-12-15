@@ -1,4 +1,13 @@
-import cpu from './easy';
+import queryString from 'query-string';
+import stupid from './stupid';
+import easy from './easy';
+
+const params = queryString.parse(window.location.search);
+
+const cpu = {
+  stupid,
+  easy,
+}[params.cpu || 'easy'];
 
 let intervals = [];
 export default function ({ players, size, world }) {

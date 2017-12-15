@@ -1,5 +1,9 @@
+import queryString from 'query-string';
+
+const params = queryString.parse(window.location.search);
+
 export default function postScoreFn(data) {
-  if (data.fbid) {
+  if (data.fbid && params.cpu !== 'stupid') {
     const scoreUrl = `https://chaus.herokuapp.com/apis/potateman/scores/${data.fbid}`;
     const scoresUrl = 'https://chaus.herokuapp.com/apis/potateman/scores';
     fetch(scoreUrl, {

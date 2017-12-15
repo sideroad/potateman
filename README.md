@@ -45,3 +45,15 @@
 |Moss|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-moss.png)|Moving ground. Increase power and magic point in certain period of time.|
 |Volcano|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-volcano.png)|Volcanic eruption happen in certain period of time.|
 |Candy|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-candy.png)|Became titan in certain period of time.|
+
+# Params
+
+|Parameter|Type    |Description        |
+|---------|--------|-------------------|
+|magic    |Number  |Initial magic point|
+|damage   |Number  |Initial damage     |
+|boundaryLimit|Number|Max zoom in, zoom out speed|
+|minMagnify|Number|Minimum magnify ratio|
+|maxMagnify|Number|Maximum magnify ratio|
+|magnify|Boolean|Enable zoom in, zoom out|
+|cpu      |stupid / easy| Change CPU behavior|
