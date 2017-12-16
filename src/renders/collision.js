@@ -92,6 +92,9 @@ export function check({
           if (bodyA.attr.guarding) {
             damage -= ((bodyA.attr.guardGage / 100) * damage);
           }
+          if (bodyA.attr.flycount > 1) {
+            bodyA.attr.flycount = 1;
+          }
           bodyA.attr.damage += damage > 0 ? damage : 0;
           bodyA.attr.magic += (bodyB.attr.strength / 6) * adjuster[type];
           let velocity = (bodyB.attr.strength * bodyA.attr.damage * adjuster[type]) / 300;

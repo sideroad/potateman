@@ -11,7 +11,7 @@ export default function giantFn({ engine, body, size }) {
     Body.scale(body, 4, 4);
     body.render.sprite.xScale = 3;
     body.render.sprite.yScale = 3;
-    body.attr.power *= 4;
+    body.attr.power *= 3;
   }
   body.attr.magic += MAGIC.thunder.min;
   thunder({

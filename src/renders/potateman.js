@@ -262,7 +262,7 @@ export default function ({
         Body.scale(potateman, 0.25, 0.25);
         potateman.render.sprite.xScale = 0.75;
         potateman.render.sprite.yScale = 0.75;
-        potateman.attr.power /= 4;
+        potateman.attr.power /= 3;
       }
     }
 

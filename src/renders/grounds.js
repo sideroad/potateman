@@ -228,7 +228,7 @@ export default function ({ engine, size }) {
       hasItem: true,
       shape: texture =>
         [
-          ...make(width / 2, (height / 5) * 4, Math.ceil(width / 2 / cellSize), texture),
+          ...make(width / 2, (height / 5) * 4, Math.ceil(width / 1.5 / cellSize), texture),
           ...make(width / 5, height / 2, Math.ceil(width / 4 / cellSize), texture),
           ...make(width / 2, height / 5, Math.ceil(width / 5 / cellSize), texture),
           ...make((width / 5) * 4, height / 2, Math.ceil(width / 4 / cellSize), texture),
@@ -282,7 +282,7 @@ export default function ({ engine, size }) {
       hasItem: true,
       shape: texture =>
         [
-          ...make(width / 2, (height / 5) * 4, Math.ceil(width / 2 / cellSize), texture),
+          ...make(width / 2, (height / 5) * 4, Math.ceil(width / 1.5 / cellSize), texture),
           ...make(width / 4, (height / 5) * 3, Math.ceil(width / 5 / cellSize), texture),
           ...make((width / 4) * 3, (height / 5) * 3, Math.ceil(width / 5 / cellSize), texture),
           ...make(width / 3, (height / 5) * 2, Math.ceil(width / 6 / cellSize), texture),

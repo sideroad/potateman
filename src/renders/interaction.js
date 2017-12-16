@@ -74,11 +74,11 @@ export default function ({
           body.attr.guardGage > 1 &&
           !body.attr.flamethrowers
         ) {
-          x = -50;
+          x = -75;
           y = -0.5;
           body.attr.teleported = true;
           body.attr.guardGage = 0;
-          sprite.setState('guard');
+          sprite.setState('squat');
         } else if (
           (x >= -3 && !direction.a && !body.attr.flying) ||
           (x >= -5 && direction.a && !body.attr.flying)
@@ -107,11 +107,11 @@ export default function ({
           body.attr.guardGage > 1 &&
           !body.attr.flamethrowers
         ) {
-          x = 50;
+          x = 75;
           y = -0.5;
           body.attr.teleported = true;
           body.attr.guardGage = 0;
-          sprite.setState('guard');
+          sprite.setState('squat');
         } else if (
           (x <= 3 && !direction.a && !body.attr.flying) ||
           (x <= 5 && direction.a && !body.attr.flying)
@@ -199,8 +199,6 @@ export default function ({
       if (direction.down) {
         if (direction.b) {
           y += 0.3;
-        } else {
-          y += 0.1;
         }
         sprite.setState('squat');
       }
