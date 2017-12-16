@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import {
   Engine,
   Events,
@@ -216,7 +218,6 @@ export default function (act) {
       image: player.image,
       player: data.player,
     });
-    // eslint-disable-next-line no-param-reassign
     delete players[data.player];
     destroyCpu();
     cpu({ players, size, world });
@@ -238,6 +239,15 @@ export default function (act) {
       };
       act.send(windata);
       act.win(windata);
+    } else {
+      const remainHuman = Object.values(players).filter(_player => !_player.cpu).length;
+      if (!remainHuman) {
+        Object.values(players).forEach((_player) => {
+          _player.body.attr.power *= 4;
+          _player.body.attr.magic *= 4;
+          _player.body.attr.damage += 300;
+        });
+      }
     }
   };
 
