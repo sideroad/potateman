@@ -190,8 +190,38 @@ export default function ({ engine, size }) {
       setup: () => {},
       beforeUpdate: () => {},
     },
+    brick: {
+      background: '#d1f1fe',
+      texture: '/images/brick-ground.png',
+      restitution: 0,
+      friction: 15,
+      hasItem: true,
+      shape: texture =>
+        [
+          ...make(width / 2, height / 2, Math.ceil(width / 1.25 / cellSize), texture),
+          ...make(width / 5, height / 5, Math.ceil(width / 5 / cellSize), texture),
+          ...make(width / 3, (height / 5) * 4, Math.ceil(width / 5 / cellSize), texture),
+          ...make((width / 5) * 4, height / 5, Math.ceil(width / 5 / cellSize), texture),
+          ...make((width / 3) * 2, (height / 5) * 4, Math.ceil(width / 5 / cellSize), texture),
+        ],
+      setup: () => {},
+      beforeUpdate: () => {
+        if (count % 1500 === 0) {
+          engine.world.bodies
+            .forEach((body) => {
+              if (body.attr && body.attr.type === 'potateman') {
+                giant({
+                  engine,
+                  size,
+                  body,
+                });
+              }
+            });
+        }
+      },
+    },
     candy: {
-      background: '#ffe2f2',
+      background: '#fdb8bd',
       texture: '/images/candy-ground.png',
       restitution: 1,
       friction: 15,
@@ -199,9 +229,9 @@ export default function ({ engine, size }) {
       shape: texture =>
         [
           ...make(width / 2, (height / 5) * 4, Math.ceil(width / 2 / cellSize), texture),
-          ...make(width / 4, height / 2, Math.ceil(width / 5 / cellSize), texture),
+          ...make(width / 5, height / 2, Math.ceil(width / 4 / cellSize), texture),
           ...make(width / 2, height / 5, Math.ceil(width / 5 / cellSize), texture),
-          ...make((width / 4) * 3, height / 2, Math.ceil(width / 5 / cellSize), texture),
+          ...make((width / 5) * 4, height / 2, Math.ceil(width / 4 / cellSize), texture),
         ],
       setup: () => {},
       beforeUpdate: (grounds) => {
@@ -223,16 +253,24 @@ export default function ({ engine, size }) {
         });
 
         if (count % 1500 === 0) {
-          engine.world.bodies
-            .forEach((body) => {
-              if (body.attr && body.attr.type === 'potateman') {
-                giant({
-                  engine,
-                  size,
-                  body,
-                });
-              }
+          _.times(width / 50, () => {
+            const cream = Bodies.rectangle(random(0, width), 0, 20, 10, {
+              collisionFilter: {
+                category: COLLISION.ITEM,
+                // eslint-disable-next-line no-bitwise
+                mask: COLLISION.POTATEMANS | COLLISION.GROUND | COLLISION.ATTACK,
+              },
+              render: {
+                sprite: {
+                  texture: '/images/cream.png',
+                },
+              },
             });
+            cream.attr = {
+              type: 'curse',
+            };
+            World.add(engine.world, [cream]);
+          });
         }
       },
     },

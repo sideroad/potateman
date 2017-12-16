@@ -44,12 +44,14 @@
 |Space|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-space.png)|Increase gravity in certain period of time.|
 |Moss|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-moss.png)|Moving ground. Increase power and magic point in certain period of time.|
 |Volcano|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-volcano.png)|Volcanic eruption happen in certain period of time.|
-|Candy|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-candy.png)|Became titan in certain period of time.|
+|Candy|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-candy.png)|Fall down cream in certain period of time.|
+|Brick|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-brick.png)|Became titan in certain period of time.|
 
 # Params
 
 |Parameter|Type    |Description        |
 |---------|--------|-------------------|
+|stage    |ice / earth / space / moss / volcano / candy / brick  |Fix stage|
 |magic    |Number  |Initial magic point|
 |damage   |Number  |Initial damage     |
 |boundaryLimit|Number|Max zoom in, zoom out speed|
