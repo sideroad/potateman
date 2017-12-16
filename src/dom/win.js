@@ -7,5 +7,11 @@ export default function winFn({ name, image, score }) {
     document.getElementById('winner-character').style.backgroundImage = 'none';
     document.getElementById('winner-message').innerHTML = 'Draw the game!';
   }
-  document.getElementById('winner').style.display = 'block';
+  const winner = document.getElementById('winner');
+  winner.style.display = 'block';
+  setTimeout(() => {
+    if (winner.style.display === 'block') {
+      document.getElementById('restart').click();
+    }
+  }, 3000);
 }

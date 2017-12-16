@@ -10,6 +10,7 @@ import {
 } from 'matter-js';
 import _ from 'lodash';
 import Stats from 'stats.js';
+import queryString from 'query-string';
 import attendee from '../dom/attendee';
 import start from '../dom/start';
 import win from '../dom/win';
@@ -22,6 +23,8 @@ import interaction from './interaction';
 import cpu, { destroy as destroyCpu } from './cpus/init';
 import prefetch from './prefetch';
 import postScore from '../helpers/postScore';
+
+const params = queryString.parse(window.location.search);
 
 export default function (act) {
   // show stats
@@ -241,7 +244,7 @@ export default function (act) {
       act.win(windata);
     } else {
       const remainHuman = Object.values(players).filter(_player => !_player.cpu).length;
-      if (!remainHuman) {
+      if (!remainHuman && !params.keepFighting) {
         Object.values(players).forEach((_player) => {
           _player.body.attr.power *= 4;
           _player.body.attr.magic *= 4;
