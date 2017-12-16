@@ -191,7 +191,7 @@ export default function ({ engine, size }) {
       beforeUpdate: () => {},
     },
     brick: {
-      background: '#d1f1fe',
+      background: '#fff2b2',
       texture: '/images/brick-ground.png',
       restitution: 0,
       friction: 15,
