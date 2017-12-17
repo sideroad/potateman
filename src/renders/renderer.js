@@ -33,6 +33,7 @@ export default function (act) {
   stats.dom.style.left = 'initial';
   stats.dom.style.right = 0;
   stats.dom.style.bottom = 0;
+  stats.dom.style.opacity = 0.25;
   document.body.appendChild(stats.dom);
 
   // create engine
