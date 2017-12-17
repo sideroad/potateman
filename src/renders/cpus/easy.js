@@ -105,7 +105,7 @@ export default function easyFn({
 
   if (
     player.body.attr.punchGage < 20 ||
-    target.distance.t > 100 ||
+    target.distance.t > 120 ||
     target.attr.item
   ) {
     player.direction.a = 1;
