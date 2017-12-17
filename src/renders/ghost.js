@@ -129,7 +129,7 @@ export default function ghost({
   });
   body.attr = {
     punchGage: 0,
-    power: 50,
+    power: 75,
     category: COLLISION.NONE,
     magic: 0,
     type: 'ghost',

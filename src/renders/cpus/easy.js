@@ -44,6 +44,32 @@ export default function easyFn({
   const quarterWidth = size.width / 4;
   const quarterHeight = size.height / 4;
 
+  // teleport
+  if (
+    player.body.velocity.x < -15 &&
+    player.body.attr.guardGage
+  ) {
+    player.direction.a = 0;
+    player.direction.b = 1;
+    player.direction.left = 0;
+    player.direction.right = 1;
+    player.direction.up = 0;
+    player.direction.down = 0;
+    return;
+  }
+  if (
+    player.body.velocity.x > 15 &&
+    player.body.attr.guardGage
+  ) {
+    player.direction.a = 0;
+    player.direction.b = 1;
+    player.direction.left = 1;
+    player.direction.right = 0;
+    player.direction.up = 0;
+    player.direction.down = 0;
+    return;
+  }
+
   player.direction.right =
     (
       target.distance.x < 0 &&
@@ -72,6 +98,7 @@ export default function easyFn({
     target.distance.y < 0 &&
     quarterHeight * 3 > player.body.position.y ? 1 : 0;
 
+  // fall down / floating
   player.direction.b =
     target.distance.y < 0 &&
     !player.body.attr.flying ? 1 : 0;
