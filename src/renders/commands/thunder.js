@@ -4,11 +4,19 @@ import {
   Bodies,
 } from 'matter-js';
 import _ from 'lodash';
-import { getThunderStrength } from '../potateman';
 import Sprite from '../Sprite';
 import COLLISION from '../collision';
 import MAGIC from '../magic';
 import shrink from '../motions/shrink';
+
+function getThunderStrength({ magic }) {
+  const maticStrength = magic / 8;
+  // eslint-disable-next-line no-nested-ternary
+  const strength = maticStrength < 1 ? 1 :
+  // eslint-disable-next-line indent
+                   maticStrength > 300 ? 300 : maticStrength;
+  return strength;
+}
 
 export default function thunder({
   engine,

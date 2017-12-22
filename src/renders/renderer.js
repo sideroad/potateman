@@ -15,12 +15,12 @@ import attendee from '../dom/attendee';
 import start from '../dom/start';
 import win from '../dom/win';
 import grounds from './grounds';
-import potateman, { destroy } from './potateman';
-import createGhost, { destroy as destroyGhost } from './ghost';
+import potateman, { destroy } from './characters/potateman';
+import createGhost, { destroy as destroyGhost } from './characters/ghost';
 import boundary from './boundary';
 import items from './items';
 import interaction from './interaction';
-import cpu, { destroy as destroyCpu } from './cpus/init';
+import cpu from './cpus/init';
 import prefetch from './prefetch';
 import postScore from '../helpers/postScore';
 
@@ -190,7 +190,7 @@ export default function (act) {
           restitution,
         });
       });
-      cpu({ players, size, world });
+      cpu({ engine, players, size });
       boundary({
         engine,
         size,
@@ -223,8 +223,6 @@ export default function (act) {
       player: data.player,
     });
     delete players[data.player];
-    destroyCpu();
-    cpu({ players, size, world });
     if (Object.keys(players).length <= 1) {
       const winner = Object.keys(players)[0] || {};
       const windata = {
@@ -268,7 +266,6 @@ export default function (act) {
       destroyGhost({ engine, body: ghosts[ghostId].body });
       delete ghosts[ghostId];
     });
-    destroyCpu();
     engine.world.bodies.forEach((body) => {
       World.remove(engine.world, body);
     });

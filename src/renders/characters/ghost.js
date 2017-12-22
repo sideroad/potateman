@@ -4,10 +4,10 @@ import {
   Body,
   Bodies,
 } from 'matter-js';
-import Sprite from './Sprite';
-import COLLISION from './collision';
+import Sprite from '../Sprite';
+import COLLISION from '../collision';
 import { getPunchStrength } from './potateman';
-import shrink from './motions/shrink';
+import shrink from '../motions/shrink';
 
 export const shockWaveRender = {
   strokeStyle: '#ffffff',
@@ -129,7 +129,7 @@ export default function ghost({
   });
   body.attr = {
     punchGage: 0,
-    power: 75,
+    power: 100,
     category: COLLISION.NONE,
     magic: 0,
     type: 'ghost',

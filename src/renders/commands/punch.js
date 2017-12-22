@@ -1,8 +1,16 @@
 import {
   World,
 } from 'matter-js';
-import { getPunchStrength, shockWaveRender } from '../potateman';
+import { getPunchStrength } from '../characters/potateman';
 import shrink from '../motions/shrink';
+
+
+const shockWaveRender = {
+  strokeStyle: '#ffffff',
+  fillStyle: '#38a1db',
+  opacity: 0.5,
+  lineWidth: 1,
+};
 
 export default function punch({
   engine,

@@ -9,8 +9,7 @@ const cpu = {
   easy,
 }[params.cpu || 'easy'];
 
-let intervals = [];
-export default function ({ players, size, world }) {
+export default function ({ engine, players, size }) {
   Object
     .values(players)
     .filter(player => player.cpu)
@@ -20,21 +19,12 @@ export default function ({ players, size, world }) {
         .filter(_player => _player.body.attr.player !== player.body.attr.player);
 
       setTimeout(() => {
-        intervals.push(setInterval(() => {
-          cpu({
-            player,
-            others,
-            size,
-            world,
-            items: world.bodies.filter(body => body.attr && body.attr.item),
-            grounds: world.bodies.filter(body => body.attr && body.attr.ground),
-          });
-        }, 300));
+        cpu({
+          player,
+          others,
+          size,
+          engine,
+        });
       }, index * 50);
     });
-}
-
-export function destroy() {
-  intervals.forEach(interval => clearInterval(interval));
-  intervals = [];
 }

@@ -3,9 +3,17 @@ import {
   Body,
   Bodies,
 } from 'matter-js';
-import { getMeteoriteStrength } from '../potateman';
 import COLLISION from '../collision';
 import MAGIC from '../magic';
+
+function getMeteoriteStrength({ magic }) {
+  const maticStrength = magic / 2;
+  // eslint-disable-next-line no-nested-ternary
+  const strength = maticStrength < 1 ? 1 :
+  // eslint-disable-next-line indent
+                   maticStrength > 300 ? 300 : maticStrength;
+  return strength;
+}
 
 export default function meteorite({
   engine,

@@ -5,17 +5,10 @@ import {
   Bodies,
 } from 'matter-js';
 import queryString from 'query-string';
-import Sprite from './Sprite';
-import COLLISION from './collision';
-import MAGIC from './magic';
-import flamethrower from './commands/flamethrower';
-
-export const shockWaveRender = {
-  strokeStyle: '#ffffff',
-  fillStyle: '#38a1db',
-  opacity: 0.5,
-  lineWidth: 1,
-};
+import Sprite from '../Sprite';
+import COLLISION from '../collision';
+import MAGIC from '../magic';
+import flamethrower from '../commands/flamethrower';
 
 export function getPunchStrength({ punchGage, power }) {
   const punchStrength = (punchGage * power) / 100;
@@ -23,24 +16,6 @@ export function getPunchStrength({ punchGage, power }) {
   const strength = punchStrength < 8 ? 8 :
   // eslint-disable-next-line indent
                    punchStrength > 25 ? 25 : punchStrength;
-  return strength;
-}
-
-export function getMeteoriteStrength({ magic }) {
-  const maticStrength = magic / 2;
-  // eslint-disable-next-line no-nested-ternary
-  const strength = maticStrength < 1 ? 1 :
-  // eslint-disable-next-line indent
-                   maticStrength > 300 ? 300 : maticStrength;
-  return strength;
-}
-
-export function getThunderStrength({ magic }) {
-  const maticStrength = magic / 8;
-  // eslint-disable-next-line no-nested-ternary
-  const strength = maticStrength < 1 ? 1 :
-  // eslint-disable-next-line indent
-                   maticStrength > 300 ? 300 : maticStrength;
   return strength;
 }
 
