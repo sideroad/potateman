@@ -95,7 +95,7 @@ export default function ghost({
       Body.scale(sinkMotion, scale, scale);
     }
 
-    if (curse && curse % 5 === 0) {
+    if (curse && curse % 3 === 0) {
       shrink({
         engine,
         type: 'curse',
