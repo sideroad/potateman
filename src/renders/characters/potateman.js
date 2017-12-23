@@ -35,7 +35,7 @@ export default function ({
   const category = COLLISION[`POTATEMAN${index}`];
   const startX = (size.width / 2) + (index % 2 ? (index * 20) + 20 : index * -20);
   const potateman = Bodies.rectangle(startX, size.height / 3, 34.5, 43.5, {
-    frictionAir: 0,
+    frictionAir: 0.01,
     frictionStatic: friction,
     restitution,
     density: 0.75,

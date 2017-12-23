@@ -10,7 +10,6 @@ import {
 } from 'matter-js';
 import _ from 'lodash';
 import Stats from 'stats.js';
-import queryString from 'query-string';
 import attendee from '../dom/attendee';
 import start from '../dom/start';
 import win from '../dom/win';
@@ -23,8 +22,6 @@ import interaction from './interaction';
 import cpu from './cpus/init';
 import prefetch from './prefetch';
 import postScore from '../helpers/postScore';
-
-const params = queryString.parse(window.location.search);
 
 export default function (act) {
   // show stats
@@ -243,15 +240,6 @@ export default function (act) {
       };
       act.send(windata);
       act.win(windata);
-    } else {
-      const remainHuman = remainPlayer.filter(_player => !_player.cpu).length;
-      if (!remainHuman && !params.keepFighting) {
-        remainPlayer.forEach((_player) => {
-          _player.body.attr.power *= 4;
-          _player.body.attr.magic *= 4;
-          _player.body.attr.damage += 300;
-        });
-      }
     }
   };
 

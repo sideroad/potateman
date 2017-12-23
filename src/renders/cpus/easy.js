@@ -17,6 +17,7 @@ export default function easyFn({
     const items = world.bodies.filter(body => body.attr && body.attr.item);
     if (count % 20 === 0) {
       const target = others
+        .filter(other => !other.dead)
         .map(other => other.body)
         .concat(items)
         .map((other) => {

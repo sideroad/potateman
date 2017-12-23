@@ -56,10 +56,30 @@ COLLISION.POTATEMANS =
 export default COLLISION;
 
 const adjuster = {
-  shockWave: 0.5,
-  meteorite: 0.4,
-  thunder: 2,
-  volcano: 0.15,
+  damage: {
+    shockWave: 1.25,
+    meteorite: 1,
+    thunder: 0.75,
+    volcano: 1,
+  },
+  magic: {
+    shockWave: 1,
+    meteorite: 0.6,
+    thunder: 2,
+    volcano: 0.15,
+  },
+  score: {
+    shockWave: 0.5,
+    meteorite: 0.4,
+    thunder: 2,
+    volcano: 0.15,
+  },
+  velocity: {
+    shockWave: 0.5,
+    meteorite: 0.4,
+    thunder: 2,
+    volcano: 0.1,
+  },
 };
 
 export function check({
@@ -97,13 +117,13 @@ export function check({
           if (bodyA.attr.flycount > 1) {
             bodyA.attr.flycount = 1;
           }
-          bodyA.attr.damage += damage > 0 ? damage : 0;
-          bodyA.attr.magic += (bodyB.attr.strength / 6) * adjuster[type];
-          let velocity = (bodyB.attr.strength * bodyA.attr.damage * adjuster[type]) / 300;
+          bodyA.attr.damage += damage > 0 ? damage * adjuster.damage[type] : 0;
+          bodyA.attr.magic += (bodyB.attr.strength / 6) * adjuster.magic[type];
+          let velocity = (bodyB.attr.strength * bodyA.attr.damage * adjuster.velocity[type]) / 300;
           const player = players[bodyB.attr.player];
           if (player) {
-            player.body.attr.magic += (bodyB.attr.strength / 2) * adjuster[type];
-            player.body.attr.score += (bodyB.attr.strength / 2) * adjuster[type];
+            player.body.attr.magic += (bodyB.attr.strength / 2) * adjuster.magic[type];
+            player.body.attr.score += (bodyB.attr.strength / 2) * adjuster.score[type];
             bodyA.attr.lastAttacked = bodyB.attr.player;
             velocity *= player.body.attr.power / 100;
           }
