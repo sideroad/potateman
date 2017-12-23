@@ -140,12 +140,12 @@ export default function ({
         ) {
           if (body.attr.flycount < 3 && !body.attr.keepTouchingJump) {
             if (!body.attr.flying) {
-              y = -11;
+              y = -12;
               body.attr.flycount += 1;
               body.attr.flying = true;
               body.attr.keepTouchingJump = true;
             } else if (body.velocity.y > 0) {
-              y -= 12;
+              y -= 13;
               body.attr.flycount += 1;
               body.attr.flying = true;
               body.attr.keepTouchingJump = true;
