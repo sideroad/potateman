@@ -13,8 +13,7 @@ export default function easyFn({
 }) {
   let count = 0;
   const { world } = engine;
-
-  Events.on(engine, 'beforeUpdate', () => {
+  const tick = () => {
     const items = world.bodies.filter(body => body.attr && body.attr.item);
     if (count % 20 === 0) {
       const target = others
@@ -196,5 +195,10 @@ export default function easyFn({
       }
     }
     count += 1;
-  });
+    if (player.dead) {
+      Events.off(engine, 'beforeUpdate', tick);
+    }
+  };
+
+  Events.on(engine, 'beforeUpdate', tick);
 }

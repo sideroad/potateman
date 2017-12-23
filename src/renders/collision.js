@@ -70,7 +70,9 @@ export function check({
 }) {
   Events.on(engine, 'collisionStart', (event) => {
     const { pairs } = event;
-    const bodies = Object.keys(players).map(id => players[id].body);
+    const bodies = Object
+      .values(players)
+      .map(player => player.body);
     const collisionConfirm = (bodyA, bodyB) => {
       if (bodies.includes(bodyA)) {
         // when potateman collision with some others, reset fly count

@@ -36,14 +36,16 @@ export default function shrink({
     type,
     player,
   };
-
-  Events.on(engine, 'beforeUpdate', () => {
+  const tick = () => {
     Body.setVelocity(motion, velocity);
     const scale = motion.attr.strength / motion.circleRadius;
     Body.scale(motion, scale, scale);
     motion.attr.strength += 1;
     if (motion.attr.strength >= strength) {
       World.remove(engine.world, motion);
+      Events.off(engine, 'beforeUpdate', tick);
     }
-  });
+  };
+
+  Events.on(engine, 'beforeUpdate', tick);
 }

@@ -29,50 +29,52 @@ export default function ({
     const maxY = render.bounds.max.y;
     const minX = render.bounds.min.x;
     const minY = render.bounds.min.y;
-    Object.keys(players).forEach((player) => {
-      const { position, attr } = players[player].body;
-      Body.set(attr.outsiderRight, {
-        render: {
-          ...attr.outsiderRight.render,
-          opacity: position.x > maxX ? 1 : 0,
-        },
-      });
-      Body.set(attr.outsiderLeft, {
-        render: {
-          ...attr.outsiderLeft.render,
-          opacity: position.x < minX ? 1 : 0,
-        },
-      });
-      Body.set(attr.outsiderTop, {
-        render: {
-          ...attr.outsiderTop.render,
-          opacity: position.y < minY ? 1 : 0,
-        },
-      });
-      Body.set(attr.outsiderBottom, {
-        render: {
-          ...attr.outsiderBottom.render,
-          opacity: position.y > maxY ? 1 : 0,
-        },
-      });
-      if (
-        position.y > bottomBoundary ||
-        position.y < topBoundary
-      ) {
-        const lastAttacker = players[attr.lastAttacked];
-        if (lastAttacker) {
-          lastAttacker.body.attr.damage = lastAttacker.body.attr.damage > attr.damage ?
-            lastAttacker.body.attr.damage - attr.damage : 0;
-          lastAttacker.body.attr.magic += attr.magic;
-          lastAttacker.body.attr.score += attr.damage + attr.magic + attr.score;
-        }
-        act.dead({
-          act: 'dead',
-          player,
-          score: Math.ceil(attr.score),
+    Object
+      .values(players)
+      .forEach((player) => {
+        const { position, attr } = player.body;
+        Body.set(attr.outsiderRight, {
+          render: {
+            ...attr.outsiderRight.render,
+            opacity: position.x > maxX ? 1 : 0,
+          },
         });
-      }
-    });
+        Body.set(attr.outsiderLeft, {
+          render: {
+            ...attr.outsiderLeft.render,
+            opacity: position.x < minX ? 1 : 0,
+          },
+        });
+        Body.set(attr.outsiderTop, {
+          render: {
+            ...attr.outsiderTop.render,
+            opacity: position.y < minY ? 1 : 0,
+          },
+        });
+        Body.set(attr.outsiderBottom, {
+          render: {
+            ...attr.outsiderBottom.render,
+            opacity: position.y > maxY ? 1 : 0,
+          },
+        });
+        if (
+          position.y > bottomBoundary ||
+          position.y < topBoundary
+        ) {
+          const lastAttacker = players[attr.lastAttacked];
+          if (lastAttacker) {
+            lastAttacker.body.attr.damage = lastAttacker.body.attr.damage > attr.damage ?
+              lastAttacker.body.attr.damage - attr.damage : 0;
+            lastAttacker.body.attr.magic += attr.magic;
+            lastAttacker.body.attr.score += attr.damage + attr.magic + attr.score;
+          }
+          act.dead({
+            act: 'dead',
+            player: player.body.attr.player,
+            score: Math.ceil(attr.score),
+          });
+        }
+      });
     if (count % 5 === 0) {
       engine.world.bodies.forEach((body) => {
         if (body.position.y > bottomBoundary) {
@@ -116,21 +118,23 @@ export default function ({
         x: half.width,
         y: half.height,
       };
-      Object.values(players).forEach((player) => {
-        const { x, y } = player.body.position;
-        if (x < leftTop.x && x > 0) {
-          leftTop.x = x;
-        }
-        if (y < leftTop.y && y > 0) {
-          leftTop.y = y;
-        }
-        if (x > rightBottom.x && x < size.width) {
-          rightBottom.x = x;
-        }
-        if (y > rightBottom.y && y < size.height) {
-          rightBottom.y = y;
-        }
-      });
+      Object
+        .values(players)
+        .forEach((player) => {
+          const { x, y } = player.body.position;
+          if (x < leftTop.x && x > 0) {
+            leftTop.x = x;
+          }
+          if (y < leftTop.y && y > 0) {
+            leftTop.y = y;
+          }
+          if (x > rightBottom.x && x < size.width) {
+            rightBottom.x = x;
+          }
+          if (y > rightBottom.y && y < size.height) {
+            rightBottom.y = y;
+          }
+        });
       const center = {
         x: ((rightBottom.x - leftTop.x) / 2) + leftTop.x,
         y: ((rightBottom.y - leftTop.y) / 2) + leftTop.y,

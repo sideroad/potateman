@@ -208,6 +208,7 @@ export default function (act) {
     // eslint-disable-next-line no-console
     console.log(`dead:${data.player}`);
     const player = players[data.player];
+    player.dead = true;
     postScore({
       fbid: player.fbid,
       score: data.score,
@@ -223,8 +224,9 @@ export default function (act) {
       player: data.player,
     });
     delete players[data.player];
-    if (Object.keys(players).length <= 1) {
-      const winner = Object.keys(players)[0] || {};
+    const remainPlayer = Object.values(players);
+    if (remainPlayer.length <= 1) {
+      const winner = remainPlayer[0].body.attr.player || {};
       const windata = {
         act: 'win',
         player: winner,
@@ -242,9 +244,9 @@ export default function (act) {
       act.send(windata);
       act.win(windata);
     } else {
-      const remainHuman = Object.values(players).filter(_player => !_player.cpu).length;
+      const remainHuman = remainPlayer.filter(_player => !_player.cpu).length;
       if (!remainHuman && !params.keepFighting) {
-        Object.values(players).forEach((_player) => {
+        remainPlayer.forEach((_player) => {
           _player.body.attr.power *= 4;
           _player.body.attr.magic *= 4;
           _player.body.attr.damage += 300;
@@ -262,10 +264,12 @@ export default function (act) {
       // eslint-disable-next-line no-param-reassign
       delete players[player.player];
     }
-    Object.keys(ghosts).forEach((ghostId) => {
-      destroyGhost({ engine, body: ghosts[ghostId].body });
-      delete ghosts[ghostId];
-    });
+    Object
+      .values(ghosts)
+      .forEach((ghost) => {
+        destroyGhost({ engine, body: ghost.body });
+        delete ghosts[ghost.body.attr.player];
+      });
     engine.world.bodies.forEach((body) => {
       World.remove(engine.world, body);
     });
