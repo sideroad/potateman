@@ -243,7 +243,7 @@ export default function ({
 
     // damage
     if (count > 10) {
-      const particle = Bodies.circle(x, y, (potateman.attr.damage / 10) + 1, {
+      const particle = Bodies.circle(x, y, (potateman.attr.damage / 20) + 1, {
         frictionAir: 0,
         force: {
           x: sprite.direction === 'left' ? (potateman.attr.damage / 100000) : (potateman.attr.damage / -100000),
