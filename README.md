@@ -57,5 +57,3 @@
 |boundaryLimit|Number|Max zoom in, zoom out speed|
 |minMagnify|Number|Minimum magnify ratio|
 |maxMagnify|Number|Maximum magnify ratio|
-|magnify|Boolean|Enable zoom in, zoom out|
-|cpu      |stupid / easy| Change CPU behavior|

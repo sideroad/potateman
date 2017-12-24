@@ -1,13 +1,10 @@
-import queryString from 'query-string';
 import stupid from './stupid';
 import easy from './easy';
-
-const params = queryString.parse(window.location.search);
 
 const cpu = {
   stupid,
   easy,
-}[params.cpu || 'easy'];
+};
 
 export default function ({ engine, players, size }) {
   Object
@@ -19,7 +16,7 @@ export default function ({ engine, players, size }) {
         .filter(_player => _player.body.attr.player !== player.body.attr.player);
 
       setTimeout(() => {
-        cpu({
+        cpu[window.config.training ? 'stupid' : 'easy']({
           player,
           others,
           size,

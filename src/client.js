@@ -8,8 +8,10 @@ import ranking from './dom/ranking';
 import loading from './dom/loading';
 import login from './dom/login';
 import joypad from './dom/joypad';
+import config from './dom/config';
 
 login();
+config();
 const initialize = () =>
   new Promise((resolve) => {
     const act = peer();
@@ -24,6 +26,7 @@ const initialize = () =>
         element: document.getElementById('qr'),
         value: url,
       });
+      // eslint-disable-next-line no-console
       console.log(url);
 
       const start = () => {

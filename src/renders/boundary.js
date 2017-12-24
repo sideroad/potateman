@@ -12,7 +12,6 @@ const params = queryString.parse(window.location.search);
 const boundaryLimit = Number(params.boundaryLimit || 1);
 const maxMagnify = Number(params.maxMagnify || 2);
 const minMagnify = Number(params.minMagnify || 0.25);
-const magnify = params.magnify !== 'false';
 
 export default function ({
   engine,
@@ -85,7 +84,7 @@ export default function ({
     count += 1;
   });
 
-  if (magnify) {
+  if (window.config.magnify) {
     const half = {
       width: size.width / 2,
       height: size.height / 2,

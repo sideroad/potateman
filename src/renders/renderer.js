@@ -205,6 +205,9 @@ export default function (act) {
     // eslint-disable-next-line no-console
     console.log(`dead:${data.player}`);
     const player = players[data.player];
+    if (!player) {
+      return;
+    }
     player.dead = true;
     postScore({
       fbid: player.fbid,
@@ -223,7 +226,7 @@ export default function (act) {
     delete players[data.player];
     const remainPlayer = Object.values(players);
     if (remainPlayer.length <= 1) {
-      const winner = remainPlayer[0].body.attr.player || {};
+      const winner = remainPlayer[0] ? remainPlayer[0].body.attr.player : '';
       const windata = {
         act: 'win',
         player: winner,
@@ -240,6 +243,16 @@ export default function (act) {
       };
       act.send(windata);
       act.win(windata);
+    } else {
+      const isRemainOnlyCpus = !remainPlayer.filter(_player => !_player.cpu).length;
+      if (window.config.skip && isRemainOnlyCpus) {
+        remainPlayer.forEach(_player =>
+          act.dead({
+            act: 'dead',
+            player: _player.body.attr.player,
+            score: Math.ceil(_player.body.attr.score),
+          }));
+      }
     }
   };
 

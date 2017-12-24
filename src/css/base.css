@@ -7,17 +7,55 @@ body {
   overflow: hidden;
 }
 
+.reception {
+  width: 100vw;
+  height: 100vh;
+  background-color: #fffffc;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .left-container{
   background-color: #3B4647;
   color: #fffffc;
   font-size: 2em;
   padding: 1em;
-  width: 30%;
   overflow: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 250px;
 }
+
+.center-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.right-container {
+  background-color: #3B4647;
+  color: #fffffc;
+  font-size: 1.25em;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  width: 250px;
+  position: relative;
+}
+
+.config {
+  line-height: 3em;
+}
+
 .rankers {
   color: #fffffc;
 }
@@ -161,28 +199,6 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
 }
-
-.reception {
-  width: 100vw;
-  height: 100vh;
-  background-color: #fffffc;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: stretch;
-  flex-direction: row;
-}
-
-.right-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 70%;
-  position: relative;
-}
-
 
 .help {
   position: absolute;
@@ -508,6 +524,9 @@ body {
 
 @media (max-width: 768px) {
   .left-container{
+    display: none;
+  }
+  .right-container{
     display: none;
   }
   .reception{
