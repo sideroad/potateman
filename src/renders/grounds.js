@@ -72,11 +72,15 @@ export default function ({ engine, size }) {
           ...make((width / 4) * 3, height / 2, 10, texture),
           ...make(width / 2, (height / 5) * 1.5, 10, texture),
         ],
-      setup: () => {},
+      setup: () => {
+        // skip first wind
+        count = 50;
+      },
       beforeUpdate: () => {
         if (count % 20 === 0) {
           const body = Bodies.circle(random(0, size.width), 0, 3, {
-            frictionAir: 0.2,
+            frictionAir: 0.15,
+            density: 0.0001,
             render: {
               strokeStyle: '#ccdddd',
               fillStyle: '#bbdddd',
@@ -348,7 +352,10 @@ export default function ({ engine, size }) {
           ...make(width / 2, (height / 6) * 3, Math.ceil(width / 3 / cellSize), texture),
           ...make(width / 2, (height / 6), Math.ceil(width / 6 / cellSize), texture),
         ],
-      setup: () => {},
+      setup: () => {
+        // skip first volcano
+        count = 1;
+      },
       beforeUpdate: () => {
         if (count % 1000 === 0) {
           const volcanoOptions = {

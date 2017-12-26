@@ -144,14 +144,6 @@ export default function (act) {
       hasItem,
       restitution,
     } = grounds({ engine, size });
-    interaction({
-      act,
-      engine,
-      players,
-      ghosts,
-      size,
-      grounds: groundsBody,
-    });
     Bounds.shift(render.bounds, {
       x: 0,
       y: 0,
@@ -166,26 +158,34 @@ export default function (act) {
         y: size.height,
       },
     };
+    stack.forEach((data, index) => {
+      players[data.player] = potateman({
+        act,
+        engine,
+        size,
+        index,
+        fbid: data.fbid,
+        player: data.player,
+        name: data.name,
+        image: data.image,
+        cpu: data.cpu,
+        render,
+        friction,
+        restitution,
+      });
+    });
+    act.stream(canvas);
     start(() => {
       Events.on(engine, 'beforeUpdate', () => {
         stats.update();
       });
-      act.stream(canvas);
-      stack.forEach((data, index) => {
-        players[data.player] = potateman({
-          act,
-          engine,
-          size,
-          index,
-          fbid: data.fbid,
-          player: data.player,
-          name: data.name,
-          image: data.image,
-          cpu: data.cpu,
-          render,
-          friction,
-          restitution,
-        });
+      interaction({
+        act,
+        engine,
+        players,
+        ghosts,
+        size,
+        grounds: groundsBody,
       });
       cpu({ engine, players, size });
       boundary({
