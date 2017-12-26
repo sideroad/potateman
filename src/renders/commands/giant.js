@@ -20,5 +20,5 @@ export default function giantFn({ engine, body, size }) {
     size,
     ratio: 0.5,
   });
-  body.attr.giant += 300;
+  body.attr.giant += 350;
 }

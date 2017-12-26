@@ -25,6 +25,7 @@ export default function itemsFn({
       if (dice < 40) {
         const rescueBox = Bodies.rectangle(x, 0, 20, 20, {
           collisionFilter,
+          restitution: 1,
           render: {
             sprite: {
               texture: '/images/rescue-box.png',
@@ -41,6 +42,7 @@ export default function itemsFn({
       } else if (dice < 70) {
         const magicBox = Bodies.rectangle(x, 0, 20, 20, {
           collisionFilter,
+          restitution: 1,
           render: {
             sprite: {
               texture: '/images/magic-box.png',
@@ -57,6 +59,7 @@ export default function itemsFn({
       } else if (dice < 90) {
         const flamethrower = Bodies.rectangle(x, 0, 20, 10, {
           collisionFilter,
+          restitution: 1,
           render: {
             sprite: {
               texture: '/images/flamethrower-equip-left-1.png',
@@ -73,6 +76,7 @@ export default function itemsFn({
       } else if (dice <= 100) {
         const giant = Bodies.rectangle(x, 0, 20, 20, {
           collisionFilter,
+          restitution: 1,
           render: {
             sprite: {
               texture: '/images/giant-leaf.png',

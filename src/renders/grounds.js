@@ -264,6 +264,7 @@ export default function ({ engine, size }) {
                 // eslint-disable-next-line no-bitwise
                 mask: COLLISION.POTATEMANS | COLLISION.GROUND | COLLISION.ATTACK,
               },
+              restitution: 1,
               render: {
                 sprite: {
                   texture: '/images/cream.png',
