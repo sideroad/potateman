@@ -208,7 +208,10 @@ export default function ({ engine, size }) {
           ...make((width / 5) * 4, height / 5, Math.ceil(width / 5 / cellSize), texture),
           ...make((width / 3) * 2, (height / 5) * 4, Math.ceil(width / 5 / cellSize), texture),
         ],
-      setup: () => {},
+      setup: () => {
+        // skip first become titan
+        count = 1;
+      },
       beforeUpdate: () => {
         if (count % 1500 === 0) {
           engine.world.bodies
