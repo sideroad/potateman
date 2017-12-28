@@ -719,6 +719,38 @@ export default function ({ engine, size }) {
       setup: () => {
       },
       beforeUpdate: () => {
+        if (count % 1000 < 200) {
+          World.add(engine.world, [
+            Bodies.rectangle(random(0, width), 0, 1, 75, {
+              render: {
+                strokeStyle: '#ffffff',
+                fillStyle: '#ffffff',
+                opacity: 0.5,
+              },
+              isSensor: true,
+            }),
+          ]);
+          if (count % 1000 > 50) {
+            const x = random(0, width / 6) + ((width / 12) * 5);
+            const water = Bodies.rectangle(x, -height, 3, 75, {
+              render: {
+                strokeStyle: '#ffffff',
+                fillStyle: '#38a1db',
+                opacity: 0.8,
+              },
+              collisionFilter: {
+                category: COLLISION.ITEM,
+                // eslint-disable-next-line no-bitwise
+                mask: COLLISION.POTATEMANS,
+              },
+              isSensor: true,
+            });
+            water.attr = {
+              type: 'water',
+            };
+            World.add(engine.world, [water]);
+          }
+        }
       },
     },
   };

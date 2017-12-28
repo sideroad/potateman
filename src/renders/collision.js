@@ -153,6 +153,16 @@ export function check({
           bodyA.attr.cursed = true;
         }
 
+        // water collision
+        if (
+          type === 'water'
+        ) {
+          Body.setVelocity(bodyA, {
+            x: bodyA.velocity.x,
+            y: bodyA.velocity.y + 3,
+          });
+        }
+
         // items collision
         if (item) {
           switch (type) {
