@@ -58,11 +58,11 @@ Once your magic point reach to use skill, you can use skill by C button. ( See C
 # Stages
 |Stage|Image|Remark|
 |-----|-----|------|
-|Earth|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-earth.png)|No item. Basic stage.|
+|Earth|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-earth.png)|No item. Apply flamethrowers in certain period of time.|
 |Ice|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-ice.png)|No friction ground. Raging wind in certain period of time.|
 |Space|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-space.png)|Increase gravity in certain period of time.|
 |Moss|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-moss.png)|Moving ground. Increase power and magic point in certain period of time.|
-|Volcano|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-volcano.png)|Volcanic eruption happen in certain period of time.|
+|Volcano|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-volcano.png)|Volcanic eruption happen in certain period of time. Increase damage. |
 |Candy|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-candy.png)|Fall down cream in certain period of time.|
 |Brick|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-brick.png)|Became titan in certain period of time.|
 

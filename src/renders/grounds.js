@@ -191,8 +191,34 @@ export default function ({ engine, size }) {
           ...make(width / 8, height / 4, Math.ceil(width / 5 / cellSize), texture),
           ...make((width / 8) * 7, height / 4, Math.ceil(width / 5 / cellSize), texture),
         ],
-      setup: () => {},
-      beforeUpdate: () => {},
+      setup: () => {
+        // skip first flamethrowers
+        count = 1;
+      },
+      beforeUpdate: () => {
+        if (count % 1500 === 0) {
+          _.times((width / 200) * (height / 200), () => {
+            const x = random(0, width);
+            const y = random(0, height);
+            cure({
+              engine,
+              body: {
+                attr: {
+                  category: COLLISION.POTATEMANS,
+                },
+                position: { x, y },
+              },
+            });
+          });
+          engine.world.bodies
+            .forEach((body) => {
+              if (body.attr && body.attr.type === 'potateman') {
+                // eslint-disable-next-line no-param-reassign
+                body.attr.flamethrowers += 400;
+              }
+            });
+        }
+      },
     },
     brick: {
       background: '#fff2b2',
@@ -361,6 +387,16 @@ export default function ({ engine, size }) {
         count = 1;
       },
       beforeUpdate: () => {
+        if (count % 100 === 0) {
+          engine.world.bodies
+            .forEach((body) => {
+              if (body.attr && body.attr.type === 'potateman') {
+                const increase = 10;
+                // eslint-disable-next-line no-param-reassign
+                body.attr.damage += increase;
+              }
+            });
+        }
         if (count % 1000 === 0) {
           const volcanoOptions = {
             engine,
