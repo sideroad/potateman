@@ -159,7 +159,7 @@ export function check({
         ) {
           Body.setVelocity(bodyA, {
             x: bodyA.velocity.x,
-            y: bodyA.velocity.y + 3,
+            y: bodyA.velocity.y + 1,
           });
         }
 
