@@ -14,7 +14,7 @@ export default function itemsFn({
   const collisionFilter = {
     category: COLLISION.ITEM,
     // eslint-disable-next-line no-bitwise
-    mask: COLLISION.POTATEMANS | COLLISION.GROUND | COLLISION.ATTACK,
+    mask: COLLISION.POTATEMANS | COLLISION.GROUND | COLLISION.WALL | COLLISION.ATTACK,
   };
   Events.on(engine, 'beforeUpdate', () => {
     count += 1;

@@ -19,11 +19,24 @@ export default function ({ engine, size }) {
   const { width, height } = size;
   const cellSize = 20;
   const adjust = cellSize / 2;
-  const options = {
+  const groundOptions = {
     density: 1,
     isStatic: true,
     collisionFilter: {
       category: COLLISION.GROUND,
+      // eslint-disable-next-line no-bitwise
+      mask: COLLISION.POTATEMANS | COLLISION.ITEM,
+    },
+    render: {
+      // fillStyle: 'transparent',
+      lineWidth: 0,
+    },
+  };
+  const wallOptions = {
+    density: 1,
+    isStatic: true,
+    collisionFilter: {
+      category: COLLISION.WALL,
       // eslint-disable-next-line no-bitwise
       mask: COLLISION.POTATEMANS | COLLISION.ITEM,
     },
@@ -41,15 +54,37 @@ export default function ({ engine, size }) {
       },
     },
   };
-  const make = (x, y, amount, texture) => {
+  const makeGround = ({
+    x,
+    y,
+    amount,
+    textures,
+  }) => {
     const groundWidth = amount * cellSize;
     const xx = x - (groundWidth / 2);
     const yy = y;
-    spriteOptions.render.sprite.texture = texture;
+    spriteOptions.render.sprite.texture = textures.ground;
     return [
       Composites.stack(xx, yy - adjust, amount, 1, 0, 0, (_x, _y) =>
         Bodies.rectangle(_x, _y, cellSize, cellSize, spriteOptions)),
-      Bodies.rectangle(x, y, groundWidth, cellSize, options),
+      Bodies.rectangle(x, y, groundWidth, cellSize, groundOptions),
+    ];
+  };
+  const makeWall = ({
+    x,
+    y,
+    thick = 2,
+    amount,
+    textures,
+  }) => {
+    const groundHeight = amount * cellSize;
+    const xx = x;
+    const yy = y - (groundHeight / 2);
+    spriteOptions.render.sprite.texture = textures.wall;
+    return [
+      Composites.stack(xx - (adjust * thick), yy, thick, amount, 0, 0, (_x, _y) =>
+        Bodies.rectangle(_x, _y, cellSize, cellSize, spriteOptions)),
+      Bodies.rectangle(x, y, cellSize * thick, groundHeight, wallOptions),
     ];
   };
   let count = 0;
@@ -60,17 +95,39 @@ export default function ({ engine, size }) {
   const maps = {
     ice: {
       background: '#ffffff',
-      texture: '/images/ice-ground.png',
+      textures: {
+        ground: '/images/ice-ground.png',
+      },
       restitution: 0,
       friction: 0,
       hasItem: true,
-      shape: texture =>
+      shape: textures =>
         [
           // eslint-disable-next-line max-len
-          ...make(width / 2, (height / 5) * 4, Math.ceil(width / 1.5 / cellSize), texture),
-          ...make(width / 4, height / 2, 10, texture),
-          ...make((width / 4) * 3, height / 2, 10, texture),
-          ...make(width / 2, (height / 5) * 1.5, 10, texture),
+          ...makeGround({
+            x: width / 2,
+            y: (height / 5) * 4,
+            amount: Math.ceil(width / 1.5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 4,
+            y: height / 2,
+            amount: 10,
+            textures,
+          }),
+          ...makeGround({
+            x: (width / 4) * 3,
+            y: height / 2,
+            amount: 10,
+            textures,
+          }),
+          ...makeGround({
+            x: width / 2,
+            y: (height / 5) * 1.5,
+            amount: 10,
+            textures,
+          }),
         ],
       setup: () => {
         // skip first wind
@@ -123,19 +180,56 @@ export default function ({ engine, size }) {
     },
     space: {
       background: '#0D0015',
-      texture: '/images/space-ground.png',
+      textures: {
+        ground: '/images/space-ground.png',
+      },
       restitution: 0,
       friction: 15,
       hasItem: true,
-      shape: texture =>
+      shape: textures =>
         [
-          ...make(width / 2, height / 2, Math.ceil(width / 2 / cellSize), texture),
-          ...make(width / 6, height / 4, 6, texture),
-          ...make(width / 6, (height / 4) * 3, 6, texture),
-          ...make((width / 6) * 5, height / 4, 6, texture),
-          ...make((width / 6) * 5, (height / 4) * 3, 6, texture),
-          ...make(width / 2, height / 6, 10, texture),
-          ...make(width / 2, (height / 6) * 5, 10, texture),
+          ...makeGround({
+            x: width / 2,
+            y: height / 2,
+            amount: Math.ceil(width / 2 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 6,
+            y: height / 4,
+            amount: 6,
+            textures,
+          }),
+          ...makeGround({
+            x: width / 6,
+            y: (height / 4) * 3,
+            amount: 6,
+            textures,
+          }),
+          ...makeGround({
+            x: (width / 6) * 5,
+            y: height / 4,
+            amount: 6,
+            textures,
+          }),
+          ...makeGround({
+            x: (width / 6) * 5,
+            y: (height / 4) * 3,
+            amount: 6,
+            textures,
+          }),
+          ...makeGround({
+            x: width / 2,
+            y: height / 6,
+            amount: 10,
+            textures,
+          }),
+          ...makeGround({
+            x: width / 2,
+            y: (height / 6) * 5,
+            amount: 10,
+            textures,
+          }),
         ],
       setup: () => {
         _.times((width / 60) * (height / 60), (index) => {
@@ -179,17 +273,45 @@ export default function ({ engine, size }) {
     },
     earth: {
       background: '#F1F4FE',
-      texture: '/images/ground.png',
+      textures: {
+        ground: '/images/ground.png',
+        wall: '/images/ground.png',
+      },
       restitution: 0,
       friction: 15,
       hasItem: false,
-      shape: texture =>
+      shape: textures =>
         [
-          ...make(width / 2, (height / 4) * 3, Math.ceil(width / 2 / cellSize), texture),
-          ...make(width / 4, height / 2, Math.ceil(width / 5 / cellSize), texture),
-          ...make((width / 4) * 3, height / 2, Math.ceil(width / 5 / cellSize), texture),
-          ...make(width / 8, height / 4, Math.ceil(width / 5 / cellSize), texture),
-          ...make((width / 8) * 7, height / 4, Math.ceil(width / 5 / cellSize), texture),
+          ...makeGround({
+            x: width / 2,
+            y: (height / 4) * 3,
+            amount: Math.ceil(width / 2 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 4,
+            y: height / 2,
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: (width / 4) * 3,
+            y: height / 2,
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 8,
+            y: height / 4,
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: (width / 8) * 7,
+            y: height / 4,
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
         ],
       setup: () => {
         // skip first flamethrowers
@@ -222,17 +344,44 @@ export default function ({ engine, size }) {
     },
     brick: {
       background: '#fff2b2',
-      texture: '/images/brick-ground.png',
+      textures: {
+        ground: '/images/brick-ground.png',
+      },
       restitution: 0,
       friction: 15,
       hasItem: true,
-      shape: texture =>
+      shape: textures =>
         [
-          ...make(width / 2, height / 2, Math.ceil(width / 1.25 / cellSize), texture),
-          ...make(width / 5, height / 5, Math.ceil(width / 5 / cellSize), texture),
-          ...make(width / 3, (height / 5) * 4, Math.ceil(width / 5 / cellSize), texture),
-          ...make((width / 5) * 4, height / 5, Math.ceil(width / 5 / cellSize), texture),
-          ...make((width / 3) * 2, (height / 5) * 4, Math.ceil(width / 5 / cellSize), texture),
+          ...makeGround({
+            x: width / 2,
+            y: height / 2,
+            amount: Math.ceil(width / 1.25 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 5,
+            y: height / 5,
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 3,
+            y: (height / 5) * 4,
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: (width / 5) * 4,
+            y: height / 5,
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: (width / 3) * 2,
+            y: (height / 5) * 4,
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
         ],
       setup: () => {
         // skip first become titan
@@ -255,16 +404,38 @@ export default function ({ engine, size }) {
     },
     candy: {
       background: '#fdb8bd',
-      texture: '/images/candy-ground.png',
+      textures: {
+        ground: '/images/candy-ground.png',
+      },
       restitution: 1,
       friction: 15,
       hasItem: true,
-      shape: texture =>
+      shape: textures =>
         [
-          ...make(width / 2, (height / 5) * 4, Math.ceil(width / 1.5 / cellSize), texture),
-          ...make(width / 5, height / 2, Math.ceil(width / 4 / cellSize), texture),
-          ...make(width / 2, height / 5, Math.ceil(width / 5 / cellSize), texture),
-          ...make((width / 5) * 4, height / 2, Math.ceil(width / 4 / cellSize), texture),
+          ...makeGround({
+            x: width / 2,
+            y: (height / 5) * 4,
+            amount: Math.ceil(width / 1.5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 5,
+            y: height / 2,
+            amount: Math.ceil(width / 4 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 2,
+            y: height / 5,
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: (width / 5) * 4,
+            y: height / 2,
+            amount: Math.ceil(width / 4 / cellSize),
+            textures,
+          }),
         ],
       setup: () => {},
       beforeUpdate: (grounds) => {
@@ -291,7 +462,10 @@ export default function ({ engine, size }) {
               collisionFilter: {
                 category: COLLISION.ITEM,
                 // eslint-disable-next-line no-bitwise
-                mask: COLLISION.POTATEMANS | COLLISION.GROUND | COLLISION.ATTACK,
+                mask: COLLISION.POTATEMANS |
+                      COLLISION.GROUND |
+                      COLLISION.WALL |
+                      COLLISION.ATTACK,
               },
               restitution: 1,
               render: {
@@ -310,19 +484,56 @@ export default function ({ engine, size }) {
     },
     moss: {
       background: '#f7ffea',
-      texture: '/images/moss-ground.png',
+      textures: {
+        ground: '/images/moss-ground.png',
+      },
       restitution: 0,
       friction: 15,
       hasItem: true,
-      shape: texture =>
+      shape: textures =>
         [
-          ...make(width / 2, (height / 5) * 4, Math.ceil(width / 1.5 / cellSize), texture),
-          ...make(width / 4, (height / 5) * 3, Math.ceil(width / 5 / cellSize), texture),
-          ...make((width / 4) * 3, (height / 5) * 3, Math.ceil(width / 5 / cellSize), texture),
-          ...make(width / 3, (height / 5) * 2, Math.ceil(width / 6 / cellSize), texture),
-          ...make((width / 3) * 2, (height / 5) * 2, Math.ceil(width / 6 / cellSize), texture),
-          ...make(width / 2, (height / 5), Math.ceil(width / 5 / cellSize), texture),
-          ...make(width / 2, (height / 5), Math.ceil(width / 5 / cellSize), texture),
+          ...makeGround({
+            x: width / 2,
+            y: (height / 5) * 4,
+            amount: Math.ceil(width / 1.5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 4,
+            y: (height / 5) * 3,
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: (width / 4) * 3,
+            y: (height / 5) * 3,
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 3,
+            y: (height / 5) * 2,
+            amount: Math.ceil(width / 6 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: (width / 3) * 2,
+            y: (height / 5) * 2,
+            amount: Math.ceil(width / 6 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 2,
+            y: (height / 5),
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 2,
+            y: (height / 5),
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
         ],
       setup: () => {},
       beforeUpdate: (grounds) => {
@@ -371,16 +582,33 @@ export default function ({ engine, size }) {
     },
     volcano: {
       background: '#ffead8',
-      texture: '/images/volcano-ground.png',
+      textures: {
+        ground: '/images/volcano-ground.png',
+      },
       restitution: 0,
       friction: 15,
       hasItem: true,
-      shape: texture =>
+      shape: textures =>
         [
           // eslint-disable-next-line max-len
-          ...make(width / 2, (height / 6) * 5, Math.ceil(width / 1.5 / cellSize), texture),
-          ...make(width / 2, (height / 6) * 3, Math.ceil(width / 3 / cellSize), texture),
-          ...make(width / 2, (height / 6), Math.ceil(width / 6 / cellSize), texture),
+          ...makeGround({
+            x: width / 2,
+            y: (height / 6) * 5,
+            amount: Math.ceil(width / 1.5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 2,
+            y: (height / 6) * 3,
+            amount: Math.ceil(width / 3 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 2,
+            y: (height / 6),
+            amount: Math.ceil(width / 6 / cellSize),
+            textures,
+          }),
         ],
       setup: () => {
         // skip first volcano
@@ -431,6 +659,77 @@ export default function ({ engine, size }) {
         }
       },
     },
+    nest: {
+      background: '#F1F4FE',
+      textures: {
+        ground: '/images/ground.png',
+        wall: '/images/wall.png',
+      },
+      restitution: 0,
+      friction: 15,
+      hasItem: false,
+      shape: textures =>
+        [
+          ...makeGround({
+            x: width / 4,
+            y: height / 4,
+            amount: Math.ceil(width / 4 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: (width / 4) * 3,
+            y: height / 4,
+            amount: Math.ceil(width / 4 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 2,
+            y: height / 2,
+            amount: Math.ceil(width / 5 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: width / 3,
+            y: (height / 4) * 3,
+            amount: Math.ceil(width / 6 / cellSize),
+            textures,
+          }),
+          ...makeGround({
+            x: (width / 3) * 2,
+            y: (height / 4) * 3,
+            amount: Math.ceil(width / 6 / cellSize),
+            textures,
+          }),
+          ...makeWall({
+            x: ((width / 12) * 7) + (adjust * 2),
+            y: height + (adjust * 1.5),
+            amount: Math.ceil(height / 2 / cellSize),
+            textures,
+          }),
+          ...makeWall({
+            x: ((width / 12) * 5) - (adjust * 2),
+            y: height + (adjust * 1.5),
+            amount: Math.ceil(height / 2 / cellSize),
+            textures,
+          }),
+          ...makeWall({
+            x: width / 4,
+            y: (height / 2) + (adjust / 2),
+            amount: Math.ceil(height / 2 / cellSize),
+            textures,
+          }),
+          ...makeWall({
+            x: (width / 4) * 3,
+            y: (height / 2) + (adjust / 2),
+            amount: Math.ceil(height / 2 / cellSize),
+            textures,
+          }),
+        ],
+      setup: () => {
+      },
+      beforeUpdate: () => {
+      },
+    },
   };
 
   const stages = Object.keys(maps);
@@ -448,13 +747,7 @@ export default function ({ engine, size }) {
     },
   }));
 
-  const grounds = maps[stage].shape(maps[stage].texture);
-  grounds.forEach((ground) => {
-    // eslint-disable-next-line no-param-reassign
-    ground.attr = {
-      ground: true,
-    };
-  });
+  const grounds = maps[stage].shape(maps[stage].textures);
   World.add(engine.world, grounds);
 
   const { setup, beforeUpdate } = maps[stage];
@@ -467,6 +760,9 @@ export default function ({ engine, size }) {
     friction: maps[stage].friction,
     restitution: maps[stage].restitution,
     hasItem: maps[stage].hasItem,
-    grounds,
+    grounds: grounds
+      .filter(ground =>
+        ground.type === 'body' &&
+        ground.collisionFilter.category === COLLISION.GROUND),
   };
 }

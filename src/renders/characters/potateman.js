@@ -43,6 +43,7 @@ export default function ({
       category,
       // eslint-disable-next-line no-bitwise
       mask: COLLISION.GROUND |
+            COLLISION.WALL |
             COLLISION.VOLCANO |
             COLLISION.POTATEMANS |
             COLLISION.ATTACK |
@@ -276,6 +277,7 @@ export default function ({
         category: potateman.attr.category,
         mask: potateman.velocity.y >= 0 && !potateman.attr.transparent ?
         // eslint-disable-next-line no-bitwise
+          COLLISION.WALL |
           COLLISION.GROUND |
           COLLISION.VOLCANO |
           COLLISION.POTATEMANS |
@@ -283,6 +285,7 @@ export default function ({
           COLLISION.ITEM
           :
           // eslint-disable-next-line no-bitwise
+          COLLISION.WALL |
           COLLISION.VOLCANO |
           COLLISION.POTATEMANS |
           COLLISION.ATTACK |
