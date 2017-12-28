@@ -273,7 +273,6 @@ export default function ({ engine, size }) {
       background: '#F1F4FE',
       textures: {
         ground: '/images/ground.png',
-        wall: '/images/ground.png',
       },
       restitution: 0,
       friction: 15,
@@ -652,14 +651,14 @@ export default function ({ engine, size }) {
         }
       },
     },
-    nest: {
-      background: '#F1F4FE',
+    sink: {
+      background: '#b3f1ff',
       textures: {
-        ground: '/images/ground.png',
-        wall: '/images/wall.png',
+        ground: '/images/sink-ground.png',
+        wall: '/images/sink-wall.png',
       },
       restitution: 0,
-      friction: 15,
+      friction: 0,
       shape: textures =>
         [
           ...makeGround({
