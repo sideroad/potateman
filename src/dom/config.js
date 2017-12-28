@@ -1,5 +1,5 @@
 export default function configFn() {
-  const config = JSON.parse(localStorage.config || '{"magnify":true}');
+  const config = JSON.parse(localStorage.config || '{"magnify":true,"hasItem":true}');
   window.config = config;
   function check() {
     const name = this.getAttribute('name');

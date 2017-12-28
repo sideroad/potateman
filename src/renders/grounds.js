@@ -100,7 +100,6 @@ export default function ({ engine, size }) {
       },
       restitution: 0,
       friction: 0,
-      hasItem: true,
       shape: textures =>
         [
           // eslint-disable-next-line max-len
@@ -185,7 +184,6 @@ export default function ({ engine, size }) {
       },
       restitution: 0,
       friction: 15,
-      hasItem: true,
       shape: textures =>
         [
           ...makeGround({
@@ -279,7 +277,6 @@ export default function ({ engine, size }) {
       },
       restitution: 0,
       friction: 15,
-      hasItem: false,
       shape: textures =>
         [
           ...makeGround({
@@ -349,7 +346,6 @@ export default function ({ engine, size }) {
       },
       restitution: 0,
       friction: 15,
-      hasItem: true,
       shape: textures =>
         [
           ...makeGround({
@@ -409,7 +405,6 @@ export default function ({ engine, size }) {
       },
       restitution: 1,
       friction: 15,
-      hasItem: true,
       shape: textures =>
         [
           ...makeGround({
@@ -489,7 +484,6 @@ export default function ({ engine, size }) {
       },
       restitution: 0,
       friction: 15,
-      hasItem: true,
       shape: textures =>
         [
           ...makeGround({
@@ -587,7 +581,6 @@ export default function ({ engine, size }) {
       },
       restitution: 0,
       friction: 15,
-      hasItem: true,
       shape: textures =>
         [
           // eslint-disable-next-line max-len
@@ -667,7 +660,6 @@ export default function ({ engine, size }) {
       },
       restitution: 0,
       friction: 15,
-      hasItem: false,
       shape: textures =>
         [
           ...makeGround({
@@ -759,7 +751,6 @@ export default function ({ engine, size }) {
   return {
     friction: maps[stage].friction,
     restitution: maps[stage].restitution,
-    hasItem: maps[stage].hasItem,
     grounds: grounds
       .filter(ground =>
         ground.type === 'body' &&

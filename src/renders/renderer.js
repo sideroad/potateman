@@ -141,7 +141,6 @@ export default function (act) {
     const {
       grounds: groundsBody,
       friction,
-      hasItem,
       restitution,
     } = grounds({ engine, size });
     Bounds.shift(render.bounds, {
@@ -195,7 +194,7 @@ export default function (act) {
         players,
         render,
       });
-      if (hasItem) {
+      if (window.config.hasItem) {
         items({ engine, size });
       }
     });
