@@ -12,6 +12,7 @@ import candy from './stages/candy';
 import earth from './stages/earth';
 import ice from './stages/ice';
 import moss from './stages/moss';
+import slime from './stages/slime';
 import sink from './stages/sink';
 import space from './stages/space';
 import volcano from './stages/volcano';
@@ -22,6 +23,7 @@ const stages = {
   earth,
   ice,
   moss,
+  slime,
   sink,
   space,
   volcano,
@@ -71,23 +73,30 @@ export default function ({ engine, size }) {
   const makeGround = ({
     x,
     y,
+    thick = 1,
     amount,
     textures,
+    tunnel = true,
   }) => {
     const groundWidth = amount * cellSize;
     const xx = x - (groundWidth / 2);
     const yy = y;
     spriteOptions.render.sprite.texture = textures.ground;
+    const options = tunnel ? groundOptions : wallOptions;
+    const ground = Bodies.rectangle(x, y, groundWidth, cellSize * thick, options);
+    ground.attr = {
+      type: 'ground',
+    };
     return [
-      Composites.stack(xx, yy - adjust, amount, 1, 0, 0, (_x, _y) =>
+      Composites.stack(xx, yy - (adjust * thick), amount, thick, 0, 0, (_x, _y) =>
         Bodies.rectangle(_x, _y, cellSize, cellSize, spriteOptions)),
-      Bodies.rectangle(x, y, groundWidth, cellSize, groundOptions),
+      ground,
     ];
   };
   const makeWall = ({
     x,
     y,
-    thick = 2,
+    thick = 1,
     amount,
     textures,
   }) => {
@@ -146,6 +155,7 @@ export default function ({ engine, size }) {
     grounds: grounds
       .filter(ground =>
         ground.type === 'body' &&
-        ground.collisionFilter.category === COLLISION.GROUND),
+        ground.attr &&
+        ground.attr.type === 'ground'),
   };
 }

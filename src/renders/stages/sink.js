@@ -5,7 +5,7 @@ import {
 import random from '../../helpers/random';
 import COLLISION from '../collision';
 
-export default function iceFn({
+export default function sinkFn({
   width,
   height,
   cellSize,
@@ -59,36 +59,42 @@ export default function iceFn({
           y: -height / 4,
           amount: Math.ceil(height / cellSize),
           textures,
+          thick: 2,
         }),
         ...makeWall({
           x: ((width / 10) * 9) + (adjust / 2),
           y: -height / 4,
           amount: Math.ceil(height / cellSize),
           textures,
+          thick: 2,
         }),
         ...makeWall({
           x: width / 4,
           y: (height / 2) + (adjust / 2),
           amount: Math.ceil(height / 2 / cellSize),
           textures,
+          thick: 2,
         }),
         ...makeWall({
           x: (width / 4) * 3,
           y: (height / 2) + (adjust / 2),
           amount: Math.ceil(height / 2 / cellSize),
           textures,
+          thick: 2,
         }),
         ...makeWall({
           x: ((width / 12) * 7) + (adjust * 2),
           y: (height * 1.25) + (adjust),
           amount: Math.ceil(height / cellSize),
           textures,
+          thick: 2,
         }),
         ...makeWall({
           x: ((width / 12) * 5) - (adjust * 2),
           y: (height * 1.25) + (adjust),
           amount: Math.ceil(height / cellSize),
           textures,
+          thick: 2,
         }),
       ],
     count: 151,

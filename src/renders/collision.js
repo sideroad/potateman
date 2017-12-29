@@ -97,7 +97,10 @@ export function check({
     const collisionConfirm = (bodyA, bodyB) => {
       if (bodies.includes(bodyA)) {
         // when potateman collision with some others, reset fly count
-        if (grounds.find(ground => ground === bodyB)) {
+        if (
+          grounds.find(ground => ground === bodyB) &&
+          bodyA.velocity.y >= 0
+        ) {
           bodyA.attr.flycount = 0;
           bodyA.attr.flying = false;
           if (!bodyA.attr.guarding) {

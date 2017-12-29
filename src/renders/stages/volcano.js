@@ -1,7 +1,7 @@
 import COLLISION from '../collision';
 import volcano from '../commands/volcano';
 
-export default function iceFn({
+export default function volcanoFn({
   width,
   height,
   cellSize,
