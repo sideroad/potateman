@@ -321,6 +321,8 @@ export default function ({
     flamethrowers: 0,
     giant: 0,
     lastAttacked: undefined,
+    cursed: false,
+    stunned: 0,
   };
   return {
     body: potateman,

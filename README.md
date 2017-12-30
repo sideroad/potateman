@@ -62,9 +62,11 @@ Once your magic point reach to use skill, you can use skill by C button. ( See C
 |Ice|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-ice.png)|No friction ground. Raging wind in certain period of time.|
 |Space|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-space.png)|Increase gravity in certain period of time.|
 |Moss|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-moss.png)|Moving ground. Increase power and magic point in certain period of time.|
-|Volcano|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-volcano.png)|Volcanic eruption happen in certain period of time. Increase damage. |
+|Volcano|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-volcano.png)|Volcanic eruption happen in certain period of time. |
 |Candy|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-candy.png)|Fall down cream in certain period of time.|
 |Brick|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-brick.png)|Became titan in certain period of time.|
+|Sink|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-sink.png)|Washout potatemans in certain period of time.|
+|Hell|![](https://raw.githubusercontent.com/sideroad/potateman/master/src/images/stage-hell.png)|Surrounded by lava walls. Get damage when touch lavas. Increase damage consecutively. |
 
 # Params
 

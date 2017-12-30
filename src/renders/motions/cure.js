@@ -1,17 +1,27 @@
 import shrink from './shrink';
 
-export default function cureFn({ engine, body }) {
+export default function cureFn({
+  engine,
+  body,
+  strokeStyle = '#aaaaaa',
+  fillStyle = '#ddccff',
+  strength = 15,
+  velocity: {
+    x = 0,
+    y = -5,
+  },
+}) {
   shrink({
     engine,
     type: 'particle',
-    strength: 15,
+    strength,
     velocity: {
-      x: 0,
-      y: -5,
+      x,
+      y,
     },
     render: {
-      strokeStyle: '#aaaaaa',
-      fillStyle: '#ddccff',
+      strokeStyle,
+      fillStyle,
       opacity: 0.75,
       lineWidth: 1,
     },

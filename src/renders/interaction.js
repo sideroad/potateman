@@ -67,7 +67,7 @@ export default function ({
         // left / right moving
         if (
           direction.left &&
-          !body.attr.cursed
+          !body.attr.stunned
         ) {
           if (
             direction.b &&
@@ -100,7 +100,7 @@ export default function ({
 
         if (
           direction.right &&
-          !body.attr.cursed
+          !body.attr.stunned
         ) {
           if (
             direction.b &&
@@ -136,7 +136,7 @@ export default function ({
         if (
           direction.up &&
           !direction.b &&
-          !body.attr.cursed
+          !body.attr.stunned
         ) {
           if (body.attr.flycount < 3 && !body.attr.keepTouchingJump) {
             if (!body.attr.flying) {
@@ -315,16 +315,20 @@ export default function ({
           sprite.setState('stand');
         }
 
+        // decrese speed if cursed
         if (body.attr.cursed) {
           x /= 100;
           y /= 100;
+          body.attr.cursed = false;
+        }
+
+        if (body.attr.stunned) {
+          body.attr.stunned -= 1;
         }
         Body.setVelocity(body, {
           x,
           y,
         });
-
-        body.attr.cursed = false;
       });
     Object
       .values(ghosts)

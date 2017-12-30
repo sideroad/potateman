@@ -81,6 +81,12 @@ const adjuster = {
     thunder: 2,
     volcano: 0.1,
   },
+  stunned: {
+    shockWave: 5,
+    meteorite: 5,
+    thunder: 0,
+    volcano: 10,
+  },
 };
 
 export function check({
@@ -131,6 +137,7 @@ export function check({
             bodyA.attr.lastAttacked = bodyB.attr.player;
             velocity *= player.body.attr.power / 100;
           }
+          bodyA.attr.stunned = adjuster[type];
           if (bodyA.attr.guarding) {
             velocity -= ((bodyA.attr.guardGage / 100) * velocity);
           }
@@ -152,8 +159,8 @@ export function check({
         if (
           type === 'curse'
         ) {
-          bodyA.attr.damage += 1;
           bodyA.attr.cursed = true;
+          bodyA.attr.stunned = 20;
         }
 
         // water collision

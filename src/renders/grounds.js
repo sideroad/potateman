@@ -12,7 +12,7 @@ import candy from './stages/candy';
 import earth from './stages/earth';
 import ice from './stages/ice';
 import moss from './stages/moss';
-import slime from './stages/slime';
+import hell from './stages/hell';
 import sink from './stages/sink';
 import space from './stages/space';
 import volcano from './stages/volcano';
@@ -23,7 +23,7 @@ const stages = {
   earth,
   ice,
   moss,
-  slime,
+  hell,
   sink,
   space,
   volcano,
@@ -77,6 +77,7 @@ export default function ({ engine, size }) {
     amount,
     textures,
     tunnel = true,
+    lava = false,
   }) => {
     const groundWidth = amount * cellSize;
     const xx = x - (groundWidth / 2);
@@ -84,9 +85,13 @@ export default function ({ engine, size }) {
     spriteOptions.render.sprite.texture = textures.ground;
     const options = tunnel ? groundOptions : wallOptions;
     const ground = Bodies.rectangle(x, y, groundWidth, cellSize * thick, options);
-    ground.attr = {
-      type: 'ground',
-    };
+    ground.attr = lava ?
+      {
+        type: 'shockWave',
+        strength: 20,
+      } : {
+        type: 'ground',
+      };
     return [
       Composites.stack(xx, yy - (adjust * thick), amount, thick, 0, 0, (_x, _y) =>
         Bodies.rectangle(_x, _y, cellSize, cellSize, spriteOptions)),
@@ -99,15 +104,24 @@ export default function ({ engine, size }) {
     thick = 1,
     amount,
     textures,
+    lava = false,
   }) => {
     const groundHeight = amount * cellSize;
     const xx = x;
     const yy = y - (groundHeight / 2);
     spriteOptions.render.sprite.texture = textures.wall;
+    const wall = Bodies.rectangle(x, y, cellSize * thick, groundHeight, wallOptions);
+    wall.attr = lava ?
+      {
+        type: 'shockWave',
+        strength: 20,
+      } : {
+        type: 'ground',
+      };
     return [
       Composites.stack(xx - (adjust * thick), yy, thick, amount, 0, 0, (_x, _y) =>
         Bodies.rectangle(_x, _y, cellSize, cellSize, spriteOptions)),
-      Bodies.rectangle(x, y, cellSize * thick, groundHeight, wallOptions),
+      wall,
     ];
   };
   // eslint-disable-next-line no-param-reassign

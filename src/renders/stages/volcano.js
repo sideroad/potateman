@@ -41,16 +41,6 @@ export default function volcanoFn({
     setup: () => {
     },
     beforeUpdate: (count) => {
-      if (count % 100 === 0) {
-        engine.world.bodies
-          .forEach((body) => {
-            if (body.attr && body.attr.type === 'potateman') {
-              const increase = 10;
-              // eslint-disable-next-line no-param-reassign
-              body.attr.damage += increase;
-            }
-          });
-      }
       if (count % 1000 === 0) {
         const volcanoOptions = {
           engine,
