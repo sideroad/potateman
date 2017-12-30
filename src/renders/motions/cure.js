@@ -6,19 +6,16 @@ export default function cureFn({
   strokeStyle = '#aaaaaa',
   fillStyle = '#ddccff',
   strength = 15,
-  velocity: {
-    x = 0,
-    y = -5,
+  velocity = {
+    x: 0,
+    y: -5,
   },
 }) {
   shrink({
     engine,
     type: 'particle',
     strength,
-    velocity: {
-      x,
-      y,
-    },
+    velocity,
     render: {
       strokeStyle,
       fillStyle,
