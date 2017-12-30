@@ -78,7 +78,7 @@ export default function candyFn({
                     COLLISION.WALL |
                     COLLISION.ATTACK,
             },
-            restitution: 1,
+            restitution: 0,
             render: {
               sprite: {
                 texture: '/images/cream.png',
