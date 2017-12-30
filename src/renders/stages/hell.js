@@ -29,13 +29,13 @@ export default function hellFn({
         }),
         ...makeGround({
           x: width / 4,
-          y: (height / 5) * 2,
+          y: height / 2,
           amount: Math.ceil(width / 6 / cellSize),
           textures,
         }),
         ...makeGround({
           x: (width / 4) * 3,
-          y: (height / 5) * 2,
+          y: height / 2,
           amount: Math.ceil(width / 6 / cellSize),
           textures,
         }),
