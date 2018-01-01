@@ -112,12 +112,14 @@ export default function thunder({
   // eslint-disable-next-line no-param-reassign
   body.attr.magic = 1;
 
-  Events.on(engine, 'beforeUpdate', () => {
+  const tick = () => {
     thunderbolts.forEach((thunderbolt) => {
       thunderbolt.sprite.render();
       if (thunderbolt.sprite.step === 7) {
         World.remove(engine.world, thunderbolt.body);
+        Events.off(engine, 'beforeUpdate', tick);
       }
     });
-  });
+  };
+  Events.on(engine, 'beforeUpdate', tick);
 }

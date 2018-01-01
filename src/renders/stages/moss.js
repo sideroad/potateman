@@ -91,7 +91,7 @@ export default function mossFn({
             engine,
             body: {
               attr: {
-                category: COLLISION.NONE,
+                category: COLLISION.POTATEMANS,
               },
               position: { x, y },
             },

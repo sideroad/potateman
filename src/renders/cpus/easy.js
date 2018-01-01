@@ -123,6 +123,7 @@ export default function easyFn({
         player.direction.a = 0;
       }
 
+      // thunder
       if (
         (
           target.distance.xabs < 5 &&
@@ -147,6 +148,7 @@ export default function easyFn({
         return;
       }
 
+      // uppercut
       if (
         (
           target.distance.xabs < 5 &&
@@ -170,6 +172,8 @@ export default function easyFn({
         player.direction.c = 1;
         return;
       }
+
+      // meteorite
       if (
         target.distance.yabs < 5 &&
         player.body.attr.magic > MAGIC.uppercut.min &&
@@ -178,11 +182,20 @@ export default function easyFn({
       ) {
         player.direction.up = 0;
         player.direction.down = 0;
+        if (target.distance.x < 0) {
+          player.direction.left = 0;
+          player.direction.right = 1;
+        } else {
+          player.direction.left = 1;
+          player.direction.right = 0;
+        }
         player.direction.c = 1;
         return;
       }
+
+      // volcano
       if (
-        player.body.attr.magic > MAGIC.volcano.min &&
+        player.body.attr.magic > (MAGIC.volcano.min * 2) &&
         !player.body.attr.flamethrowers &&
         !target.attr.item
       ) {

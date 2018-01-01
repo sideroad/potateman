@@ -76,14 +76,14 @@ export default function hellFn({
       ],
     setup: () => {},
     beforeUpdate: (count) => {
-      if (count % 20 === 0) {
+      if (count % 15 === 0) {
         const x = random(0, width);
         const y = random(0, height);
         cure({
           engine,
           body: {
             attr: {
-              category: COLLISION.NONE,
+              category: COLLISION.POTATEMANS,
             },
             position: { x, y },
           },

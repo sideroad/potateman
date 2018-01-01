@@ -60,7 +60,7 @@ const adjuster = {
   damage: {
     shockWave: 1.25,
     meteorite: 1,
-    thunder: 0.75,
+    thunder: 0.5,
     volcano: 1,
   },
   magic: {
@@ -76,15 +76,15 @@ const adjuster = {
     volcano: 0.15,
   },
   velocity: {
-    shockWave: 0.5,
-    meteorite: 0.4,
-    thunder: 2,
+    shockWave: 0.4,
+    meteorite: 0.35,
+    thunder: 1.75,
     volcano: 0.1,
   },
   stunned: {
-    shockWave: 5,
-    meteorite: 5,
-    thunder: 0,
+    shockWave: 10,
+    meteorite: 10,
+    thunder: 10,
     volcano: 10,
   },
 };
@@ -137,7 +137,7 @@ export function check({
             bodyA.attr.lastAttacked = bodyB.attr.player;
             velocity *= player.body.attr.power / 100;
           }
-          bodyA.attr.stunned = adjuster[type];
+          bodyA.attr.stunned = adjuster.stunned[type];
           if (bodyA.attr.guarding) {
             velocity -= ((bodyA.attr.guardGage / 100) * velocity);
           }

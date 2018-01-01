@@ -44,11 +44,12 @@ export default function meteorite({
       // eslint-disable-next-line no-bitwise
       mask: COLLISION.POTATEMANS - category,
     },
-    force: {
-      x: sprite.direction === 'left' ? -1 * radius * (radius < 30 ? 0.5 : 1) : radius * (radius < 30 ? 0.5 : 1),
-      y: (-1 * radius) / 8,
-    },
   });
+  const velocity = {
+    x: sprite.direction === 'left' ? -30 : 30,
+    y: -3,
+  };
+  Body.setVelocity(meteoriteMotion, velocity);
   Body.setAngularVelocity(meteoriteMotion, sprite.direction === 'left' ? -0.4 : 0.4);
   World.add(engine.world, [
     meteoriteMotion,
