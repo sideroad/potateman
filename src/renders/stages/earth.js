@@ -71,7 +71,7 @@ export default function earthFn({
           .forEach((body) => {
             if (body.attr && body.attr.type === 'potateman') {
               // eslint-disable-next-line no-param-reassign
-              body.attr.flamethrowers += 400;
+              body.attr.magic += (body.attr.damage / 2);
             }
           });
       }

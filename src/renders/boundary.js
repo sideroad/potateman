@@ -62,8 +62,8 @@ export default function ({
         ) {
           const lastAttacker = players[attr.lastAttacked];
           if (lastAttacker) {
-            lastAttacker.body.attr.damage = lastAttacker.body.attr.damage > attr.damage ?
-              lastAttacker.body.attr.damage - attr.damage : 0;
+            lastAttacker.body.attr.damage = lastAttacker.body.attr.damage > attr.damage / 2 ?
+              lastAttacker.body.attr.damage - (attr.damage / 2) : 0;
             lastAttacker.body.attr.magic += attr.magic;
             lastAttacker.body.attr.score += attr.damage + attr.magic + attr.score;
           }

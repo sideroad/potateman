@@ -48,7 +48,7 @@ export default function thunder({
     collisionFilter: {
       category: COLLISION.ATTACK,
       // eslint-disable-next-line no-bitwise
-      mask: COLLISION.POTATEMANS - category,
+      mask: (COLLISION.POTATEMANS - category) | COLLISION.ATTACK,
     },
     isSensor: true,
   };

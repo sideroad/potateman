@@ -58,34 +58,55 @@ export default COLLISION;
 
 const adjuster = {
   damage: {
+    flame: 1,
     shockWave: 1.25,
     meteorite: 1,
     thunder: 0.5,
-    volcano: 1,
+    volcano: 0.5,
   },
   magic: {
+    flame: 1,
     shockWave: 1,
     meteorite: 0.6,
     thunder: 2,
-    volcano: 0.15,
+    volcano: 0.05,
   },
   score: {
+    flame: 0.25,
     shockWave: 0.5,
     meteorite: 0.4,
     thunder: 2,
     volcano: 0.15,
   },
   velocity: {
+    flame: 0.1,
     shockWave: 0.4,
     meteorite: 0.35,
-    thunder: 1.75,
-    volcano: 0.1,
+    thunder: 1.25,
+    volcano: 0.05,
   },
-  stunned: {
+  minVelocity: {
+    flame: 5,
     shockWave: 10,
     meteorite: 10,
     thunder: 10,
-    volcano: 10,
+    volcano: 5,
+  },
+  stunned: {
+    attacker: {
+      flame: 0,
+      shockWave: 10,
+      meteorite: 10,
+      thunder: 10,
+      volcano: 10,
+    },
+    attacked: {
+      flame: 10,
+      shockWave: 15,
+      meteorite: 15,
+      thunder: 5,
+      volcano: 10,
+    },
   },
 };
 
@@ -115,6 +136,7 @@ export function check({
         }
         const { type, item } = bodyB.attr ? bodyB.attr : {};
         if (
+          type === 'flame' ||
           type === 'shockWave' ||
           type === 'meteorite' ||
           type === 'thunder' ||
@@ -136,12 +158,17 @@ export function check({
             player.body.attr.score += (bodyB.attr.strength / 2) * adjuster.score[type];
             bodyA.attr.lastAttacked = bodyB.attr.player;
             velocity *= player.body.attr.power / 100;
+            player.body.attr.stunned = adjuster.stunned.attacker[type];
           }
-          bodyA.attr.stunned = adjuster.stunned[type];
           if (bodyA.attr.guarding) {
             velocity -= ((bodyA.attr.guardGage / 100) * velocity);
+          } else {
+            bodyA.attr.stunned = adjuster.stunned.attacked[type];
           }
           velocity /= (bodyA.render.sprite.xScale / 0.75) * (bodyA.render.sprite.yScale / 0.75);
+          if (Math.abs(velocity) < adjuster.minVelocity[type]) {
+            velocity = adjuster.minVelocity[type] * (velocity > 0 ? 1 : -1);
+          }
           Body.setVelocity(bodyA, {
             x: (
               bodyB.velocity.x > 0 ? velocity :

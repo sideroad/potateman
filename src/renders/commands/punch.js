@@ -2,7 +2,7 @@ import {
   World,
 } from 'matter-js';
 import { getPunchStrength } from '../characters/potateman';
-import shrink from '../motions/shrink';
+import swell from '../motions/swell';
 
 
 const shockWaveRender = {
@@ -26,7 +26,7 @@ export default function punch({
   }
   const strength = getPunchStrength(body.attr);
   // eslint-disable-next-line no-nested-ternary
-  const speed = strength < 15 ? 15 : strength > 20 ? 20 : strength;
+  const speed = (strength / 1.75) + Math.abs(body.velocity.x);
   const velocity = {
     x:
     direction.left ? speed * -1 :
@@ -39,7 +39,7 @@ export default function punch({
     direction.down ? speed * 1 :
     0,
   };
-  shrink({
+  swell({
     engine,
     body,
     strength,
@@ -49,6 +49,8 @@ export default function punch({
     category: body.attr.category,
     player: body.attr.player,
     position: body.position,
+    initial: strength / 2,
+    ratio: strength / 14,
   });
   // eslint-disable-next-line no-param-reassign
   body.attr.punchGage = 0;

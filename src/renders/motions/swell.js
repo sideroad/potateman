@@ -15,10 +15,12 @@ export default function shrink({
   category,
   position,
   player,
+  ratio = 1,
+  initial = 1,
 }) {
   const { x = 0, y = 0 } = position;
 
-  const motion = Bodies.circle(x, y, 1, {
+  const motion = Bodies.circle(x, y, initial, {
     render,
     density: 0.025,
     collisionFilter: {
@@ -32,7 +34,7 @@ export default function shrink({
     motion,
   ]);
   motion.attr = {
-    strength: 1,
+    strength: initial,
     type,
     player,
   };
@@ -40,7 +42,7 @@ export default function shrink({
     Body.setVelocity(motion, velocity);
     const scale = motion.attr.strength / motion.circleRadius;
     Body.scale(motion, scale, scale);
-    motion.attr.strength += 1;
+    motion.attr.strength += ratio;
     if (motion.attr.strength >= strength) {
       World.remove(engine.world, motion);
       Events.off(engine, 'beforeUpdate', tick);

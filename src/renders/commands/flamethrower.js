@@ -16,7 +16,7 @@ export default function flamethrowerFn({
       engine,
       body,
       strength: 18,
-      type: 'shockWave',
+      type: 'flame',
       render: {
         strokeStyle: '#ffffff',
         fillStyle: body.attr.flamethrowers % 2 === 0 ? '#FB3C02' : '#EE7800',

@@ -14,7 +14,7 @@ const shockWaveRender = {
 export default function sink({ engine, body, sprite }) {
   sprite.setState('guard');
   // eslint-disable-next-line no-param-reassign
-  body.attr.punchGage += 1;
+  body.attr.punchGage += 0.75;
 
   const strength = getPunchStrength(body.attr);
   if (!body.attr.sinkMotion) {

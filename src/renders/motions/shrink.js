@@ -15,6 +15,7 @@ export default function shrink({
   category,
   position,
   player,
+  ratio = 1,
 }) {
   const { x = 0, y = 0 } = position;
 
@@ -24,7 +25,7 @@ export default function shrink({
     collisionFilter: {
       category: COLLISION.ATTACK,
       // eslint-disable-next-line no-bitwise
-      mask: (COLLISION.POTATEMANS - category) | COLLISION.ITEM,
+      mask: (COLLISION.POTATEMANS - category) | COLLISION.ITEM | COLLISION.ATTACK,
     },
     velocity,
   });
@@ -40,7 +41,7 @@ export default function shrink({
     Body.setVelocity(motion, velocity);
     const scale = motion.attr.strength / strength;
     Body.scale(motion, scale, scale);
-    motion.attr.strength -= 1;
+    motion.attr.strength -= ratio;
     if (motion.attr.strength <= 0) {
       World.remove(engine.world, motion);
       Events.off(engine, 'beforeUpdate', tick);

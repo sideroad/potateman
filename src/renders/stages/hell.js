@@ -16,6 +16,7 @@ export default function hellFn({
     textures: {
       ground: '/images/hell-ground.png',
       wall: '/images/hell-wall.png',
+      lava: '/images/hell-lava.png',
     },
     restitution: 0,
     friction: 15,

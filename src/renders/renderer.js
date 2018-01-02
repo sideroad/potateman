@@ -210,7 +210,7 @@ export default function (act) {
     player.dead = true;
     postScore({
       fbid: player.fbid,
-      score: data.score,
+      score: window.training ? 0 : data.score,
       image: player.image,
     });
     destroy({ engine, body: player.body });
@@ -232,7 +232,7 @@ export default function (act) {
         fbid: (players[winner] || {}).fbid,
         name: (players[winner] || {}).name,
         image: (players[winner] || {}).image,
-        score: Math.ceil((players[winner] || {
+        score: window.training ? 0 : Math.ceil((players[winner] || {
           body: {
             attr: {
               score: 0,
@@ -249,7 +249,7 @@ export default function (act) {
           act.dead({
             act: 'dead',
             player: _player.body.attr.player,
-            score: Math.ceil(_player.body.attr.score),
+            score: window.training ? 0 : Math.ceil(_player.body.attr.score),
           }));
       }
     }

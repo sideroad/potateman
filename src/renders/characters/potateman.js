@@ -12,10 +12,11 @@ import flamethrower from '../commands/flamethrower';
 
 export function getPunchStrength({ punchGage, power }) {
   const punchStrength = (punchGage * power) / 100;
+  const maxStrength = (power / 100) * 25;
   // eslint-disable-next-line no-nested-ternary
-  const strength = punchStrength < 8 ? 8 :
+  const strength = punchStrength < 15 ? 15 :
   // eslint-disable-next-line indent
-                   punchStrength > 25 ? 25 : punchStrength;
+                   punchStrength > maxStrength ? maxStrength : punchStrength;
   return strength;
 }
 
@@ -235,10 +236,10 @@ export default function ({
     if (giant > 0) {
       potateman.attr.giant -= 1;
       if (potateman.attr.giant === 0) {
-        Body.scale(potateman, 0.25, 0.25);
+        Body.scale(potateman, 0.5, 0.5);
         potateman.render.sprite.xScale = 0.75;
         potateman.render.sprite.yScale = 0.75;
-        potateman.attr.power /= 3;
+        potateman.attr.power /= 2;
       }
     }
 

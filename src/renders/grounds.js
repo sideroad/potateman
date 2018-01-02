@@ -82,7 +82,7 @@ export default function ({ engine, size }) {
     const groundWidth = amount * cellSize;
     const xx = x - (groundWidth / 2);
     const yy = y;
-    spriteOptions.render.sprite.texture = textures.ground;
+    spriteOptions.render.sprite.texture = lava ? textures.lava : textures.ground;
     const options = tunnel ? groundOptions : wallOptions;
     const ground = Bodies.rectangle(x, y, groundWidth, cellSize * thick, options);
     ground.attr = lava ?
@@ -109,7 +109,7 @@ export default function ({ engine, size }) {
     const groundHeight = amount * cellSize;
     const xx = x;
     const yy = y - (groundHeight / 2);
-    spriteOptions.render.sprite.texture = textures.wall;
+    spriteOptions.render.sprite.texture = lava ? textures.lava : textures.wall;
     const wall = Bodies.rectangle(x, y, cellSize * thick, groundHeight, wallOptions);
     wall.attr = lava ?
       {

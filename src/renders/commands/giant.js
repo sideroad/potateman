@@ -8,17 +8,17 @@ import MAGIC from '../magic';
 
 export default function giantFn({ engine, body, size }) {
   if (body.render.sprite.xScale === 0.75) {
-    Body.scale(body, 4, 4);
-    body.render.sprite.xScale = 3;
-    body.render.sprite.yScale = 3;
-    body.attr.power *= 3;
+    Body.scale(body, 2, 2);
+    body.render.sprite.xScale = 1.5;
+    body.render.sprite.yScale = 1.5;
+    body.attr.power *= 2;
   }
   body.attr.magic += MAGIC.thunder.min;
   thunder({
     engine,
     body,
     size,
-    ratio: 0.5,
+    ratio: 0.25,
   });
-  body.attr.giant += 350;
+  body.attr.giant += 400;
 }

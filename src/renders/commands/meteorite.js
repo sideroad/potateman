@@ -42,12 +42,12 @@ export default function meteorite({
     collisionFilter: {
       category: COLLISION.ATTACK,
       // eslint-disable-next-line no-bitwise
-      mask: COLLISION.POTATEMANS - category,
+      mask: (COLLISION.POTATEMANS - category) | COLLISION.ATTACK,
     },
   });
   const velocity = {
     x: sprite.direction === 'left' ? -30 : 30,
-    y: -3,
+    y: -3.5,
   };
   Body.setVelocity(meteoriteMotion, velocity);
   Body.setAngularVelocity(meteoriteMotion, sprite.direction === 'left' ? -0.4 : 0.4);
