@@ -60,13 +60,23 @@ const adjuster = {
   damage: {
     flame: 1,
     shockWave: 1.25,
+    lava: 1,
     meteorite: 1,
     thunder: 0.5,
     volcano: 0.5,
   },
+  downable: {
+    flame: true,
+    shockWave: true,
+    lava: true,
+    meteorite: false,
+    thunder: false,
+    volcano: true,
+  },
   magic: {
     flame: 1,
     shockWave: 1,
+    lava: 1,
     meteorite: 0.6,
     thunder: 2,
     volcano: 0.05,
@@ -74,20 +84,23 @@ const adjuster = {
   score: {
     flame: 0.25,
     shockWave: 0.5,
+    lava: 0,
     meteorite: 0.4,
     thunder: 2,
     volcano: 0.15,
   },
   velocity: {
     flame: 0.1,
-    shockWave: 0.4,
-    meteorite: 0.35,
-    thunder: 1.25,
+    shockWave: 0.6,
+    lava: 0.5,
+    meteorite: 0.45,
+    thunder: 3,
     volcano: 0.05,
   },
   minVelocity: {
     flame: 5,
     shockWave: 10,
+    lava: 15,
     meteorite: 10,
     thunder: 10,
     volcano: 5,
@@ -96,17 +109,27 @@ const adjuster = {
     attacker: {
       flame: 0,
       shockWave: 10,
+      lava: 0,
       meteorite: 10,
       thunder: 10,
       volcano: 10,
     },
     attacked: {
       flame: 10,
-      shockWave: 15,
-      meteorite: 15,
-      thunder: 5,
+      shockWave: 20,
+      lava: 0,
+      meteorite: 20,
+      thunder: 20,
       volcano: 10,
     },
+  },
+  invincible: {
+    flame: 1,
+    shockWave: 0,
+    lava: 0,
+    meteorite: 0,
+    thunder: 5,
+    volcano: 0,
   },
 };
 
@@ -122,7 +145,7 @@ export function check({
       .values(players)
       .map(player => player.body);
     const collisionConfirm = (bodyA, bodyB) => {
-      if (bodies.includes(bodyA)) {
+      if (bodies.includes(bodyA) && !bodyA.attr.invincible) {
         // when potateman collision with some others, reset fly count
         if (
           grounds.find(ground => ground === bodyB) &&
@@ -138,6 +161,7 @@ export function check({
         if (
           type === 'flame' ||
           type === 'shockWave' ||
+          type === 'lava' ||
           type === 'meteorite' ||
           type === 'thunder' ||
           type === 'volcano'
@@ -164,19 +188,29 @@ export function check({
             velocity -= ((bodyA.attr.guardGage / 100) * velocity);
           } else {
             bodyA.attr.stunned = adjuster.stunned.attacked[type];
+            bodyA.attr.invincible = adjuster.invincible[type];
           }
           velocity /= (bodyA.render.sprite.xScale / 0.75) * (bodyA.render.sprite.yScale / 0.75);
           if (Math.abs(velocity) < adjuster.minVelocity[type]) {
             velocity = adjuster.minVelocity[type] * (velocity > 0 ? 1 : -1);
           }
+          const downable = adjuster.downable[type];
           Body.setVelocity(bodyA, {
             x: (
               bodyB.velocity.x > 0 ? velocity :
               bodyB.velocity.x < 0 ? velocity * -1 :
               bodyA.position.x > bodyB.position.x ? velocity :
-              velocity * -1
+              bodyA.position.x < bodyB.position.x ? velocity * -1 :
+              0
             ) + bodyA.velocity.x,
-            y: (velocity * (type === 'shockWave' && bodyB.velocity.y ? 0.25 : -1)) + bodyA.velocity.y,
+            y: (
+              !downable ? velocity * -1 :
+              bodyB.velocity.y > 0 && bodyB.velocity.x === 0 ? velocity :
+              bodyB.velocity.y > 0 ? velocity * 0.5 :
+              bodyB.velocity.y < 0 ? velocity * -1 :
+              bodyA.position.y > bodyB.position.y ? velocity * 0.5 :
+              velocity * -0.5
+            ) + bodyA.velocity.y,
           });
           // eslint-disable-next-line no-console
           console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} type: ${type}`);

@@ -22,7 +22,7 @@ export default function itemsFn({
     if (count % 300 === 0) {
       const dice = random(0, 100);
       const x = random(size.width / 4, (size.width / 4) * 3);
-      if (dice < 40) {
+      if (dice < 30) {
         const rescueBox = Bodies.rectangle(x, 0, 20, 20, {
           collisionFilter,
           restitution: 1,

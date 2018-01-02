@@ -12,7 +12,7 @@ import flamethrower from '../commands/flamethrower';
 
 export function getPunchStrength({ punchGage, power }) {
   const punchStrength = (punchGage * power) / 100;
-  const maxStrength = (power / 100) * 25;
+  const maxStrength = (power / 100) * 27;
   // eslint-disable-next-line no-nested-ternary
   const strength = punchStrength < 15 ? 15 :
   // eslint-disable-next-line indent
@@ -244,7 +244,7 @@ export default function ({
     }
 
     // damage
-    if (count > 10) {
+    if (count > 15) {
       const particle = Bodies.circle(x, y, (potateman.attr.damage / 20) + 1, {
         frictionAir: 0,
         force: {

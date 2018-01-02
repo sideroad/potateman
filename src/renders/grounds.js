@@ -87,7 +87,7 @@ export default function ({ engine, size }) {
     const ground = Bodies.rectangle(x, y, groundWidth, cellSize * thick, options);
     ground.attr = lava ?
       {
-        type: 'shockWave',
+        type: 'lava',
         strength: 20,
       } : {
         type: 'ground',
@@ -113,7 +113,7 @@ export default function ({ engine, size }) {
     const wall = Bodies.rectangle(x, y, cellSize * thick, groundHeight, wallOptions);
     wall.attr = lava ?
       {
-        type: 'shockWave',
+        type: 'lava',
         strength: 20,
       } : {
         type: 'ground',

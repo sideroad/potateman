@@ -68,7 +68,7 @@ export default function candyFn({
       });
 
       if (count % 1500 === 0) {
-        _.times(width / 50, () => {
+        _.times(width / 100, () => {
           const cream = Bodies.rectangle(random(0, width), 0, 20, 10, {
             collisionFilter: {
               category: COLLISION.ITEM,

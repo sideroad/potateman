@@ -325,6 +325,10 @@ export default function ({
         if (body.attr.stunned) {
           body.attr.stunned -= 1;
         }
+
+        if (body.attr.invincible) {
+          body.attr.invincible -= 1;
+        }
         Body.setVelocity(body, {
           x,
           y,
