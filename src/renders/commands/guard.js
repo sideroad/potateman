@@ -7,7 +7,7 @@ export default function guard({ engine, body, sprite }) {
   sprite.setState('guard');
   if (body.attr.guardGage > 1) {
     // eslint-disable-next-line no-param-reassign
-    body.attr.guardGage -= 1;
+    body.attr.guardGage -= 0.5;
   }
   // eslint-disable-next-line no-param-reassign
   body.attr.guarding = true;

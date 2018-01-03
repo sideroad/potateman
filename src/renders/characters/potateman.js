@@ -162,7 +162,7 @@ export default function ({
     });
     const assignedMagic = Object.keys(MAGIC).filter(magic =>
       potateman.attr.magic >= MAGIC[magic].min).reverse()[0];
-    indicator.render.strokeStyle = (MAGIC[assignedMagic] || { color: '#FFFFFF' }).color;
+    indicator.render.strokeStyle = MAGIC[assignedMagic] ? MAGIC[assignedMagic].color : '#FFFFFF';
 
     // outsider
     const maxX = render.bounds.max.x;

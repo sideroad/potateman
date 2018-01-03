@@ -242,6 +242,7 @@ export default function ({
           !body.attr.flamethrowers
         ) {
           y = -3;
+          body.attr.guardGage -= 0.5;
         }
 
         // thunder

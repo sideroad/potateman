@@ -194,6 +194,9 @@ export function check({
           if (Math.abs(velocity) < adjuster.minVelocity[type]) {
             velocity = adjuster.minVelocity[type] * (velocity > 0 ? 1 : -1);
           }
+          if (velocity > 100) {
+            velocity = 100;
+          }
           const downable = adjuster.downable[type];
           Body.setVelocity(bodyA, {
             x:
