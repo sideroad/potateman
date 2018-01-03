@@ -100,7 +100,7 @@ export default function mossFn({
         engine.world.bodies
           .forEach((body) => {
             if (body.attr && body.attr.type === 'potateman') {
-              const increase = (count / 1500) * 25;
+              const increase = (count / 1500) * 10;
               // eslint-disable-next-line no-param-reassign
               body.attr.magic += increase;
               // eslint-disable-next-line no-param-reassign

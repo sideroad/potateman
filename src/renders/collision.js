@@ -90,12 +90,12 @@ const adjuster = {
     volcano: 0.15,
   },
   velocity: {
-    flame: 0.1,
-    shockWave: 0.6,
-    lava: 0.5,
+    flame: 0.3,
+    shockWave: 0.7,
+    lava: 0.25,
     meteorite: 0.45,
-    thunder: 3,
-    volcano: 0.05,
+    thunder: 3.5,
+    volcano: 0.3,
   },
   minVelocity: {
     flame: 5,
@@ -108,18 +108,18 @@ const adjuster = {
   stunned: {
     attacker: {
       flame: 0,
-      shockWave: 10,
-      lava: 0,
-      meteorite: 10,
-      thunder: 10,
-      volcano: 10,
-    },
-    attacked: {
-      flame: 10,
-      shockWave: 20,
+      shockWave: 15,
       lava: 0,
       meteorite: 20,
       thunder: 20,
+      volcano: 20,
+    },
+    attacked: {
+      flame: 10,
+      shockWave: 25,
+      lava: 0,
+      meteorite: 25,
+      thunder: 25,
       volcano: 10,
     },
   },
@@ -196,21 +196,19 @@ export function check({
           }
           const downable = adjuster.downable[type];
           Body.setVelocity(bodyA, {
-            x: (
-              bodyB.velocity.x > 0 ? velocity :
-              bodyB.velocity.x < 0 ? velocity * -1 :
-              bodyA.position.x > bodyB.position.x ? velocity :
-              bodyA.position.x < bodyB.position.x ? velocity * -1 :
-              0
-            ) + bodyA.velocity.x,
-            y: (
-              !downable ? velocity * -1 :
-              bodyB.velocity.y > 0 && bodyB.velocity.x === 0 ? velocity :
-              bodyB.velocity.y > 0 ? velocity * 0.5 :
-              bodyB.velocity.y < 0 ? velocity * -1 :
-              bodyA.position.y > bodyB.position.y ? velocity * 0.5 :
-              velocity * -0.5
-            ) + bodyA.velocity.y,
+            x:
+            bodyB.velocity.x > 0 ? velocity :
+            bodyB.velocity.x < 0 ? velocity * -1 :
+            bodyA.position.x > bodyB.position.x ? velocity :
+            bodyA.position.x < bodyB.position.x ? velocity * -1 :
+            0,
+            y:
+            !downable ? velocity * -1 :
+            bodyB.velocity.y > 0 && bodyB.velocity.x === 0 ? velocity :
+            bodyB.velocity.y > 0 ? velocity * 0.5 :
+            bodyB.velocity.y < 0 ? velocity * -1 :
+            bodyA.position.y > bodyB.position.y ? velocity * 0.5 :
+            velocity * -0.5,
           });
           // eslint-disable-next-line no-console
           console.log(`strength: ${bodyB.attr.strength} velocity:${velocity} damage:${bodyA.attr.damage} type: ${type}`);
