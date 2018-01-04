@@ -12,6 +12,7 @@ import _ from 'lodash';
 import Stats from 'stats.js';
 import attendee from '../dom/attendee';
 import start from '../dom/start';
+import selectStage from '../dom/select-stage';
 import win from '../dom/win';
 import grounds from './grounds';
 import potateman, { destroy } from './characters/potateman';
@@ -128,75 +129,82 @@ export default function (act) {
   let started = false;
   // eslint-disable-next-line no-param-reassign
   act.start = ({ stage }) => {
-    const canvas = document.getElementsByTagName('canvas')[document.getElementsByTagName('canvas').length - 1];
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    started = true;
-    fetch(`/api/stages/${stage}`, {
-      method: 'DELETE',
-    });
-    act.send({
-      act: 'start',
-    });
-    const {
-      grounds: groundsBody,
-      friction,
-      restitution,
-    } = grounds({ engine, size });
-    Bounds.shift(render.bounds, {
-      x: 0,
-      y: 0,
-    });
-    render.bounds = {
-      min: {
-        x: 0,
-        y: 0,
-      },
-      max: {
-        x: size.width,
-        y: size.height,
-      },
-    };
-    stack.forEach((data, index) => {
-      players[data.player] = potateman({
-        act,
-        engine,
-        size,
-        index,
-        fbid: data.fbid,
-        player: data.player,
-        name: data.name,
-        image: data.image,
-        cpu: data.cpu,
-        render,
+    selectStage((selected) => {
+      const canvas = document.getElementsByTagName('canvas')[document.getElementsByTagName('canvas').length - 1];
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      started = true;
+      fetch(`/api/stages/${stage}`, {
+        method: 'DELETE',
+      });
+      act.send({
+        act: 'start',
+      });
+      const {
+        grounds: groundsBody,
         friction,
         restitution,
-      });
-    });
-    act.stream(canvas);
-    start(() => {
-      Events.on(engine, 'beforeUpdate', () => {
-        stats.update();
-      });
-      interaction({
-        act,
-        engine,
-        players,
-        ghosts,
-        size,
-        grounds: groundsBody,
-      });
-      cpu({ engine, players, size });
-      boundary({
+      } = grounds({
         engine,
         size,
-        act,
-        players,
-        render,
+        type: 'fight',
+        selected: selected.stage,
       });
-      if (window.config.hasItem) {
-        items({ engine, size });
-      }
+      Bounds.shift(render.bounds, {
+        x: 0,
+        y: 0,
+      });
+      render.bounds = {
+        min: {
+          x: 0,
+          y: 0,
+        },
+        max: {
+          x: size.width,
+          y: size.height,
+        },
+      };
+      stack.forEach((data, index) => {
+        players[data.player] = potateman({
+          act,
+          engine,
+          size,
+          index,
+          fbid: data.fbid,
+          player: data.player,
+          name: data.name,
+          image: data.image,
+          cpu: data.cpu,
+          render,
+          friction,
+          restitution,
+        });
+      });
+      act.stream(canvas);
+      start(() => {
+        Events.on(engine, 'beforeUpdate', () => {
+          stats.update();
+        });
+        interaction({
+          act,
+          engine,
+          players,
+          ghosts,
+          size,
+          grounds: groundsBody,
+        });
+        cpu({ engine, players, size });
+        boundary({
+          engine,
+          size,
+          act,
+          players,
+          render,
+        });
+        if (window.config.hasItem) {
+          items({ engine, size });
+        }
+      });
     });
   };
   // eslint-disable-next-line no-param-reassign

@@ -393,7 +393,8 @@ body {
 
 #loading,
 #logins,
-#join{
+#join,
+#select-stage{
   display: none;
   position: absolute;
   top: 0;
@@ -520,6 +521,41 @@ body {
 }
 #c:before {
   content: 'C';
+}
+
+#select-stage {
+  background-color: rgba(0, 0, 0, 0.75);
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  align-content: center;
+}
+
+.stage {
+  width: 240px;
+  height: 150px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-sizing: border-box;
+  border: 5px solid #38a1db;
+  margin-left: -5px;
+  margin-top: -5px;
+}
+
+.random {
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5em;
+}
+
+.stage:hover{
+  border-color: #EC6D71;
+  opacity: 0.8;
 }
 
 @media (max-width: 768px) {

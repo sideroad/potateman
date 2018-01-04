@@ -4,7 +4,6 @@ import {
   Composites,
   Events,
 } from 'matter-js';
-import queryString from 'query-string';
 import COLLISION from './collision';
 import random from '../helpers/random';
 import brick from './stages/brick';
@@ -18,20 +17,25 @@ import space from './stages/space';
 import volcano from './stages/volcano';
 
 const stages = {
-  brick,
-  candy,
-  earth,
-  ice,
-  moss,
-  hell,
-  sink,
-  space,
-  volcano,
+  fight: {
+    brick,
+    candy,
+    earth,
+    ice,
+    moss,
+    hell,
+    sink,
+    space,
+    volcano,
+  },
 };
 
-const params = queryString.parse(window.location.search);
-
-export default function ({ engine, size }) {
+export default function ({
+  engine,
+  size,
+  type,
+  selected,
+}) {
   const { width, height } = size;
   const cellSize = 20;
   const adjust = cellSize / 2;
@@ -129,10 +133,10 @@ export default function ({ engine, size }) {
   // eslint-disable-next-line no-param-reassign
   engine.world.gravity.y = 1;
 
-  const stagesKey = Object.keys(stages);
+  const stagesKey = Object.keys(stages[type]);
   const stageIndex = random(0, stagesKey.length - 1);
-  const stageKey = params.stage || stagesKey[stageIndex];
-  const stage = stages[stageKey]({
+  const stageKey = selected || stagesKey[stageIndex];
+  const stage = stages[type][stageKey]({
     width,
     height,
     cellSize,
