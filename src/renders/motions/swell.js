@@ -26,7 +26,7 @@ export default function shrink({
     collisionFilter: {
       category: COLLISION.ATTACK,
       // eslint-disable-next-line no-bitwise
-      mask: (COLLISION.POTATEMANS - category) | COLLISION.ITEM,
+      mask: (COLLISION.POTATEMANS - category) | COLLISION.ITEM | COLLISION.ATTACK,
     },
     velocity,
   });

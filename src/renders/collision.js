@@ -58,7 +58,7 @@ export default COLLISION;
 
 const adjuster = {
   damage: {
-    flame: 1,
+    flame: 1.5,
     shockWave: 1.25,
     lava: 1,
     meteorite: 1,

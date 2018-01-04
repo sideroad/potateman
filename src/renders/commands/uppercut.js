@@ -4,6 +4,15 @@ import {
 import MAGIC from '../magic';
 import shrink from '../motions/shrink';
 
+function getUppercutStrength({ magic }) {
+  const maticStrength = magic / 2;
+  // eslint-disable-next-line no-nested-ternary
+  const strength = maticStrength < 20 ? 20 :
+  // eslint-disable-next-line indent
+                   maticStrength > 300 ? 300 : maticStrength;
+  return strength;
+}
+
 export default function uppercut({
   engine,
   body,
@@ -17,7 +26,7 @@ export default function uppercut({
   // eslint-disable-next-line no-nested-ternary
   const speed = 15;
   // eslint-disable-next-line no-param-reassign
-  body.attr.magic -= 25;
+  body.attr.magic = 1;
 
   let count = 0;
   Events.on(engine, 'beforeUpdate', () => {
@@ -29,7 +38,7 @@ export default function uppercut({
       shrink({
         engine,
         body,
-        strength: 20,
+        strength: getUppercutStrength({ magic: body.attr.magic }),
         type: 'shockWave',
         render: {
           strokeStyle: '#ffffff',

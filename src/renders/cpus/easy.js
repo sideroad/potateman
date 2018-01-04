@@ -153,8 +153,8 @@ export default function easyFn({
       if (
         (
           target.distance.xabs < 5 &&
-          target.distance.y > -100 &&
-          target.distance.y < 0 &&
+          target.distance.y < 200 &&
+          target.distance.y > 0 &&
           player.body.attr.magic > MAGIC.uppercut.min &&
           !player.body.attr.flamethrowers &&
           !target.attr.item

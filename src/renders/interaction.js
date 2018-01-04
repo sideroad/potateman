@@ -218,6 +218,7 @@ export default function ({
         // meteorite
         if (
           direction.c &&
+          !body.attr.stunned &&
           (
             direction.left ||
             direction.right
@@ -239,7 +240,8 @@ export default function ({
           direction.b &&
           body.attr.flying &&
           body.attr.guardGage > 1 &&
-          !body.attr.flamethrowers
+          !body.attr.flamethrowers &&
+          !body.attr.stunned
         ) {
           y = -3;
           body.attr.guardGage -= 0.5;
@@ -250,7 +252,8 @@ export default function ({
           direction.c &&
           direction.down &&
           body.attr.magic > MAGIC.thunder.min &&
-          !body.attr.flamethrowers
+          !body.attr.flamethrowers &&
+          !body.attr.stunned
         ) {
           thunder({
             engine,
@@ -271,7 +274,8 @@ export default function ({
           direction.c &&
           direction.up &&
           body.attr.magic > MAGIC.uppercut.min &&
-          !body.attr.flamethrowers
+          !body.attr.flamethrowers &&
+          !body.attr.stunned
         ) {
           uppercut({
             engine,
@@ -292,7 +296,8 @@ export default function ({
           !direction.left &&
           !direction.right &&
           body.attr.magic > MAGIC.volcano.min &&
-          !body.attr.flamethrowers
+          !body.attr.flamethrowers &&
+          !body.attr.stunned
         ) {
           volcano({
             engine,
