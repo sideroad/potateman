@@ -39,7 +39,7 @@ export default function uppercut({
         engine,
         body,
         strength: getUppercutStrength({ magic: body.attr.magic }),
-        type: 'shockWave',
+        type: 'flame',
         render: {
           strokeStyle: '#ffffff',
           fillStyle: count % 4 === 0 ? '#e9546b' : '#EB6238',
