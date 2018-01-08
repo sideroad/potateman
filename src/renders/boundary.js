@@ -117,6 +117,7 @@ export default function ({
         x: half.width,
         y: half.height,
       };
+      let focusPlayer;
       Object
         .values(players)
         .forEach((player) => {
@@ -133,13 +134,39 @@ export default function ({
           if (y > rightBottom.y && y < size.height) {
             rightBottom.y = y;
           }
+          if (player.focus) {
+            focusPlayer = player;
+          }
         });
-      const center = {
+      const center = focusPlayer ? {
+        x: focusPlayer.body.position.x,
+        y: focusPlayer.body.position.y,
+      } : {
         x: ((rightBottom.x - leftTop.x) / 2) + leftTop.x,
         y: ((rightBottom.y - leftTop.y) / 2) + leftTop.y,
       };
-      const width = rightBottom.x - leftTop.x;
-      const height = rightBottom.y - leftTop.y;
+      let width;
+      if (
+        focusPlayer &&
+        Math.abs(rightBottom.x - focusPlayer.x) >= Math.abs(leftTop.x - focusPlayer.x)
+      ) {
+        width = Math.abs(rightBottom.x - focusPlayer.x) * 2;
+      } else if (focusPlayer) {
+        width = Math.abs(leftTop.x - focusPlayer.x) * 2;
+      } else {
+        width = rightBottom.x - leftTop.x;
+      }
+      let height;
+      if (
+        focusPlayer &&
+        Math.abs(rightBottom.y - focusPlayer.y) >= Math.abs(leftTop.y - focusPlayer.y)
+      ) {
+        height = Math.abs(rightBottom.y - focusPlayer.y) * 2;
+      } else if (focusPlayer) {
+        height = Math.abs(leftTop.y - focusPlayer.y) * 2;
+      } else {
+        height = rightBottom.y - leftTop.y;
+      }
       const bounds = {
         width: width < min.width ? min.width : width > max.width ? max.width : width,
         height: height < min.height ? min.height : height > max.height ? max.height : height,

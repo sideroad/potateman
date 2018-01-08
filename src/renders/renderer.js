@@ -175,6 +175,7 @@ export default function (act) {
           name: data.name,
           image: data.image,
           cpu: data.cpu,
+          focus: data.focus,
           render,
           friction,
           restitution,

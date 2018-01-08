@@ -111,6 +111,7 @@ auth('', (user) => {
         fbid: user.id,
         name: user.name,
         image: user.image,
+        focus: true,
       });
       window.addEventListener('orientationchange', () => {
         joypad.destroy();
