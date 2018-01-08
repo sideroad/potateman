@@ -1,6 +1,5 @@
 let binded = false;
 export default function selectStageFn(callback) {
-  let selected = false;
   document.getElementById('winner').style.display = 'none';
   if (document.getElementById('reception')) {
     document.getElementById('reception').remove();
@@ -9,10 +8,6 @@ export default function selectStageFn(callback) {
   selectStageElem.style.display = 'flex';
   const stageElems = document.querySelectorAll('.stage');
   const listener = (event) => {
-    if (selected) {
-      return;
-    }
-    selected = true;
     callback({ stage: event.target.getAttribute('id') });
     selectStageElem.style.display = 'none';
     binded = true;
@@ -24,12 +19,6 @@ export default function selectStageFn(callback) {
     });
   }
   if (window.config.autoRestart) {
-    setTimeout(() => {
-      listener({
-        target: {
-          getAttribute: () => '',
-        },
-      });
-    }, 3000);
+    callback({ stage: '' });
   }
 }
