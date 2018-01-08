@@ -9,11 +9,9 @@ import MAGIC from '../magic';
 import random from '../../helpers/random';
 
 const getVolcanoStrength = ({ magic }) => {
-  const maticStrength = magic / 4;
+  const magicStrength = magic / 4;
   // eslint-disable-next-line no-nested-ternary
-  const strength = maticStrength < 1 ? 1 :
-  // eslint-disable-next-line indent
-                   maticStrength > 200 ? 200 : maticStrength;
+  const strength = magicStrength > 200 ? 200 : magicStrength;
   return strength;
 };
 
@@ -29,7 +27,7 @@ export default function ({
   }
   const volcanos = [];
   const strength = getVolcanoStrength(body.attr);
-  _.times(size.width / 90, () => {
+  _.times(size.width / (90 - (strength / 5)), () => {
     const x = sprite.direction === 'left' ? random(size.width / 2, size.width) : random(0, size.width / 2);
     const volcanoMotion = Bodies.rectangle(x, size.height, 20, 20, {
       friction: 0,

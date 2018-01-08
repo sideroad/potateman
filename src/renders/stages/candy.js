@@ -15,11 +15,11 @@ export default function candyFn({
   engine,
 }) {
   return {
-    background: '#fdb8bd',
+    background: '#ffe0e3',
     textures: {
       ground: '/images/candy-ground.png',
     },
-    restitution: 1,
+    restitution: 0,
     friction: 15,
     shape: textures =>
       [
