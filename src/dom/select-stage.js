@@ -7,9 +7,15 @@ export default function selectStageFn(callback) {
   const selectStageElem = document.getElementById('select-stage');
   selectStageElem.style.display = 'flex';
   const stageElems = document.querySelectorAll('.stage');
-  const listener = (event) => {
-    callback({ stage: event.target.getAttribute('id') });
+  if (window.config.autoRestart) {
     selectStageElem.style.display = 'none';
+    callback({ stage: '' });
+    binded = true;
+    return;
+  }
+  const listener = (event) => {
+    selectStageElem.style.display = 'none';
+    callback({ stage: event.target.getAttribute('id') });
     binded = true;
   };
   if (!binded) {
@@ -17,8 +23,5 @@ export default function selectStageFn(callback) {
       elem.addEventListener('click', listener);
       elem.addEventListener('touchstart', listener);
     });
-  }
-  if (window.config.autoRestart) {
-    callback({ stage: '' });
   }
 }

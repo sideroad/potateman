@@ -29,6 +29,7 @@ export default function ({
   player,
   cpu,
   fbid,
+  focus,
   render,
   friction,
   restitution,
@@ -332,6 +333,7 @@ export default function ({
     name,
     image,
     cpu,
+    focus,
     direction: {},
   };
 }
