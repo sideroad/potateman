@@ -578,4 +578,7 @@ body {
   #join {
     display: block;
   }
+  #find {
+    display: none;
+  }
 }
