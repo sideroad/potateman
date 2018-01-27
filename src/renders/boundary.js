@@ -148,22 +148,22 @@ export default function ({
       let width;
       if (
         focusPlayer &&
-        Math.abs(rightBottom.x - focusPlayer.x) >= Math.abs(leftTop.x - focusPlayer.x)
+        Math.abs(rightBottom.x - center.x) >= Math.abs(leftTop.x - center.x)
       ) {
-        width = Math.abs(rightBottom.x - focusPlayer.x) * 2;
+        width = Math.abs(rightBottom.x - center.x) / 2;
       } else if (focusPlayer) {
-        width = Math.abs(leftTop.x - focusPlayer.x) * 2;
+        width = Math.abs(leftTop.x - center.x) / 2;
       } else {
         width = rightBottom.x - leftTop.x;
       }
       let height;
       if (
         focusPlayer &&
-        Math.abs(rightBottom.y - focusPlayer.y) >= Math.abs(leftTop.y - focusPlayer.y)
+        Math.abs(rightBottom.y - center.y) >= Math.abs(leftTop.y - center.y)
       ) {
-        height = Math.abs(rightBottom.y - focusPlayer.y) * 2;
+        height = Math.abs(rightBottom.y - center.y) / 2;
       } else if (focusPlayer) {
-        height = Math.abs(leftTop.y - focusPlayer.y) * 2;
+        height = Math.abs(leftTop.y - center.y) / 2;
       } else {
         height = rightBottom.y - leftTop.y;
       }
@@ -177,15 +177,16 @@ export default function ({
         width: (bounds.width - prev.width) / 2,
         height: (bounds.height - prev.height) / 2,
       };
+      const maxChangeSpeed = focusPlayer ? boundaryLimit * 2 : boundaryLimit;
       const rounded = {
-        x: calc.x > boundaryLimit ? prev.x + boundaryLimit :
-        calc.x < -boundaryLimit ? prev.x - boundaryLimit : center.x,
-        y: calc.y > boundaryLimit ? prev.y + boundaryLimit :
-        calc.y < -boundaryLimit ? prev.y - boundaryLimit : center.y,
-        width: calc.width > boundaryLimit ? prev.width + boundaryLimit :
-        calc.width < -boundaryLimit ? prev.width - boundaryLimit : bounds.width,
-        height: calc.height > boundaryLimit ? prev.height + boundaryLimit :
-        calc.height < -boundaryLimit ? prev.height - boundaryLimit : bounds.height,
+        x: calc.x > maxChangeSpeed ? prev.x + maxChangeSpeed :
+        calc.x < -maxChangeSpeed ? prev.x - maxChangeSpeed : center.x,
+        y: calc.y > maxChangeSpeed ? prev.y + maxChangeSpeed :
+        calc.y < -maxChangeSpeed ? prev.y - maxChangeSpeed : center.y,
+        width: calc.width > maxChangeSpeed ? prev.width + maxChangeSpeed :
+        calc.width < -maxChangeSpeed ? prev.width - maxChangeSpeed : bounds.width,
+        height: calc.height > maxChangeSpeed ? prev.height + maxChangeSpeed :
+        calc.height < -maxChangeSpeed ? prev.height - maxChangeSpeed : bounds.height,
       };
       const ratio = size.width / size.height;
 
