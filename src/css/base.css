@@ -581,4 +581,8 @@ body {
   #find {
     display: none;
   }
+  .stage {
+    width: 120px;
+    height: 75px;
+  }
 }
