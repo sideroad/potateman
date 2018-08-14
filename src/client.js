@@ -24,7 +24,7 @@ const initialize = () =>
       // eslint-disable-next-line no-new
       new QRious({
         element: document.getElementById('qr'),
-        value: url,
+        value: data.stage,
       });
       // eslint-disable-next-line no-console
       console.log(url);

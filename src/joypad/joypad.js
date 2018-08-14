@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import jsQR from "jsqr";
 import auth from '../helpers/auth';
 import loading from '../dom/loading';
 import expander from '../dom/expander';
@@ -78,7 +79,7 @@ auth('', (user) => {
         });
         conn.on('error', (msg) => {
           // eslint-disable-next-line no-console
-          console.log(msg);
+          window.alert(msg);
         });
       };
 
