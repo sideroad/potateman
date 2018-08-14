@@ -54,7 +54,9 @@ auth('', (user) => {
         conn = peer.connect(stage, {
           serialization: 'json',
         });
+        window.alert(stage, _player);
         conn.on('open', () => {
+          window.alert('opened');
           conn.send({
             act: 'attend',
             // eslint-disable-next-line
@@ -73,6 +75,7 @@ auth('', (user) => {
           }
         });
         conn.on('data', (data) => {
+          window.alert('data!');
           if (act[data.act]) {
             act[data.act](data);
           }
@@ -93,7 +96,7 @@ auth('', (user) => {
           input(window.prompt('Please read QR code to join'), _player);
         }
       });
-      window.alert('before open')
+      window.alert('before open!')
       peer.on('error', (err) => {
         // eslint-disable-next-line no-console
         window.alert(err);
