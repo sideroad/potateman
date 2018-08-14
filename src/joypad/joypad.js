@@ -37,6 +37,7 @@ auth('', (user) => {
             backgroundImage: `url(${data.image})`,
           });
           window.addEventListener('orientationchange', () => {
+            alert((screen.availHeight || screen.height-30) <= window.innerHeight);
             joypad.destroy();
             joypad.binder(commands => conn.send(commands));
           });
