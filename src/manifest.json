@@ -1,0 +1,13 @@
+{
+  "name": "Potateman - joypad",
+  "short_name": "Potateman - joypad",
+  "start_url": "/joypad/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/images/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
