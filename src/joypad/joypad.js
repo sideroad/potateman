@@ -51,10 +51,10 @@ auth('', (user) => {
       };
 
       const input = (stage, _player) => {
+        window.alert(stage, _player);
         conn = peer.connect(stage, {
           serialization: 'json',
         });
-        window.alert(stage, _player);
         conn.on('open', () => {
           window.alert('opened');
           conn.send({
