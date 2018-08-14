@@ -83,6 +83,7 @@ auth('', (user) => {
       };
 
       peer.on('open', (_player) => {
+        window.alert('opened!');
         const stage = window.location.pathname.match(/\/joypad\/([^/]+)\//)[1];
         if (stage) {
           input(stage, _player);
@@ -91,9 +92,10 @@ auth('', (user) => {
           window.alert('Please read QR code to join');
         }
       });
+      window.alert('before open')
       peer.on('error', (err) => {
         // eslint-disable-next-line no-console
-        console.log(err);
+        window.alert(err);
       });
     });
   })(window.jQuery);
