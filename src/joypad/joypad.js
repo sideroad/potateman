@@ -84,7 +84,7 @@ auth('', (user) => {
 
       peer.on('open', (_player) => {
         window.alert('opened!');
-        const stage = window.location.pathname.match(/\/joypad\/([^/]+)\//)[1];
+        const stage = (window.location.pathname.match(/\/joypad\/([^/]+)\//)||[])[1];
         if (stage) {
           input(stage, _player);
         } else {
