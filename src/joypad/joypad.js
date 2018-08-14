@@ -89,7 +89,7 @@ auth('', (user) => {
           input(stage, _player);
         } else {
           // eslint-disable-next-line
-          window.alert('Please read QR code to join');
+          input(window.prompt('Please read QR code to join'), _player);
         }
       });
       window.alert('before open')
