@@ -1520,7 +1520,6 @@ var util = {
     } catch (e) {
       data = false;
       audioVideo = false;
-			window.alert(1, e);
     }
 
     if (data) {
@@ -1528,7 +1527,6 @@ var util = {
         dc = pc.createDataChannel('_PEERJSTEST');
       } catch (e) {
         data = false;
-				window.alert(2, e);
       }
     }
 
@@ -1538,7 +1536,6 @@ var util = {
         dc.binaryType = 'blob';
         binaryBlob = true;
       } catch (e) {
-				window.alert(3, e);
       }
 
       // Reliable test.
@@ -1549,7 +1546,6 @@ var util = {
         var reliableDC = reliablePC.createDataChannel('_PEERJSRELIABLETEST', {});
         sctp = reliableDC.reliable;
       } catch (e) {
-				window.alert(4, e);
       }
       reliablePC.close();
     }
