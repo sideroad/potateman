@@ -1,3 +1,4 @@
+import jsQR from 'jsqr';
 export default function(cb){
 
     var video = document.createElement("video");
