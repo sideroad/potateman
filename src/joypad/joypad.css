@@ -21,6 +21,7 @@ body {
 }
 
 .joypad,
+.notify,
 #stream {
   position: fixed;
   top: 0;
@@ -30,6 +31,7 @@ body {
   align-items: center;
   width: 100vw;
   height: 100vh;
+  margin: 0;
 }
 
 #dummy {
