@@ -6,6 +6,8 @@ import expander from '../dom/expander';
 import joypad from '../dom/joypad';
 import login from '../dom/login';
 
+window.alert((screen.availHeight || screen.height-30) <= window.innerHeight);
+
 auth('', (user) => {
   const loginsElem = document.getElementById('logins');
   if (loginsElem) {
@@ -38,7 +40,6 @@ auth('', (user) => {
             backgroundImage: `url(${data.image})`,
           });
           window.addEventListener('orientationchange', () => {
-            alert((screen.availHeight || screen.height-30) <= window.innerHeight);
             joypad.destroy();
             joypad.binder(commands => conn.send(commands));
           });
@@ -51,12 +52,10 @@ auth('', (user) => {
       };
 
       const input = (stage, _player) => {
-        window.alert(stage, _player);
         conn = peer.connect(stage, {
           serialization: 'json',
         });
         conn.on('open', () => {
-          window.alert('opened');
           conn.send({
             act: 'attend',
             // eslint-disable-next-line
@@ -75,19 +74,16 @@ auth('', (user) => {
           }
         });
         conn.on('data', (data) => {
-          window.alert('data!');
           if (act[data.act]) {
             act[data.act](data);
           }
         });
         conn.on('error', (msg) => {
           // eslint-disable-next-line no-console
-          window.alert(msg);
         });
       };
 
       peer.on('open', (_player) => {
-        window.alert('opened!');
         const stage = (window.location.pathname.match(/\/joypad\/([^/]+)\//)||[])[1];
         if (stage) {
           input(stage, _player);
@@ -96,10 +92,8 @@ auth('', (user) => {
           input(window.prompt('Please read QR code to join'), _player);
         }
       });
-      window.alert('before open!')
       peer.on('error', (err) => {
         // eslint-disable-next-line no-console
-        window.alert(err);
       });
     });
   })(window.jQuery);
