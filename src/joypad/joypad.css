@@ -126,8 +126,7 @@ body {
 
 
 #loading,
-#logins,
-#expander {
+#logins {
   display: none;
   position: fixed;
   top: 0;
@@ -149,7 +148,7 @@ body {
   top: 0;
   left: 0;
 }
-#expander-icon,
+
 #loading-animation {
   top: 50%;
   left: 50%;
