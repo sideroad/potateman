@@ -1,10 +1,11 @@
 body {
   margin: 0;
   font-family: 'Raleway', sans-serif;
+  transform: rotateX(-90);
 }
 
 #image {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
@@ -15,7 +16,7 @@ body {
 }
 
 #test {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
 }
@@ -37,7 +38,7 @@ body {
 }
 
 .help {
-  position: absolute;
+  position: fixed;
   color: #38a1db;
   font-size: 25px;
   left: 5px;
