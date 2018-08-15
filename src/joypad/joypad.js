@@ -3,9 +3,9 @@ import jsQR from "jsqr";
 import auth from '../helpers/auth';
 import isFullscreen from '../helpers/detection';
 import loading from '../dom/loading';
-import expander from '../dom/expander';
 import joypad from '../dom/joypad';
 import login from '../dom/login';
+import readQR from '../dom/readQR';
 import notifyToOpenFullscreen from '../dom/notifyToOpenFullscreen';
 
 if (!isFullscreen()) {
@@ -72,9 +72,6 @@ if (!isFullscreen()) {
             loading.end();
             window.scrollTo(0, 1);
             const ua = window.navigator.userAgent;
-            if (!/iPhone/.test(ua)) {
-              expander.start();
-            }
           });
           conn.on('data', (data) => {
             if (act[data.act]) {
@@ -87,13 +84,10 @@ if (!isFullscreen()) {
         };
 
         peer.on('open', (_player) => {
-          const stage = (window.location.pathname.match(/\/joypad\/([^/]+)\//)||[])[1];
-          if (stage) {
+          // eslint-disable-next-line
+          readQR((stage) => {
             input(stage, _player);
-          } else {
-            // eslint-disable-next-line
-            input(window.prompt('Please read QR code to join'), _player);
-          }
+          })
         });
         peer.on('error', (err) => {
           // eslint-disable-next-line no-console
