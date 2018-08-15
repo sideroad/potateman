@@ -7,7 +7,7 @@ import joypad from '../dom/joypad';
 import login from '../dom/login';
 
 window.alert(screen.availHeight + ':' + screen.height + ':' + window.innerHeight);
-
+window.alert((screen.availHeight || screen.height-30) <= window.innerHeight);
 auth('', (user) => {
   const loginsElem = document.getElementById('logins');
   if (loginsElem) {
