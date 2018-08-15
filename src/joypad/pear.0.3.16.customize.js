@@ -1520,6 +1520,7 @@ var util = {
     } catch (e) {
       data = false;
       audioVideo = false;
+			window.alert(1, e);
     }
 
     if (data) {
@@ -1527,6 +1528,7 @@ var util = {
         dc = pc.createDataChannel('_PEERJSTEST');
       } catch (e) {
         data = false;
+				window.alert(2, e);
       }
     }
 
@@ -1536,6 +1538,7 @@ var util = {
         dc.binaryType = 'blob';
         binaryBlob = true;
       } catch (e) {
+				window.alert(3, e);
       }
 
       // Reliable test.
@@ -1546,6 +1549,7 @@ var util = {
         var reliableDC = reliablePC.createDataChannel('_PEERJSRELIABLETEST', {});
         sctp = reliableDC.reliable;
       } catch (e) {
+				window.alert(4, e);
       }
       reliablePC.close();
     }
@@ -2875,7 +2879,7 @@ var BinaryPack = require('js-binarypack');
 
 var util = {
   debug: false,
-  
+
   inherits: function(ctor, superCtor) {
     ctor.super_ = superCtor;
     ctor.prototype = Object.create(superCtor.prototype, {
@@ -2897,7 +2901,7 @@ var util = {
   },
   pack: BinaryPack.pack,
   unpack: BinaryPack.unpack,
-  
+
   log: function () {
     if (util.debug) {
       var copy = [];
@@ -2919,7 +2923,7 @@ var util = {
     function setZeroTimeoutPostMessage(fn) {
       timeouts.push(fn);
       global.postMessage(messageName, '*');
-    }		
+    }
 
     function handleMessage(event) {
       if (event.source == global && event.data == messageName) {
@@ -2938,7 +2942,7 @@ var util = {
     }
     return setZeroTimeoutPostMessage;
   }(this)),
-  
+
   blobToArrayBuffer: function(blob, cb){
     var fr = new FileReader();
     fr.onload = function(evt) {
