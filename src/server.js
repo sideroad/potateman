@@ -80,9 +80,9 @@ app.get('/api/stages/:id/other', (req, res) => {
 });
 
 passporter.use({
-  facebook: {
-    appId: process.env.POTATEMAN_FACEBOOK_CLIENT_ID,
-    secret: process.env.POTATEMAN_FACEBOOK_SECRET_ID,
+  twitter: {
+    appId: process.env.POTATEMAN_TWITTER_CLIENT_ID,
+    secret: process.env.POTATEMAN_TWITTER_SECRET_ID,
   },
   github: {
     appId: process.env.POTATEMAN_GITHUB_CLIENT_ID,
