@@ -1,4 +1,16 @@
 import jsQR from 'jsqr';
+
+function stopStreamedVideo(videoElem) {
+  let stream = videoElem.srcObject;
+  let tracks = stream.getTracks();
+
+  tracks.forEach(function(track) {
+    track.stop();
+  });
+
+  videoElem.srcObject = null;
+}
+
 export default function(cb){
   var video = document.createElement("video");
   var canvasElement = document.createElement("canvas");
@@ -9,9 +21,8 @@ export default function(cb){
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     window.alert('The browser does not support WebRTC mediaDevices or getUserMedia');
   }
-  let localStream;
   navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
-    video.srcObject = localStream = stream;
+    video.srcObject = stream;
     video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
     video.play();
     requestAnimationFrame(tick);
@@ -27,7 +38,7 @@ export default function(cb){
         inversionAttempts: "dontInvert",
       });
       if (code) {
-        localStream.stop();
+        stopStreamedVideo(video);
         document.body.removeChild(canvasElement);
         cb(code.data);
       }
