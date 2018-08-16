@@ -83,9 +83,15 @@
         });
       });
 
-      $(document.body).bind('touchstart touchmove touchend', (e) => {
+      document.body.addEventListener('touchstart', (e) => {
         e.preventDefault();
-      });
+      }, {passive: false});
+      document.body.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+      }, {passive: false});
+      document.body.addEventListener('touchend', (e) => {
+        e.preventDefault();
+      }, {passive: false});
 
       const keyMap = {
         38: 2, // up
