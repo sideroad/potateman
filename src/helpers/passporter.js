@@ -1,5 +1,5 @@
 import passport from 'passport';
-import { Strategy as FacebookStrategy } from 'passport-facebook';
+import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -45,7 +45,7 @@ export default {
       cb(null, obj);
     });
 
-    applyStrategy('facebook', config.facebook, FacebookStrategy, origin);
+    applyStrategy('twitter', config.twitter, TwitterStrategy, origin);
     applyStrategy('github', config.github, GitHubStrategy, origin);
 
     app.use(passport.initialize());
@@ -68,7 +68,7 @@ export default {
       },
     );
 
-    applyEndpoint(app, 'facebook');
+    applyEndpoint(app, 'twitter');
     applyEndpoint(app, 'github');
   },
 };
