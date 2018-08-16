@@ -428,6 +428,16 @@ body {
   align-items: center;
   font-size: 10em;
   color: white;
+  flex-direction: column;
+}
+#authenticator-message {
+  font-size: 0.5em;
+}
+.icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
 }
 @keyframes loading {
   0% {
