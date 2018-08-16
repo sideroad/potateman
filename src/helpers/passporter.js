@@ -9,6 +9,8 @@ const applyStrategy = (authenticator, config, Strategy, origin) => {
   passport.use(new Strategy({
     clientID: config.appId,
     clientSecret: config.secret,
+    consumerKey: config.appId,
+    consumerSecret: config.secret,
     callbackURL: `${origin}/auth/${authenticator}/callback`,
     profileFields: ['id', 'displayName', 'picture'],
   }, (accessToken, refreshToken, profile, cb) =>
