@@ -9,8 +9,9 @@ export default function(cb){
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     window.alert('The browser does not support WebRTC mediaDevices or getUserMedia');
   }
+  let localStream;
   navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
-    video.srcObject = stream;
+    video.srcObject = localStream = stream;
     video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
     video.play();
     requestAnimationFrame(tick);
@@ -26,6 +27,7 @@ export default function(cb){
         inversionAttempts: "dontInvert",
       });
       if (code) {
+        localStream.stop();
         document.body.removeChild(canvasElement);
         cb(code.data);
       }
