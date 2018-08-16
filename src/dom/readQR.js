@@ -6,6 +6,9 @@ export default function(cb){
   document.body.appendChild(canvasElement);
   var canvas = canvasElement.getContext("2d");
   // Use facingMode: environment to attemt to get the front camera on phones
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    window.alert('The browser does not support WebRTC mediaDevices or getUserMedia');
+  }
   navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
     video.srcObject = stream;
     video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
