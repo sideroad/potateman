@@ -2,7 +2,7 @@
   "name": "Potateman",
   "short_name": "Potateman ",
   "start_url": "/",
-  "display": "fullscreen",
+  "display": "standalone",
   "icons": [
     {
       "src": "/images/icon-72x72.png",
