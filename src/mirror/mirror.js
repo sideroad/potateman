@@ -24,29 +24,32 @@ const initialize = () =>
       },
       win: (data) => {
         win(data);
-      },
+      }
     };
     const stage = window.location.pathname.match(/\/mirror\/([^/]+)\//)[1];
     const url = `${window.location.protocol}//${window.location.host}/joypad/${stage}/`;
     // eslint-disable-next-line no-new
     new QRious({
       element: document.getElementById('qr'),
-      value: url,
+      value: url
     });
     const peer = new window.Peer({
       host: window.location.hostname,
       port: window.location.port,
-      path: '/peerjs',
+      path: '/peerjs'
     });
     setInterval(() => {
       peer.socket.send({
-        type: 'KEEPALIVE',
+        type: 'KEEPALIVE'
       });
     }, 5000);
     peer.on('open', (player) => {
-      const conn = peer.connect(stage, {
-        serialization: 'json',
-      });
+      const conn = peer.connect(
+        stage,
+        {
+          serialization: 'json'
+        }
+      );
       const call = peer.call(stage, document.getElementById('dummy').captureStream());
       conn.on('data', (data) => {
         if (act[data.act]) {
@@ -55,7 +58,7 @@ const initialize = () =>
       });
       conn.on('open', () => {
         conn.send({
-          act: 'mirror',
+          act: 'mirror'
         });
         resolve({ data: { stage, player }, conn });
       });
@@ -79,26 +82,27 @@ const initialize = () =>
       console.log(err);
     });
 
-    fetch('https://chaus.herokuapp.com/apis/potateman/scores?orderBy=-score')
+    fetch('https://chaus.now.sh/apis/potateman/scores?orderBy=-score')
       .then(res => res.json())
       .then(res => ranking(res));
   });
 
-auth('', (user) => {
-  loading.end();
-  const loginsElem = document.getElementById('logins');
-  if (loginsElem) {
-    loginsElem.remove();
-  }
-  initialize()
-    .then(({ conn, data }) => {
+auth(
+  '',
+  (user) => {
+    loading.end();
+    const loginsElem = document.getElementById('logins');
+    if (loginsElem) {
+      loginsElem.remove();
+    }
+    initialize().then(({ conn, data }) => {
       conn.send({
         act: 'attend',
         stage: data.stage,
         player: data.player,
         fbid: user.id,
         name: user.name,
-        image: user.image,
+        image: user.image
       });
       window.addEventListener('orientationchange', () => {
         joypad.destroy();
@@ -110,6 +114,8 @@ auth('', (user) => {
       });
       joypad.binder(commands => conn.send(commands));
     });
-}, () => {
-  initialize();
-});
+  },
+  () => {
+    initialize();
+  }
+);

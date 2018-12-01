@@ -5,6 +5,7 @@
   },
   "rules": {
     "no-nested-ternary": 0,
+    "comma-dangle": ["error", "never"],
     "indent": ["error", 2, { "flatTernaryExpressions": true }]
   }
 }

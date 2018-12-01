@@ -17,14 +17,16 @@ const initialize = () =>
     const act = peer();
     act.init = (data) => {
       fetch(`/api/stages/${data.stage}`, {
-        method: 'PUT',
+        method: 'PUT'
       });
       const url = `${window.location.protocol}//${window.location.host}/joypad/${data.stage}/`;
-      const mirrorUrl = `${window.location.protocol}//${window.location.host}/mirror/${data.stage}/`;
+      const mirrorUrl = `${window.location.protocol}//${window.location.host}/mirror/${
+        data.stage
+      }/`;
       // eslint-disable-next-line no-new
       new QRious({
         element: document.getElementById('qr'),
-        value: data.stage,
+        value: data.stage
       });
       // eslint-disable-next-line no-console
       console.log(url);
@@ -86,32 +88,33 @@ const initialize = () =>
       });
       resolve({
         act,
-        data,
+        data
       });
     };
 
-    fetch('https://chaus.herokuapp.com/apis/potateman/scores?orderBy=-score&limit=10')
+    fetch('https://chaus.now.sh/apis/potateman/scores?orderBy=-score&limit=10')
       .then(res => res.json())
       .then(res => ranking(res));
 
     renderer(act);
   });
 
-auth('', (user) => {
-  loading.end();
-  const loginsElem = document.getElementById('logins');
-  if (loginsElem) {
-    loginsElem.remove();
-  }
-  initialize()
-    .then(({ act, data }) => {
+auth(
+  '',
+  (user) => {
+    loading.end();
+    const loginsElem = document.getElementById('logins');
+    if (loginsElem) {
+      loginsElem.remove();
+    }
+    initialize().then(({ act, data }) => {
       act.attend({
         stage: data.stage,
         player: data.stage,
         fbid: user.id,
         name: user.name,
         image: user.image,
-        focus: true,
+        focus: true
       });
       window.addEventListener('orientationchange', () => {
         joypad.destroy();
@@ -123,6 +126,8 @@ auth('', (user) => {
       });
       joypad.binder(commands => act.jp(commands, data.stage));
     });
-}, () => {
-  initialize();
-});
+  },
+  () => {
+    initialize();
+  }
+);

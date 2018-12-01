@@ -6,32 +6,40 @@ import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
 
 const applyStrategy = (authenticator, config, Strategy, origin) => {
-  passport.use(new Strategy({
-    clientID: config.appId,
-    clientSecret: config.secret,
-    consumerKey: config.appId,
-    consumerSecret: config.secret,
-    callbackURL: `${origin}/auth/${authenticator}/callback`,
-    profileFields: ['id', 'displayName', 'picture'],
-  }, (accessToken, refreshToken, profile, cb) =>
-    cb(null, { ...profile, token: accessToken })));
+  passport.use(new Strategy(
+    {
+      clientID: config.appId,
+      clientSecret: config.secret,
+      consumerKey: config.appId,
+      consumerSecret: config.secret,
+      callbackURL: `${origin}/auth/${authenticator}/callback`,
+      profileFields: ['id', 'displayName', 'picture']
+    },
+    (accessToken, refreshToken, profile, cb) => cb(null, { ...profile, token: accessToken })
+  ));
 };
 
 const applyEndpoint = (app, authenticator) => {
-  app.get(`/auth/${authenticator}`, passport.authenticate(authenticator, { session: true, scope: ['public_profile'] }));
+  app.get(
+    `/auth/${authenticator}`,
+    passport.authenticate(authenticator, { session: true, scope: ['public_profile'] })
+  );
 
   app.get(
-    `/auth/${authenticator}/callback`, passport.authenticate(authenticator, { session: true, failureRedirect: `/auth/${authenticator}` }),
+    `/auth/${authenticator}/callback`,
+    passport.authenticate(authenticator, {
+      session: true,
+      failureRedirect: `/auth/${authenticator}`
+    }),
     (req, res) => {
       const redirect = req.cookies.redirect || '/';
       res.clearCookie('redirect');
       res.redirect(redirect);
-    },
+    }
   );
 };
 
 export default {
-
   use: (config, app, origin) => {
     app.use(cookieParser());
     app.use(bodyParser.json());
@@ -61,16 +69,19 @@ export default {
           return next();
         }
         return res.status(401).json({});
-      }, (req, res) => {
+      },
+      (req, res) => {
         res.status(200).json({
           id: req.user.id,
           name: req.user.displayName,
-          image: `/ic?url=${encodeURIComponent(req.user.photos[0].value)}&size=100`,
+          image: `https://axkdcpaaen.cloudimg.io/cover/100x100/fradius50/${
+            req.user.photos[0].value
+          }`
         });
-      },
+      }
     );
 
     applyEndpoint(app, 'twitter');
     applyEndpoint(app, 'github');
-  },
+  }
 };
