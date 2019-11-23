@@ -13,6 +13,10 @@ export default function authFn(authenticator, callback, fallback) {
           image.onload = () => {
             callback(user);
           };
+          image.onerror = () => {
+            user.image = '/images/cpu-1.png';
+            callback(user);
+          };
           image.src = user.image;
         } else if (fallback) {
           loading.end();
