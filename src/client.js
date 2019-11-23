@@ -92,7 +92,7 @@ const initialize = () =>
       });
     };
 
-    fetch('https://chaus.now.sh/apis/potateman/scores?orderBy=-score&limit=10')
+    fetch('https://chaus.herokuapp.com/apis/potateman/scores?orderBy=-score&limit=10')
       .then(res => res.json())
       .then(res => ranking(res));
 

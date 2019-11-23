@@ -82,7 +82,7 @@ const initialize = () =>
       console.log(err);
     });
 
-    fetch('https://chaus.now.sh/apis/potateman/scores?orderBy=-score')
+    fetch('https://chaus.herokuapp.com/apis/potateman/scores?orderBy=-score')
       .then(res => res.json())
       .then(res => ranking(res));
   });

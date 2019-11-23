@@ -1,6 +1,6 @@
 # How to play?
 
-1. Access https://potateman.now.sh
+1. Access https://potateman.herokuapp.com
 2. Read QR code by players
 3. If u want to add CPU, Click human icon to add
 4. Click Crash button to start game
