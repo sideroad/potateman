@@ -32,27 +32,17 @@ if (!isFullscreen()) {
           });
         }, 5000);
 
+        const attend = ({ data }) => {
+          if (player) {
+            return;
+          }
+          // eslint-disable-next-line
+          player = data.player;
+          $('#image').css({
+            backgroundImage: `url(${data.image})`,
+          });
+        };
         const act = {
-          attend: ({ data }) => {
-            if (player) {
-              return;
-            }
-            // eslint-disable-next-line
-            player = data.player;
-            alert(data.image);
-            $('#image').css({
-              backgroundImage: `url(${data.image})`,
-            });
-            window.addEventListener('orientationchange', () => {
-              joypad.destroy();
-              joypad.binder(commands => conn.send(commands));
-            });
-            window.addEventListener('resize', () => {
-              joypad.destroy();
-              joypad.binder(commands => conn.send(commands));
-            });
-            joypad.binder(commands => conn.send(commands));
-          },
         };
 
         const input = (stage, _player) => {
@@ -65,7 +55,7 @@ if (!isFullscreen()) {
             }
           });
           conn.on('open', () => {
-            conn.send({
+            const data = {
               act: 'attend',
               // eslint-disable-next-line
               stage: stage,
@@ -74,10 +64,21 @@ if (!isFullscreen()) {
               fbid: user.id,
               name: user.name,
               image: user.image,
-            });
+            };
+            conn.send(data);
+            attend(data);
             loading.end();
             window.scrollTo(0, 1);
             const ua = window.navigator.userAgent;
+            window.addEventListener('orientationchange', () => {
+              joypad.destroy();
+              joypad.binder(commands => conn.send(commands));
+            });
+            window.addEventListener('resize', () => {
+              joypad.destroy();
+              joypad.binder(commands => conn.send(commands));
+            });
+            joypad.binder(commands => conn.send(commands));
           });
           conn.on('error', (msg) => {
             // eslint-disable-next-line no-console
