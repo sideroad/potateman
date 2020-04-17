@@ -39,6 +39,7 @@ if (!isFullscreen()) {
             }
             // eslint-disable-next-line
             player = data.player;
+            alert(data.image);
             $('#image').css({
               backgroundImage: `url(${data.image})`,
             });
@@ -58,6 +59,11 @@ if (!isFullscreen()) {
           conn = peer.connect(stage, {
             serialization: 'json',
           });
+          conn.on('data', (data) => {
+            if (act[data.act]) {
+              act[data.act](data);
+            }
+          });
           conn.on('open', () => {
             conn.send({
               act: 'attend',
@@ -72,11 +78,6 @@ if (!isFullscreen()) {
             loading.end();
             window.scrollTo(0, 1);
             const ua = window.navigator.userAgent;
-          });
-          conn.on('data', (data) => {
-            if (act[data.act]) {
-              act[data.act](data);
-            }
           });
           conn.on('error', (msg) => {
             // eslint-disable-next-line no-console
