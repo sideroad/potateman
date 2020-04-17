@@ -74,9 +74,9 @@ export default {
         res.status(200).json({
           id: req.user.id,
           name: req.user.displayName,
-          image: `https://axkdcpaaen.cloudimg.io/cover/100x100/fradius50/${
+          image: `https://demo.cloudimg.io/v7/${
             req.user.photos[0].value
-          }`
+          }&w=100&radius=50`
         });
       }
     );
