@@ -66,7 +66,7 @@ if (!isFullscreen()) {
               image: user.image,
             };
             conn.send(data);
-            attend(data);
+            attend({data});
             loading.end();
             window.scrollTo(0, 1);
             const ua = window.navigator.userAgent;
