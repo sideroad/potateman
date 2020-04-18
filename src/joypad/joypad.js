@@ -1,5 +1,4 @@
 import 'babel-polyfill';
-import jsQR from "jsqr";
 import auth from '../helpers/auth';
 import isFullscreen from '../helpers/detection';
 import loading from '../dom/loading';
@@ -24,7 +23,7 @@ if (!isFullscreen()) {
         const peer = new window.Peer({
           host: window.location.hostname,
           port: window.location.port,
-          path: '/peerjs',
+          path: '/peerjs'
         });
         setInterval(() => {
           peer.socket.send({
@@ -64,13 +63,12 @@ if (!isFullscreen()) {
               player: _player,
               fbid: user.id,
               name: user.name,
-              image: user.image,
+              image: user.image
             };
             conn.send(data);
-            attend({data});
+            attend({ data });
             loading.end();
             window.scrollTo(0, 1);
-            const ua = window.navigator.userAgent;
             window.addEventListener('orientationchange', () => {
               joypad.destroy();
               joypad.binder(commands => conn.send(commands));
@@ -81,8 +79,9 @@ if (!isFullscreen()) {
             });
             joypad.binder(commands => conn.send(commands));
           });
-          conn.on('error', (msg) => {
+          conn.on('error', (err) => {
             // eslint-disable-next-line no-console
+            console.error('#error', err);
           });
         };
 
@@ -90,10 +89,11 @@ if (!isFullscreen()) {
           // eslint-disable-next-line
           readQR((stage) => {
             input(stage, _player);
-          })
+          });
         });
         peer.on('error', (err) => {
           // eslint-disable-next-line no-console
+          console.error('#error', err);
         });
       });
     })(window.jQuery);
