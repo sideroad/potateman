@@ -27,11 +27,11 @@ const initialize = () =>
       }
     };
     const stage = window.location.pathname.match(/\/mirror\/([^/]+)\//)[1];
-    const url = `${window.location.protocol}//${window.location.host}/joypad/${stage}/`;
+    // const url = `${window.location.protocol}//${window.location.host}/joypad/${stage}/`;
     // eslint-disable-next-line no-new
     new QRious({
       element: document.getElementById('qr'),
-      value: url
+      value: stage
     });
     const peer = new window.Peer({
       host: window.location.hostname,
@@ -52,11 +52,15 @@ const initialize = () =>
       );
       const call = peer.call(stage, document.getElementById('dummy').captureStream());
       conn.on('data', (data) => {
+        // eslint-disable-next-line no-console
+        console.log('#data', data);
         if (act[data.act]) {
           act[data.act](data);
         }
       });
       conn.on('open', () => {
+        // eslint-disable-next-line no-console
+        console.log('#open');
         conn.send({
           act: 'mirror'
         });
@@ -74,7 +78,7 @@ const initialize = () =>
       });
       call.on('error', (msg) => {
         // eslint-disable-next-line no-console
-        console.log(msg);
+        console.error('#error', msg);
       });
     });
     peer.on('error', (err) => {
