@@ -28,7 +28,7 @@ if (!isFullscreen()) {
         });
         setInterval(() => {
           peer.socket.send({
-            type: 'KEEPALIVE',
+            type: 'KEEPALIVE'
           });
         }, 5000);
 
@@ -39,15 +39,16 @@ if (!isFullscreen()) {
           // eslint-disable-next-line
           player = data.player;
           $('#image').css({
-            backgroundImage: `url(${data.image})`,
+            backgroundImage: `url(${data.image})`
           });
         };
         const act = {
+          attend
         };
 
         const input = (stage, _player) => {
           conn = peer.connect(stage, {
-            serialization: 'json',
+            serialization: 'json'
           });
           conn.on('data', (data) => {
             if (act[data.act]) {
