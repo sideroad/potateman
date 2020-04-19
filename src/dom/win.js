@@ -9,7 +9,7 @@ export default function winFn({ name, image, score }) {
   }
   const winner = document.getElementById('winner');
   winner.style.display = 'block';
-  if (window.config.autoRestart) {
+  if (window.config && window.config.autoRestart) {
     setTimeout(() => {
       if (winner.style.display === 'block') {
         document.getElementById('restart').click();

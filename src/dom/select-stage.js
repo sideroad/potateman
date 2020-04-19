@@ -7,7 +7,7 @@ export default function selectStageFn(callback) {
   const selectStageElem = document.getElementById('select-stage');
   selectStageElem.style.display = 'flex';
   const stageElems = document.querySelectorAll('.stage');
-  if (window.config.autoRestart) {
+  if (window.config && window.config.autoRestart) {
     selectStageElem.style.display = 'none';
     callback({ stage: '' });
     binded = true;

@@ -73,6 +73,8 @@ const initialize = () =>
         joinElem.remove();
       });
       call.on('stream', (stream) => {
+        // eslint-disable-next-line no-console
+        console.log('#stream', stream);
         streamElem.srcObject = stream;
         streamElem.play();
       });
@@ -117,9 +119,15 @@ auth(
         joypad.binder(commands => conn.send(commands));
       });
       joypad.binder(commands => conn.send(commands));
+    }).catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error(error);
     });
   },
   () => {
-    initialize();
+    initialize().catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    })
   }
 );
