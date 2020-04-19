@@ -77,6 +77,11 @@ const initialize = () =>
         // eslint-disable-next-line no-console
         console.error('#error', msg);
       });
+      document.getElementsByTagName('body')[0].addEventListener('click', () => {
+        if (streamElem) {
+          streamElem.play();
+        }
+      });
     });
     peer.on('error', (err) => {
       // eslint-disable-next-line no-console
