@@ -67,11 +67,6 @@ const initialize = () =>
         resolve({ data: { stage, player }, conn });
       });
       const streamElem = document.getElementById('stream');
-      const joinElem = document.getElementById('join');
-      joinElem.addEventListener('touchstart', () => {
-        streamElem.play();
-        joinElem.remove();
-      });
       call.on('stream', (stream) => {
         // eslint-disable-next-line no-console
         console.log('#stream', stream);
@@ -110,15 +105,15 @@ auth(
         name: user.name,
         image: user.image
       });
-      window.addEventListener('orientationchange', () => {
-        joypad.destroy();
-        joypad.binder(commands => conn.send(commands));
-      });
-      window.addEventListener('resize', () => {
-        joypad.destroy();
-        joypad.binder(commands => conn.send(commands));
-      });
-      joypad.binder(commands => conn.send(commands));
+      // window.addEventListener('orientationchange', () => {
+      //   joypad.destroy();
+      //   joypad.binder(commands => conn.send(commands));
+      // });
+      // window.addEventListener('resize', () => {
+      //   joypad.destroy();
+      //   joypad.binder(commands => conn.send(commands));
+      // });
+      // joypad.binder(commands => conn.send(commands));
     }).catch((error) => {
       // eslint-disable-next-line no-console
       console.error(error);
