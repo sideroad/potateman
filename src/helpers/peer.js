@@ -14,8 +14,12 @@ export default function () {
       });
     },
     stream: (elem) => {
-      const stream = elem.captureStream();
-      mirrors.forEach(mirror => mirror.answer(stream));
+      try {
+        const stream = elem.captureStream();
+        mirrors.forEach(mirror => mirror.answer(stream));  
+      }catch(e) {
+        console.warn(e);
+      }
     },
   };
   setInterval(() => {
