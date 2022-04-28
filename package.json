@@ -19,7 +19,7 @@
     "watch": "npm-watch"
   },
   "dependencies": {
-    "async": "^2.0.1",
+    "async": "^2.6.4",
     "babel-polyfill": "^6.3.14",
     "body-parser": "^1.14.2",
     "clipboard": "^1.7.1",
